@@ -67,11 +67,12 @@ class CS6200CommandHandlers:
         ip_addr = iinfo.get("ip_address") or "unassigned"
         vrf = iinfo.get("vrf") or "default"
 
-        return (
-            f"{if_name} is {status}, line protocol is {status}\n"
-            f"  Internet address is {ip_addr}\n"
-            f"  VPN Routing/Forwarding \"{vrf}\""
-        )
+        lines = [f"{if_name} is {status}, line protocol is {status}"]
+        if iinfo.get("description"):
+            lines.append(f"  Description: {iinfo['description']}")
+        lines.append(f"  Internet address is {ip_addr}")
+        lines.append(f"  VPN Routing/Forwarding \"{vrf}\"")
+        return "\n".join(lines)
 
     def __init__(self, engine: CS6200CLIEngine) -> None:
         self.engine = engine
@@ -153,6 +154,9 @@ class CS6200CommandHandlers:
             "vlan.description": self._handle_vlan_description,
             "vlan.shutdown": self._handle_vlan_shutdown,
             "interface.shutdown": self._handle_interface_shutdown,
+            "interface.description": self._handle_if_description,
+            "interface.bandwidth": self._handle_if_bandwidth,
+            "interface.mtu": self._handle_if_mtu,
             "interface.switchport_mode": self._handle_switchport_mode,
             "interface.access_vlan": self._handle_switchport_access_vlan,
             "interface.trunk_allowed_vlan": self._handle_switchport_trunk_allowed,
@@ -209,6 +213,8 @@ class CS6200CommandHandlers:
             "show.port_group": self._render_show_port_group,
             "show.ip.route": self._render_show_ip_route,
             "show.ip.interface.brief": self._render_show_ip_int_brief,
+            "show.interface": self._render_show_interface,
+            "show.ipv6.interface": self._render_show_ipv6_interface,
             "show.port_security": self._render_show_port_security,
             "show.ip.ospf.neighbor": self._render_show_ospf_neighbor,
             "show.mac_address_table": self._render_show_mac_table,
@@ -384,6 +390,47 @@ class CS6200CommandHandlers:
         if_obj = self._get_current_interface()
         if if_obj is not None:
             if_obj["shutdown"] = not is_no
+        return ""
+
+    def _handle_if_description(self, args: Dict[str, Any], is_no: bool) -> str:
+        """配置接口描述；描述文本允许包含空格（由解析器并入 extra）"""
+        if_obj = self._get_current_interface()
+        if if_obj is None:
+            return "% Command only valid in interface configuration mode."
+        if is_no:
+            if_obj["description"] = ""
+            return ""
+        first = str(args.get("<text>") or "").strip()
+        rest = str(args.get("extra") or "").strip()
+        if_obj["description"] = " ".join(part for part in (first, rest) if part)
+        return ""
+
+    def _handle_if_bandwidth(self, args: Dict[str, Any], is_no: bool) -> str:
+        """配置接口带宽（kbit/s），Loopback / VLAN 等三层逻辑接口同样支持"""
+        if_obj = self._get_current_interface()
+        if if_obj is None:
+            return "% Command only valid in interface configuration mode."
+        if is_no:
+            if_obj["bandwidth"] = None
+            return ""
+        raw = str(args.get("<bandwidth>") or "").strip()
+        if not raw.isdigit() or not (1 <= int(raw) <= 100000000):
+            return "% Invalid bandwidth value, range is 1-100000000."
+        if_obj["bandwidth"] = int(raw)
+        return ""
+
+    def _handle_if_mtu(self, args: Dict[str, Any], is_no: bool) -> str:
+        """配置接口 MTU，no 形式恢复设备默认值 1500 字节"""
+        if_obj = self._get_current_interface()
+        if if_obj is None:
+            return "% Command only valid in interface configuration mode."
+        if is_no:
+            if_obj["mtu"] = 1500
+            return ""
+        raw = str(args.get("<mtu-value>") or "").strip()
+        if not raw.isdigit() or not (64 <= int(raw) <= 9216):
+            return "% Invalid MTU value, range is 64-9216."
+        if_obj["mtu"] = int(raw)
         return ""
 
     def _handle_switchport_mode(self, args: Dict[str, Any], is_no: bool) -> str:
@@ -1202,6 +1249,12 @@ class CS6200CommandHandlers:
         # 接口配置段
         for if_name, iinfo in st.get("interfaces", {}).items():
             lines.append(f"interface {if_name}")
+            if iinfo.get("description"):
+                lines.append(f" description {iinfo['description']}")
+            if iinfo.get("bandwidth"):
+                lines.append(f" bandwidth {iinfo['bandwidth']}")
+            if iinfo.get("mtu") and int(iinfo.get("mtu") or 1500) != 1500:
+                lines.append(f" mtu {iinfo['mtu']}")
             is_l3_logical = if_name.startswith(("Vlan", "Loopback", "Tunnel"))
             sw_mode = iinfo.get("switchport_mode", "access")
             if not is_l3_logical:
@@ -1374,6 +1427,99 @@ class CS6200CommandHandlers:
             status = "down" if iinfo.get("shutdown") else "up"
             rows.append(f"{if_name:<22} {ip_str:<18} {status:<10} {status}")
         return "\n".join(rows)
+
+    def _resolve_show_interface_names(self, args: Dict[str, Any]) -> List[str]:
+        """从 show interface / show ipv6 interface 参数中解析目标接口名列表"""
+        if "<loopback-id>" in args:
+            return [f"Loopback{args['<loopback-id>']}"]
+        if "<vlan-id>" in args:
+            return [f"Vlan{args['<vlan-id>']}"]
+        if "<port-channel-number>" in args:
+            return [f"Port-Channel{args['<port-channel-number>']}"]
+        if "<interface-list>" in args:
+            raw = str(args["<interface-list>"])
+            try:
+                return self.engine._expand_ethernet_list(raw)
+            except Exception:
+                return [self.engine.normalize_interface_name("ethernet", raw)]
+        # 未指定接口时遍历全部接口（按名称排序，保证输出稳定）
+        return sorted(self.engine.state.get("interfaces", {}).keys())
+
+    @staticmethod
+    def _interface_mtu(iinfo: Dict[str, Any]) -> int:
+        try:
+            return int(iinfo.get("mtu") or 1500)
+        except (TypeError, ValueError):
+            return 1500
+
+    @staticmethod
+    def _interface_bandwidth(if_name: str, iinfo: Dict[str, Any]) -> int:
+        """返回接口带宽（kbit/s）；未显式配置时按接口类型给出合理默认值"""
+        if iinfo.get("bandwidth"):
+            try:
+                return int(iinfo["bandwidth"])
+            except (TypeError, ValueError):
+                pass
+        return 8000000 if if_name.startswith("Loopback") else 1000000
+
+    def _render_interface_detail(self, if_name: str) -> str:
+        """渲染单个接口的 show interface 详细信息块"""
+        iinfo = self.engine.state.get("interfaces", {}).get(if_name)
+        if not iinfo:
+            return f"% Interface {if_name} does not exist."
+
+        status = "down" if iinfo.get("shutdown") else "up"
+        vrf = iinfo.get("vrf") or "default"
+        mtu = self._interface_mtu(iinfo)
+        bandwidth = self._interface_bandwidth(if_name, iinfo)
+
+        lines: List[str] = [f"{if_name} is {status}, line protocol is {status}"]
+        if iinfo.get("description"):
+            lines.append(f"  Description: {iinfo['description']}")
+        lines.append(f"  MTU {mtu} bytes, BW {bandwidth} Kbit, DLY 5000 usec")
+        lines.append(f"  Internet address is {iinfo.get('ip_address') or 'unassigned'}")
+
+        if iinfo.get("ipv6_enable") or iinfo.get("ipv6_addresses"):
+            lines.append("  IPv6 is enabled")
+            for addr in iinfo.get("ipv6_addresses", []):
+                lines.append(f"    IPv6 address: {addr}")
+
+        lines.append(f"  VPN Routing/Forwarding \"{vrf}\"")
+        return "\n".join(lines)
+
+    def _render_show_interface(self, args: Dict[str, Any], is_no: bool) -> str:
+        names = self._resolve_show_interface_names(args)
+        if not names:
+            return "% Interface does not exist."
+        blocks = [self._render_interface_detail(name) for name in names]
+        return "\n\n".join(blocks)
+
+    def _render_show_ipv6_interface(self, args: Dict[str, Any], is_no: bool) -> str:
+        names = self._resolve_show_interface_names(args)
+        if not names:
+            return "% Interface does not exist."
+
+        blocks: List[str] = []
+        for if_name in names:
+            iinfo = self.engine.state.get("interfaces", {}).get(if_name)
+            if not iinfo:
+                blocks.append(f"% Interface {if_name} does not exist.")
+                continue
+            status = "down" if iinfo.get("shutdown") else "up"
+            lines = [f"{if_name} is {status}, line protocol is {status}"]
+            addrs = iinfo.get("ipv6_addresses") or []
+            if not iinfo.get("ipv6_enable") and not addrs:
+                lines.append("  IPv6 is disabled")
+            else:
+                lines.append("  IPv6 is enabled")
+                if addrs:
+                    lines.append("  Global unicast address(es):")
+                    for addr in addrs:
+                        lines.append(f"    {addr}")
+                else:
+                    lines.append("  No IPv6 address configured")
+            blocks.append("\n".join(lines))
+        return "\n\n".join(blocks)
 
     def _render_show_port_security(self, args: Dict[str, Any], is_no: bool) -> str:
         header = f"{'Secure Port':<20} {'Enabled':<10} {'MaxAddr':<9} {'CurrentAddr':<13} {'SecurityViolation'}"

@@ -142,5 +142,141 @@
     "state_key": "show.ip.interface",
     "no_cmd": "",
     "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show interface",
+    "params": {},
+    "desc": "显示所有接口的物理状态、描述、MTU、带宽及三层地址信息",
+    "requires": "",
+    "state_key": "show.interface",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show interface loopback <loopback-id>",
+    "params": {
+      "<loopback-id>": "Loopback 接口编号"
+    },
+    "desc": "显示指定 Loopback 接口的详细状态信息",
+    "requires": "",
+    "state_key": "show.interface",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show interface vlan <vlan-id>",
+    "params": {
+      "<vlan-id>": "VLAN ID"
+    },
+    "desc": "显示指定 VLAN 接口的详细状态信息",
+    "requires": "",
+    "state_key": "show.interface",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show interface ethernet <interface-list>",
+    "params": {
+      "<interface-list>": "以太网端口列表"
+    },
+    "desc": "显示指定以太网端口的详细状态信息",
+    "requires": "",
+    "state_key": "show.interface",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show interface port-channel <port-channel-number>",
+    "params": {
+      "<port-channel-number>": "聚合口编号"
+    },
+    "desc": "显示指定聚合口的详细状态信息",
+    "requires": "",
+    "state_key": "show.interface",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show ipv6 interface",
+    "params": {},
+    "desc": "显示所有三层接口的 IPv6 使能状态与地址信息",
+    "requires": "",
+    "state_key": "show.ipv6.interface",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show ipv6 interface loopback <loopback-id>",
+    "params": {
+      "<loopback-id>": "Loopback 接口编号"
+    },
+    "desc": "显示指定 Loopback 接口的 IPv6 状态与地址信息",
+    "requires": "",
+    "state_key": "show.ipv6.interface",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show ipv6 interface vlan <vlan-id>",
+    "params": {
+      "<vlan-id>": "VLAN ID"
+    },
+    "desc": "显示指定 VLAN 接口的 IPv6 状态与地址信息",
+    "requires": "",
+    "state_key": "show.ipv6.interface",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show ipv6 interface ethernet <interface-list>",
+    "params": {
+      "<interface-list>": "以太网端口列表"
+    },
+    "desc": "显示指定以太网端口的 IPv6 状态与地址信息",
+    "requires": "",
+    "state_key": "show.ipv6.interface",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show ipv6 interface port-channel <port-channel-number>",
+    "params": {
+      "<port-channel-number>": "聚合口编号"
+    },
+    "desc": "显示指定聚合口的 IPv6 状态与地址信息",
+    "requires": "",
+    "state_key": "show.ipv6.interface",
+    "no_cmd": "",
+    "output_example": ""
   }
 ]

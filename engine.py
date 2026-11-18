@@ -393,6 +393,8 @@ class CS6200CLIEngine:
             "name": if_name,
             "shutdown": False,
             "description": "",
+            "bandwidth": None,
+            "mtu": 1500,
             "switchport_mode": "access",
             "access_vlan": 1,
             "trunk_allowed_vlans": "1-4094",

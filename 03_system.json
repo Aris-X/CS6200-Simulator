@@ -470,5 +470,51 @@
   "state_key": "ipv6.enable",
   "no_cmd": "no ipv6 enable",
   "output_example": ""
+  },
+  {
+    "mode": ["if"],
+    "syntax": "description <text>",
+    "params": {
+      "<text>": "接口描述信息（可包含空格）"
+    },
+    "desc": "配置当前三层/二层接口的描述信息",
+    "requires": "",
+    "state_key": "interface.description",
+    "no_cmd": "no description",
+    "output_example": ""
+  },
+  {
+    "mode": ["if"],
+    "syntax": "bandwidth <bandwidth>",
+    "params": {
+      "<bandwidth>": "接口带宽（kbit/s，1-100000000）"
+    },
+    "desc": "配置接口的带宽值",
+    "requires": "",
+    "state_key": "interface.bandwidth",
+    "no_cmd": "no bandwidth",
+    "output_example": ""
+  },
+  {
+    "mode": ["if"],
+    "syntax": "mtu <mtu-value>",
+    "params": {
+      "<mtu-value>": "接口 MTU 值（64-9216 字节）"
+    },
+    "desc": "配置接口的 MTU 值",
+    "requires": "",
+    "state_key": "interface.mtu",
+    "no_cmd": "no mtu",
+    "output_example": ""
+  },
+  {
+    "mode": ["if"],
+    "syntax": "no ip address",
+    "params": {},
+    "desc": "删除当前接口的全部 IPv4 地址",
+    "requires": "",
+    "state_key": "interface.ip_address",
+    "no_cmd": "",
+    "output_example": ""
   }
 ]

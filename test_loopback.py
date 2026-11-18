@@ -7,12 +7,15 @@ Entry Point: test_loopback.py
 Verifies native Loopback interface support (no monkey-patching required):
   1. 'interface loopback <id>' creates 'Loopback<id>' and enters
      'Switch(Config-If-Loopback<id>)#' (also via abbreviation 'int lo 2').
-  2. Layer-3 configuration (ip address /32, shutdown, no shutdown) is stored.
+  2. Full Layer-3 configuration is stored: ip address /32 (+ 'no ip address'),
+     ipv6 address / ipv6 enable, description (with spaces), bandwidth, mtu,
+     shutdown / no shutdown.
   3. Layer-2 port commands (switchport ...) are rejected on Loopback.
   4. 'no interface loopback <id>' removes the interface from the state tree.
-  5. show ip interface brief / show ip interface loopback / show ip route /
+  5. show ip interface brief / show ip interface loopback / show interface
+     loopback / show ipv6 interface loopback / show ip route /
      show running-config render Loopback correctly (no switchport lines).
-  6. 'write' persists Loopback into startup_config.
+  6. 'write' persists the complete Loopback configuration into startup_config.
 """
 
 from __future__ import annotations
@@ -97,11 +100,31 @@ def run_loopback_suite() -> None:
     # Layer-2 commands are hidden from `?` help / Tab completion in Loopback view
     view_help = engine.get_context_help("")
     assert "switchport" not in view_help, view_help
-    assert "ip address" in view_help, view_help
+    for required in ("ip address", "ipv6 address", "description", "bandwidth", "mtu", "no ip address"):
+        assert required in view_help, (required, view_help)
     assert "switchport" not in engine.get_completions(""), engine.get_completions("")
 
     exec_line(engine, "ip address 10.255.255.1 255.255.255.255")
     lo1 = engine.state["interfaces"]["Loopback1"]
+    assert lo1["ip_address"] == "10.255.255.1/255.255.255.255", lo1["ip_address"]
+
+    # 完整的三层接口属性：描述（含空格）/ 带宽 / MTU / IPv6
+    exec_line(engine, "description Core Router-ID")
+    exec_line(engine, "bandwidth 1000")
+    exec_line(engine, "mtu 9000")
+    assert lo1["description"] == "Core Router-ID", lo1["description"]
+    assert lo1["bandwidth"] == 1000, lo1["bandwidth"]
+    assert lo1["mtu"] == 9000, lo1["mtu"]
+
+    exec_line(engine, "ipv6 address 2001:db8::1/128")
+    exec_line(engine, "ipv6 enable")
+    assert "2001:db8::1/128" in lo1["ipv6_addresses"], lo1["ipv6_addresses"]
+    assert lo1["ipv6_enable"] is True
+
+    # 'no ip address' 清除地址后可重新下发
+    exec_line(engine, "no ip address")
+    assert lo1["ip_address"] is None, lo1["ip_address"]
+    exec_line(engine, "ip address 10.255.255.1 255.255.255.255")
     assert lo1["ip_address"] == "10.255.255.1/255.255.255.255", lo1["ip_address"]
 
     # Layer-2 commands are unavailable in the Loopback view (device-authentic error)
@@ -146,6 +169,17 @@ def run_loopback_suite() -> None:
     lo_detail = exec_line(engine, "show ip interface loopback 1")
     assert "Loopback1 is up" in lo_detail, lo_detail
     assert "Internet address is 10.255.255.1/255.255.255.255" in lo_detail, lo_detail
+    assert "Description: Core Router-ID" in lo_detail, lo_detail
+
+    lo_phys = exec_line(engine, "show interface loopback 1")
+    assert "Loopback1 is up" in lo_phys, lo_phys
+    assert "Description: Core Router-ID" in lo_phys, lo_phys
+    assert "MTU 9000 bytes" in lo_phys, lo_phys
+    assert "BW 1000 Kbit" in lo_phys, lo_phys
+
+    lo_v6 = exec_line(engine, "show ipv6 interface loopback 1")
+    assert "IPv6 is enabled" in lo_v6, lo_v6
+    assert "2001:db8::1/128" in lo_v6, lo_v6
 
     # Loopback must not be reported as a VLAN member / STP port
     vlan_out = exec_line(engine, "show vlan")
@@ -163,6 +197,10 @@ def run_loopback_suite() -> None:
     running = exec_line(engine, "show running-config")
     lo_block = extract_block(running, "interface Loopback1")
     assert "ip address 10.255.255.1 255.255.255.255" in lo_block, lo_block
+    assert "description Core Router-ID" in lo_block, lo_block
+    assert "bandwidth 1000" in lo_block, lo_block
+    assert "mtu 9000" in lo_block, lo_block
+    assert "ipv6 address 2001:db8::1/128" in lo_block, lo_block
     assert "switchport" not in lo_block, lo_block
 
     # ------------------------------------------------------------------
@@ -172,6 +210,11 @@ def run_loopback_suite() -> None:
     exec_line(engine, "write")
     assert "Loopback1" in engine.state["startup_config"]["interfaces"]
     assert "Loopback2" in engine.state["startup_config"]["interfaces"]
+    saved_lo1 = engine.state["startup_config"]["interfaces"]["Loopback1"]
+    assert saved_lo1["description"] == "Core Router-ID", saved_lo1
+    assert saved_lo1["bandwidth"] == 1000, saved_lo1
+    assert saved_lo1["mtu"] == 9000, saved_lo1
+    assert "2001:db8::1/128" in saved_lo1["ipv6_addresses"], saved_lo1
 
     exec_line(engine, "config terminal")
     exec_line(engine, "no interface loopback 2")
