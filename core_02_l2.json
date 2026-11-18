@@ -251,5 +251,17 @@
     "state_key": "interface.spanning_tree.portfast",
     "no_cmd": "no spanning-tree portfast",
     "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "loopback",
+    "params": {},
+    "desc": "打开或关闭指定端口的环回测试功能",
+    "requires": "端口配置模式（以太网端口 / 聚合口）",
+    "state_key": "interface.port_loopback",
+    "no_cmd": "no loopback",
+    "output_example": ""
   }
 ]

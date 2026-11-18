@@ -157,6 +157,7 @@ class CS6200CommandHandlers:
             "interface.description": self._handle_if_description,
             "interface.bandwidth": self._handle_if_bandwidth,
             "interface.mtu": self._handle_if_mtu,
+            "interface.port_loopback": self._handle_if_port_loopback,
             "interface.switchport_mode": self._handle_switchport_mode,
             "interface.access_vlan": self._handle_switchport_access_vlan,
             "interface.trunk_allowed_vlan": self._handle_switchport_trunk_allowed,
@@ -431,6 +432,14 @@ class CS6200CommandHandlers:
         if not raw.isdigit() or not (64 <= int(raw) <= 9216):
             return "% Invalid MTU value, range is 64-9216."
         if_obj["mtu"] = int(raw)
+        return ""
+
+    def _handle_if_port_loopback(self, args: Dict[str, Any], is_no: bool) -> str:
+        """打开/关闭物理端口的环回测试（诊断功能，不写入 running-config）"""
+        if_obj = self._get_current_interface()
+        if if_obj is None:
+            return "% Command only valid in interface configuration mode."
+        if_obj["port_loopback"] = not is_no
         return ""
 
     def _handle_switchport_mode(self, args: Dict[str, Any], is_no: bool) -> str:
@@ -1483,6 +1492,9 @@ class CS6200CommandHandlers:
             lines.append("  IPv6 is enabled")
             for addr in iinfo.get("ipv6_addresses", []):
                 lines.append(f"    IPv6 address: {addr}")
+
+        if iinfo.get("port_loopback"):
+            lines.append("  Loopback test: enabled")
 
         lines.append(f"  VPN Routing/Forwarding \"{vrf}\"")
         return "\n".join(lines)

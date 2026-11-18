@@ -103,6 +103,8 @@ def run_loopback_suite() -> None:
     for required in ("ip address", "ipv6 address", "description", "bandwidth", "mtu", "no ip address"):
         assert required in view_help, (required, view_help)
     assert "switchport" not in engine.get_completions(""), engine.get_completions("")
+    # 物理端口的环回测试命令 'loopback' 不应出现在 Loopback 逻辑接口视图
+    assert "loopback" not in engine.get_completions(""), engine.get_completions("")
 
     exec_line(engine, "ip address 10.255.255.1 255.255.255.255")
     lo1 = engine.state["interfaces"]["Loopback1"]

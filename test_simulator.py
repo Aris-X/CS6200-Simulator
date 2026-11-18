@@ -161,6 +161,14 @@ def run_acceptance_suite() -> None:
     exec_cmd(engine, "switchport port-security")
     exec_cmd(engine, "switchport port-security maximum 2")
     exec_cmd(engine, "switchport port-security violation restrict")
+
+    # 端口环回测试命令：必须出现在 Ethernet 端口视图的 'l' 补全列表中
+    assert "loopback" in engine.get_completions("l"), engine.get_completions("l")
+    exec_cmd(engine, "loopback")
+    assert engine.state["interfaces"]["Ethernet1/0/1"]["port_loopback"] is True
+    exec_cmd(engine, "no loopback")
+    assert engine.state["interfaces"]["Ethernet1/0/1"]["port_loopback"] is False
+
     exec_cmd(engine, "exit")
 
     eth1 = engine.state["interfaces"]["Ethernet1/0/1"]
