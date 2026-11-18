@@ -1,0 +1,146 @@
+[
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip route {<ip-prefix> <mask> | <ip-prefix>/<prefix-length>} {<gateway-address> | <gateway-interface>} [<distance>]",
+    "params": {
+      "<ip-prefix>": "目标网络前缀",
+      "<mask> | <prefix-length>": "子网掩码或前缀长度",
+      "<gateway-address> | <gateway-interface>": "网关IP地址或网关接口",
+      "<distance>": "管理距离"
+    },
+    "desc": "配置静态路由",
+    "requires": "",
+    "state_key": "ip.route.static",
+    "no_cmd": "no ip route {<ip-prefix> <mask> | <ip-prefix>/<prefix-length>} [<gateway-address> | <gateway-interface>] [<distance>]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "router ospf [<id>] [VRF Name]",
+    "params": {
+      "<id>": "OSPF进程号",
+      "[VRF Name]": "VRF名称"
+    },
+    "desc": "启动 OSPF协议进程",
+    "requires": "",
+    "state_key": "router.ospf",
+    "no_cmd": "no router ospf [<id>]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router"
+    ],
+    "syntax": "network {<network> <mask> | <network>/<prefix>} area <area_id>",
+    "params": {
+      "<network>": "网络地址",
+      "<mask> | <prefix>": "掩码或前缀",
+      "<area_id>": "区域ID"
+    },
+    "desc": "配置某个网段属于某个区域",
+    "requires": "",
+    "state_key": "router.ospf.network",
+    "no_cmd": "no network {<network> <mask> | <network>/<prefix>} area <area_id>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip dhcp pool <name>",
+    "params": {
+      "<name>": "DHCP地址池名称"
+    },
+    "desc": "配置 DHCP 地址池",
+    "requires": "",
+    "state_key": "dhcp.pool",
+    "no_cmd": "no ip dhcp pool <name>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "dhcp-pool"
+    ],
+    "syntax": "network-address <network-number> <mask>",
+    "params": {
+      "<network-number>": "网络地址",
+      "<mask>": "掩码或前缀长度"
+    },
+    "desc": "配置地址池可分配的地址范围",
+    "requires": "",
+    "state_key": "dhcp.pool.network_address",
+    "no_cmd": "no network-address",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "dhcp-pool"
+    ],
+    "syntax": "default-router <address1>",
+    "params": {
+      "address1...address8": "缺省网关IP地址"
+    },
+    "desc": "为 DHCP客户机配置缺省网关",
+    "requires": "",
+    "state_key": "dhcp.pool.default_router",
+    "no_cmd": "no default-router",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show ip route",
+    "params": {},
+    "desc": "显示IPv4路由表",
+    "requires": "",
+    "state_key": "show.ip.route",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show ip ospf neighbor",
+    "params": {},
+    "desc": "显示OSPF邻居状态信息",
+    "requires": "",
+    "state_key": "show.ip.ospf.neighbor",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show ip interface brief",
+    "params": {},
+    "desc": "显示IP接口简要信息",
+    "requires": "",
+    "state_key": "show.ip.interface.brief",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show ip interface {vlan <vlan-id> | ethernet <interface-list> | port-channel <port-channel-number> | loopback <loopback-id>}",
+    "params": {
+      "<vlan-id>": "VLAN ID",
+      "<interface-list>": "以太网端口列表",
+      "<port-channel-number>": "聚合口编号",
+      "<loopback-id>": "Loopback 接口编号"
+    },
+    "desc": "显示指定三层接口的IP配置及状态信息",
+    "requires": "",
+    "state_key": "show.ip.interface",
+    "no_cmd": "",
+    "output_example": ""
+  }
+]

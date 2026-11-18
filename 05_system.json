@@ -1,0 +1,409 @@
+[
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "no ip pim dense-mode",
+    "params": {},
+    "desc": "在接口上关闭 PIM-DM协议",
+    "requires": "",
+    "state_key": "interface.pim_dm.disable",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "no ip pim multicast-routing",
+    "params": {},
+    "desc": "全局关闭 PIM-DM协议（或 PIM-SM/IGMP 等组播路由协议）",
+    "requires": "",
+    "state_key": "global.pim.multicast_routing.disable",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ip pim hello-interval <interval>",
+    "params": {
+      "<interval>": "时间间隔值"
+    },
+    "desc": "配置接口 PIM-SM hello 报文间隔时间",
+    "requires": "",
+    "state_key": "interface.pim_sm.hello_interval",
+    "no_cmd": "no ip pim hello-interval",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ip pim hello-holdtime <value>",
+    "params": {
+      "<value>": "holdtime时间值"
+    },
+    "desc": "配置接口 PIM-SM hello报文中的holdtime 域的值",
+    "requires": "",
+    "state_key": "interface.pim_sm.hello_holdtime",
+    "no_cmd": "no ip pim hello-holdtime",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ip pim neighbor-filter {<access-list-number> }",
+    "params": {
+      "<access-list-number>": "访问控制列表号"
+    },
+    "desc": "配置邻居访问列表进行过滤",
+    "requires": "",
+    "state_key": "interface.pim_sm.neighbor_filter",
+    "no_cmd": "no ip pim neighbor-filter {<access-list-number> }",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ip pim bsr-border",
+    "params": {},
+    "desc": "配置接口为 PIM-DM 边缘接口",
+    "requires": "",
+    "state_key": "interface.pim_sm.bsr_border",
+    "no_cmd": "no ip pim bsr-border",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip pim rp-address <A.B.C.D> [<A.B.C.D/M>]",
+    "params": {
+      "<A.B.C.D>": "RP的IP地址",
+      "<A.B.C.D/M>": "组播地址范围及掩码"
+    },
+    "desc": "为全局或某个组播地址范围的组播组配置静态 RP",
+    "requires": "",
+    "state_key": "global.pim_sm.rp_address",
+    "no_cmd": "no ip pim rp-address <A.B.C.D> {<all> | <A.B.C.D/M>}",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip multicast unresolved-cache aging-time <value>",
+    "params": {
+      "<value>": "缓存老化时间值"
+    },
+    "desc": "配置内核组播路由缓存时间",
+    "requires": "",
+    "state_key": "global.multicast.unresolved_cache_aging_time",
+    "no_cmd": "no ip multicast unresolved-cache aging-time",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "no ip pim sparse-mode",
+    "params": {},
+    "desc": "在接口上关闭 PIM-SM协议",
+    "requires": "",
+    "state_key": "interface.pim_sm.disable",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router"
+    ],
+    "syntax": "peer <peer-address>",
+    "params": {
+      "<peer-address>": "MSDP对等体IP地址"
+    },
+    "desc": "创建 MSDP Peer",
+    "requires": "",
+    "state_key": "msdp.peer",
+    "no_cmd": "no peer <peer-address>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router"
+    ],
+    "syntax": "connect-source <interface-type> <interface-number>",
+    "params": {
+      "<interface-type>": "接口类型",
+      "<interface-number>": "接口编号"
+    },
+    "desc": "配置 MSDP Peer的Connect-Source 接口",
+    "requires": "",
+    "state_key": "msdp.peer.connect_source",
+    "no_cmd": "no connect-source",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router"
+    ],
+    "syntax": "description <text>",
+    "params": {
+      "<text>": "描述字符串"
+    },
+    "desc": "配置 MSDP对等体的描述信息",
+    "requires": "",
+    "state_key": "msdp.peer.description",
+    "no_cmd": "no description",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router"
+    ],
+    "syntax": "remote-as <as-num>",
+    "params": {
+      "<as-num>": "自治系统号"
+    },
+    "desc": "配置 MSDP Peer的AS号",
+    "requires": "",
+    "state_key": "msdp.peer.remote_as",
+    "no_cmd": "no remote-as <as-num>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router"
+    ],
+    "syntax": "mesh-group <name>",
+    "params": {
+      "<name>": "全连接组名称"
+    },
+    "desc": "配置 MSDP Peer 加入指定全连接组",
+    "requires": "",
+    "state_key": "msdp.peer.mesh_group",
+    "no_cmd": "no mesh-group <name>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router"
+    ],
+    "syntax": "redistribute [list <acl-list-number |acl-name>]",
+    "params": {
+      "<acl-list-number |acl-name>": "ACL编号或名称"
+    },
+    "desc": "配置 SA报文创建过滤策略",
+    "requires": "",
+    "state_key": "msdp.redistribute",
+    "no_cmd": "no redistribute",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router"
+    ],
+    "syntax": "sa-filter (in|out) [list <acl-number | acl-name> | rp-list <rp-acl-number | rp-acl-name>]",
+    "params": {
+      "(in|out)": "入方向或出方向",
+      "<acl-number | acl-name>": "ACL编号或名称",
+      "<rp-acl-number | rp-acl-name>": "RP ACL编号或名称"
+    },
+    "desc": "配置 SA报文接收和转发过滤规则",
+    "requires": "",
+    "state_key": "msdp.sa_filter",
+    "no_cmd": "no sa-filter (in|out) [[list <acl-number | acl-name> | rp-list <rp-acl-number | rp-acl-name>]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router"
+    ],
+    "syntax": "sa-request",
+    "params": {},
+    "desc": "配置发送 SA请求报文",
+    "requires": "",
+    "state_key": "msdp.peer.sa_request",
+    "no_cmd": "no sa-request",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router"
+    ],
+    "syntax": "sa-request-filter [list <access-list-number | access-list-name>]",
+    "params": {
+      "<access-list-number | access-list-name>": "访问控制列表编号或名称"
+    },
+    "desc": "配置 SA-Request报文过滤策略",
+    "requires": "",
+    "state_key": "msdp.sa_request_filter",
+    "no_cmd": "no sa-request-filter [list <access-list-number | access-list-name>]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip multicast ssm {default|range <access-list-number >}",
+    "params": {
+      "<access-list-number >": "访问控制列表编号"
+    },
+    "desc": "配置 pim ssm 组播组地址范围",
+    "requires": "",
+    "state_key": "global.pim_ssm.range",
+    "no_cmd": "no ip multicast ssm",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "access-list <5000-5099> {deny|permit} ip {{<source> <source-wildcard>}|{host-source <source-host-ip>}|any-source} {{<destination> <destination-wildcard>}|{host-destination <destination-host-ip>}|any-destination}",
+    "params": {
+      "<5000-5099>": "ACL编号",
+      "{deny|permit}": "拒绝或允许"
+    },
+    "desc": "配置源受控使用的规则",
+    "requires": "",
+    "state_key": "global.access_list.source_control",
+    "no_cmd": "no access-list <5000-5099> {deny|permit} ip {{<source> <source-wildcard>}|{host-source <source-host-ip>}|any-source} {{<destination> <destination-wildcard>}|{host-destination <destination-host-ip>}|any-destination}",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ip multicast source-control access-group <5000-5099>",
+    "params": {
+      "<5000-5099>": "ACL编号"
+    },
+    "desc": "把源受控使用的规则配置到端口上",
+    "requires": "",
+    "state_key": "interface.multicast.source_control",
+    "no_cmd": "no ip multicast source-control access-group <5000-5099>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "no ip dvmrp enable",
+    "params": {},
+    "desc": "关闭 DVMRP 等相关 IGMP 协议特性",
+    "requires": "",
+    "state_key": "interface.dvmrp.disable",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "vlan"
+    ],
+    "syntax": "multicast-vlan",
+    "params": {},
+    "desc": "配置一个 VLAN 启动组播 VLAN 功能",
+    "requires": "",
+    "state_key": "vlan.multicast_vlan",
+    "no_cmd": "no multicast-vlan",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "vlan"
+    ],
+    "syntax": "multicast-vlan association <vlan-list>",
+    "params": {
+      "<vlan-list>": "VLAN列表"
+    },
+    "desc": "将一个组播 VLAN 与多个 VLAN 关联",
+    "requires": "",
+    "state_key": "vlan.multicast_vlan.association",
+    "no_cmd": "no multicast-vlan association <vlan-list>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "vlan"
+    ],
+    "syntax": "multicast-vlan association interface (ethernet | port-channel|) IFNAME",
+    "params": {
+      "IFNAME": "接口名称"
+    },
+    "desc": "将特定端口关联到组播 VLAN 上",
+    "requires": "",
+    "state_key": "vlan.multicast_vlan.association.interface",
+    "no_cmd": "no multicast-vlan association interface (ethernet | port-channel|) IFNAME",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "vlan"
+    ],
+    "syntax": "multicast-vlan mode {dynamic| compatible}",
+    "params": {
+      "{dynamic| compatible}": "组播vlan模式"
+    },
+    "desc": "配置组播vlan的两种模式",
+    "requires": "",
+    "state_key": "vlan.multicast_vlan.mode",
+    "no_cmd": "no multicast-vlan mode {dynamic| compatible}",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip igmp snooping vlan <vlan-id>",
+    "params": {
+      "<vlan-id>": "VLAN ID"
+    },
+    "desc": "启动组播 VLAN 的 IGMP Snooping 功能",
+    "requires": "",
+    "state_key": "global.igmp_snooping.vlan",
+    "no_cmd": "no ip igmp snooping vlan <vlan-id>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip igmp snooping",
+    "params": {},
+    "desc": "启动 IGMP Snooping功能",
+    "requires": "",
+    "state_key": "global.igmp_snooping",
+    "no_cmd": "no ip igmp snooping",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ipv6 mld snooping vlan <vlan-id>",
+    "params": {
+      "<vlan-id>": "VLAN ID"
+    },
+    "desc": "启动组播 VLAN的 MLD Snooping功能",
+    "requires": "",
+    "state_key": "global.mld_snooping.vlan",
+    "no_cmd": "no ipv6 mld snooping vlan <vlan-id>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ipv6 mld snooping",
+    "params": {},
+    "desc": "启动 MLD Snooping 功能",
+    "requires": "",
+    "state_key": "global.mld_snooping",
+    "no_cmd": "no ipv6 mld snooping",
+    "output_example": ""
+  }
+]

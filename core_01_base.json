@@ -1,0 +1,218 @@
+[
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "enable [<1-15>]",
+    "params": {
+      "<1-15>": "用户权限级别"
+    },
+    "desc": "进入特权用户模式",
+    "requires": "",
+    "state_key": "system.enable",
+    "no_cmd": "disable",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "config [terminal]",
+    "params": {},
+    "desc": "进入全局配置模式",
+    "requires": "",
+    "state_key": "system.config",
+    "no_cmd": "exit",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "hostname <name>",
+    "params": {
+      "<name>": "交换机名称"
+    },
+    "desc": "配置交换机名称",
+    "requires": "",
+    "state_key": "system.hostname",
+    "no_cmd": "no hostname",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "enable password [0 | 7] <password>",
+    "params": {
+      "[0 | 7]": "明文或密文",
+      "<password>": "密码"
+    },
+    "desc": "配置特权用户口令",
+    "requires": "",
+    "state_key": "system.enable_password",
+    "no_cmd": "no enable password",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip routing",
+    "params": {},
+    "desc": "启用 IPv4 单播路由功能",
+    "requires": "",
+    "state_key": "system.ip_routing",
+    "no_cmd": "no ip routing",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ipv6 unicast-routing",
+    "params": {},
+    "desc": "启用 IPv6 单播路由功能",
+    "requires": "",
+    "state_key": "system.ipv6_unicast_routing",
+    "no_cmd": "no ipv6 unicast-routing",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "line vty <first-line> [<last-line>]",
+    "params": {
+      "<first-line>": "起始线路号",
+      "<last-line>": "结束线路号"
+    },
+    "desc": "进入 VTY 线路配置模式",
+    "requires": "",
+    "state_key": "system.line_vty",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "show running-config",
+    "params": {},
+    "desc": "显示当前运行状态下生效的交换机参数配置",
+    "requires": "",
+    "state_key": "show.running_config",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "show startup-config",
+    "params": {},
+    "desc": "显示当前运行状态下写在Flash Memory中的交换机参数配置",
+    "requires": "",
+    "state_key": "show.startup_config",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "copy <source-url> <destination-url> [ascii | binary]",
+    "params": {
+      "<source-url>": "源文件路径",
+      "<destination-url>": "目标文件路径",
+      "[ascii | binary]": "传输模式"
+    },
+    "desc": "文件复制或上下载操作",
+    "requires": "",
+    "state_key": "system.copy",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "ping <ip-address>",
+    "params": {
+      "<ip-address>": "目标IP地址"
+    },
+    "desc": "网络连通性测试",
+    "requires": "",
+    "state_key": "system.ping",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "reload",
+    "params": {},
+    "desc": "热启动交换机",
+    "requires": "",
+    "state_key": "system.reload",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "interface ethernet <interface-list>",
+    "params": {
+      "<interface-list>": "以太网端口列表"
+    },
+    "desc": "进入业务端口配置模式（物理接口）",
+    "requires": "",
+    "state_key": "interface.ethernet",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "interface vlan <vlan-id>",
+    "params": {
+      "<vlan-id>": "VLAN ID"
+    },
+    "desc": "创建一个 VLAN 接口并进入配置模式（SVI 接口）",
+    "requires": "",
+    "state_key": "interface.vlan",
+    "no_cmd": "no interface vlan <vlan-id>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "interface port-channel <port-channel-number>",
+    "params": {
+      "<port-channel-number>": "聚合口编号"
+    },
+    "desc": "进入 port-channel 聚合口配置模式",
+    "requires": "",
+    "state_key": "interface.port_channel",
+    "no_cmd": "no interface port-channel <port-channel-number>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "interface loopback <loopback-id>",
+    "params": {
+      "<loopback-id>": "Loopback 接口编号（0-1023）"
+    },
+    "desc": "创建或进入 Loopback 环回接口配置模式（三层逻辑接口）",
+    "requires": "",
+    "state_key": "interface.loopback",
+    "no_cmd": "no interface loopback <loopback-id>",
+    "output_example": ""
+  }
+]

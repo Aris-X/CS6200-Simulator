@@ -1,0 +1,590 @@
+[
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "set aggregator as <as-number> <ip_addr>",
+    "params": {
+      "<as-number>": "AS号",
+      "<ip_addr>": "IP地址"
+    },
+    "desc": "为 BGP 聚合者分配一个 AS 号",
+    "requires": "",
+    "state_key": "route_map.set.aggregator",
+    "no_cmd": "no set aggregator as [<as-number> <ip_addr>]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "set as-path prepend <as-num>",
+    "params": {
+      "<as-num>": "AS号"
+    },
+    "desc": "在 BGP 路由信息的 as-path 系列前加入指定的 AS 号",
+    "requires": "",
+    "state_key": "route_map.set.as_path_prepend",
+    "no_cmd": "no set as-path prepend [<as-num>]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "set atomic-aggregate",
+    "params": {},
+    "desc": "设置BGP原子聚合属性",
+    "requires": "",
+    "state_key": "route_map.set.atomic_aggregate",
+    "no_cmd": "no set atomic-aggregate",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "set comm-list <community-list-name | community-list-num > delete",
+    "params": {
+      "<community-list-name | community-list-num>": "团体属性列表名称或编号"
+    },
+    "desc": "删除BGP团体属性值",
+    "requires": "",
+    "state_key": "route_map.set.comm_list",
+    "no_cmd": "no set comm-list <community-list-name | community-list-num > delete",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "set community [AA:NN] [internet] [local-AS] [no-advertise] [no-export] [none] [additive]",
+    "params": {
+      "[AA:NN]": "团体属性值",
+      "[internet]": "Internet属性",
+      "[local-AS]": "本地AS属性",
+      "[no-advertise]": "不通告属性",
+      "[no-export]": "不导出属性"
+    },
+    "desc": "设置BGP团体属性值",
+    "requires": "",
+    "state_key": "route_map.set.community",
+    "no_cmd": "no set community [AA:NN] [internet] [local-AS] [no-advertise] [no-export] [none] [additive]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "set extcommunity <rt | soo> <AA:NN>",
+    "params": {
+      "<rt | soo>": "扩展团体属性类型",
+      "<AA:NN>": "扩展团体属性值"
+    },
+    "desc": "设置BGP扩展团体属性",
+    "requires": "",
+    "state_key": "route_map.set.extcommunity",
+    "no_cmd": "no set extcommunity <rt | soo> [<AA:NN>]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "set ip next-hop <ip_addr>",
+    "params": {
+      "<ip_addr>": "下一跳IP地址"
+    },
+    "desc": "设置下一跳IP地址",
+    "requires": "",
+    "state_key": "route_map.set.ip_next_hop",
+    "no_cmd": "no set ip next-hop [<ip_addr>]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "set local-preference <pre_val>",
+    "params": {
+      "<pre_val>": "优先级数值"
+    },
+    "desc": "设置本地优先级",
+    "requires": "",
+    "state_key": "route_map.set.local_preference",
+    "no_cmd": "no set local-preference [<pre_val>]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "set metric < +/- metric_val | metric_val>",
+    "params": {
+      "< +/- metric_val | metric_val>": "度量值或增减量"
+    },
+    "desc": "设置路由度量值",
+    "requires": "",
+    "state_key": "route_map.set.metric",
+    "no_cmd": "no set metric [+/- metric_val | metric_val]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "set metric-type <type-1 | type-2>",
+    "params": {
+      "<type-1 | type-2>": "度量类型1或2"
+    },
+    "desc": "设置 OSPF 度量类型",
+    "requires": "",
+    "state_key": "route_map.set.metric_type",
+    "no_cmd": "no set metric-type [<type-1 | type-2>]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "set origin <egp | igp | incomplete >",
+    "params": {
+      "<egp | igp | incomplete >": "路由源类型"
+    },
+    "desc": "设置BGP路由源",
+    "requires": "",
+    "state_key": "route_map.set.origin",
+    "no_cmd": "no set origin [<egp | igp | incomplete >]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "set originator-id <ip_addr>",
+    "params": {
+      "<ip_addr>": "起源者IP地址"
+    },
+    "desc": "设置路由起源者 ID",
+    "requires": "",
+    "state_key": "route_map.set.originator_id",
+    "no_cmd": "no set originator-id [<ip_addr>]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "set tag <tag_val>",
+    "params": {
+      "<tag_val>": "OSPF tag值"
+    },
+    "desc": "设置 OSPF 路由 tag 值",
+    "requires": "",
+    "state_key": "route_map.set.tag",
+    "no_cmd": "no set tag [<tag_val>]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "set vpnv4 next-hop <ip_addr>",
+    "params": {
+      "<ip_addr>": "VPNv4下一跳IP地址"
+    },
+    "desc": "设置 BGP VPNv4 下一跳地址",
+    "requires": "",
+    "state_key": "route_map.set.vpnv4_next_hop",
+    "no_cmd": "no set vpnv4 next-hop [<ip_addr>]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "set weight <weight_val>",
+    "params": {
+      "<weight_val>": "权重数值"
+    },
+    "desc": "设置BGP路由权重",
+    "requires": "",
+    "state_key": "route_map.set.weight",
+    "no_cmd": "no set weight [<weight_val>]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip prefix-list <list_name> description <description>",
+    "params": {
+      "<list_name>": "前缀列表名称",
+      "<description>": "描述内容"
+    },
+    "desc": "对前缀列表进行描述",
+    "requires": "",
+    "state_key": "ip.prefix_list.description",
+    "no_cmd": "no ip prefix-list <list_name> description",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip prefix-list <list_name> [seq <sequence_number>] <deny | permit> < any | ip_addr/mask_length [ge min_prefix_len] [le max_prefix_len]>",
+    "params": {
+      "<list_name>": "前缀列表名称",
+      "<deny | permit>": "拒绝或允许",
+      "<any | ip_addr/mask_length>": "任意或IP及掩码",
+      "[ge min_prefix_len]": "最小掩码长度",
+      "[le max_prefix_len]": "最大掩码长度"
+    },
+    "desc": "配置前缀列表",
+    "requires": "",
+    "state_key": "ip.prefix_list.rule",
+    "no_cmd": "no ip prefix-list <list_name> [seq <sequence_number>] [<deny | permit> < any | ip_addr/mask_length [ge min_prefix_len] [le max_prefix_len]>]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv",
+      "global"
+    ],
+    "syntax": "show ip rip aggregate",
+    "params": {},
+    "desc": "显示聚合路由信息",
+    "requires": "",
+    "state_key": "show.ip.rip.aggregate",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router"
+    ],
+    "syntax": "redistribute ospf [<process-id>] [metric<value>] [route-map<word>]",
+    "params": {
+      "<process-id>": "OSPF进程号",
+      "<value>": "度量值",
+      "<word>": "路由策略图名称"
+    },
+    "desc": "启动或者关闭RIP引入其他OSPF进程路由功能",
+    "requires": "",
+    "state_key": "router.rip.redistribute.ospf",
+    "no_cmd": "no redistribute ospf [<process-id>]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv",
+      "global"
+    ],
+    "syntax": "show ip rip redistribute",
+    "params": {},
+    "desc": "显示RIP进程引入其它外部路由的配置信息",
+    "requires": "",
+    "state_key": "show.ip.rip.redistribute",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "debug rip redistribute message send",
+    "params": {},
+    "desc": "打开或关闭 RIP引入其他OSPF进程路由的命令下发调试开关",
+    "requires": "",
+    "state_key": "debug.rip.redistribute.message",
+    "no_cmd": "no debug rip redistribute message send",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "debug rip redistribute route receive",
+    "params": {},
+    "desc": "打开或关闭 RIP 进程收到 nsm 发来的路由信息的调试开关",
+    "requires": "",
+    "state_key": "debug.rip.redistribute.route",
+    "no_cmd": "no debug rip redistribute route receive",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router"
+    ],
+    "syntax": "address-family ipv4 vrf <vrf-name>",
+    "params": {
+      "<vrf-name>": "VRF实例名称"
+    },
+    "desc": "配置在 PE路由器上的VRF 配置RIP地址族",
+    "requires": "",
+    "state_key": "router.rip.address_family",
+    "no_cmd": "no address-family ipv4 vrf <vrf-name>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router"
+    ],
+    "syntax": "exit-address-family",
+    "params": {},
+    "desc": "退出地址族模式",
+    "requires": "",
+    "state_key": "router.address_family.exit",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ip ospf hello-interval <time>",
+    "params": {
+      "<time>": "发送时间间隔"
+    },
+    "desc": "配置接口周期发送 HELLO 数据包的时间间隔",
+    "requires": "",
+    "state_key": "interface.ospf.hello_interval",
+    "no_cmd": "no ip ospf hello-interval",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ip ospf dead-interval <time >",
+    "params": {
+      "<time >": "失效时间间隔"
+    },
+    "desc": "配置认定相邻三层交换机失效的时间间隔",
+    "requires": "",
+    "state_key": "interface.ospf.dead_interval",
+    "no_cmd": "no ip ospf dead-interval",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ip ospf transit-delay <time>",
+    "params": {
+      "<time>": "时延值"
+    },
+    "desc": "设置在接口上传送链路状态广播的时延值",
+    "requires": "",
+    "state_key": "interface.ospf.transit_delay",
+    "no_cmd": "no ip ospf transit-delay",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ip ospf retransmit <time>",
+    "params": {
+      "<time>": "重传间隔时间"
+    },
+    "desc": "配置接口与邻接三层交换机之间传送链路状态通告时的重传间隔",
+    "requires": "",
+    "state_key": "interface.ospf.retransmit",
+    "no_cmd": "no ip ospf retransmit",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router"
+    ],
+    "syntax": "redistribute { bgp | connected | static | rip | kernel} [ metric-type { 1 | 2 } ] [ tag <tag> ] [ metric <cost_value> ] [ router-map <WORD>]",
+    "params": {
+      "{ bgp | connected | static | rip | kernel}": "源路由协议",
+      "<cost_value>": "度量值",
+      "<WORD>": "路由策略图"
+    },
+    "desc": "引入其他协议发现路由和静态路由作为外部路由信息",
+    "requires": "",
+    "state_key": "router.ospf.redistribute",
+    "no_cmd": "no redistribute { bgp | connected | static | rip | kernel }",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router"
+    ],
+    "syntax": "timers spf <interval>",
+    "params": {
+      "<interval>": "SPF定时器时间"
+    },
+    "desc": "配置 OSPF 的 SPF 定时器",
+    "requires": "",
+    "state_key": "router.ospf.timers.spf",
+    "no_cmd": "no timers spf",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router"
+    ],
+    "syntax": "overflow database {<max-LSA> [hard | soft] | external <max-LSA> <recover time>}",
+    "params": {
+      "<max-LSA>": "最大LSA数量",
+      "<recover time>": "恢复时间"
+    },
+    "desc": "配置当前 OSPF 进程数据库中 LSA 的限制",
+    "requires": "",
+    "state_key": "router.ospf.overflow_database",
+    "no_cmd": "no overflow database [external <max-LSA > < recover time >]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router"
+    ],
+    "syntax": "area <id> {authentication [message-digest] | default-cost <cost> | filter-list {access | prefix} <WORD> {in | out} | nssa [default-information-originate | no-redistribution | no-summary | translator-role] | range <range> | stub [no-summary] | virtual-link <neighbor>}",
+    "params": {
+      "<id>": "区域ID",
+      "<cost>": "默认代价值",
+      "<WORD>": "过滤列表名",
+      "<range>": "聚合地址范围",
+      "<neighbor>": "虚链路邻居IP"
+    },
+    "desc": "配置OSPF区域下的参数（STUB域，NSSA 域和虚链路）",
+    "requires": "",
+    "state_key": "router.ospf.area",
+    "no_cmd": "no area <id> {authentication | default-cost | filter-list {access | prefix} <WORD> {in | out} | nssa [default-information-originate | no-redistribution | no-summary | translator-role] | range <range> | stub [no-summary] | virtual-link <neighbor>}",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ip ospf priority <priority>",
+    "params": {
+      "<priority>": "优先级"
+    },
+    "desc": "配置接口在选举“指定三层交换机”时的优先级",
+    "requires": "",
+    "state_key": "interface.ospf.priority",
+    "no_cmd": "no ip ospf priority",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router"
+    ],
+    "syntax": "log-adjacency-changes detail",
+    "params": {},
+    "desc": "设置是否记录 ospf 邻居变化的日志信息",
+    "requires": "",
+    "state_key": "router.ospf.log_adjacency_changes",
+    "no_cmd": "no log-adjacency-changes detail",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router"
+    ],
+    "syntax": "timers bgp <keepalive> <holdtime>",
+    "params": {
+      "<keepalive>": "Keepalive定时器",
+      "<holdtime>": "Holdtime定时器"
+    },
+    "desc": "设置所有邻居的 BGP 定时器",
+    "requires": "",
+    "state_key": "router.bgp.timers",
+    "no_cmd": "no timers bgp",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router"
+    ],
+    "syntax": "neighbor {<ip-address> | <TAG>} timers <keepalive> <holdtime>",
+    "params": {
+      "<ip-address> | <TAG>": "邻居IP或标签",
+      "<keepalive>": "Keepalive定时器",
+      "<holdtime>": "Holdtime定时器"
+    },
+    "desc": "设置某个特定的邻居的 keepalve 和 holdtime 定时器时间",
+    "requires": "",
+    "state_key": "router.bgp.neighbor.timers",
+    "no_cmd": "no neighbor {<ip-address> | <TAG>} timers",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router"
+    ],
+    "syntax": "neighbor {<ip-address> | <TAG>} advertisement-interval <seconds>",
+    "params": {
+      "<ip-address> | <TAG>": "邻居IP或标签",
+      "<seconds>": "时间间隔"
+    },
+    "desc": "设置发送BGP路由更新信息之间的最小间隔",
+    "requires": "",
+    "state_key": "router.bgp.neighbor.advertisement_interval",
+    "no_cmd": "no neighbor {<ip-address> | <TAG>} advertisement-interval",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router"
+    ],
+    "syntax": "bgp default local-preference <value>",
+    "params": {
+      "<value>": "本地优先级数值"
+    },
+    "desc": "改变默认的本地优先级",
+    "requires": "",
+    "state_key": "router.bgp.default.local_preference",
+    "no_cmd": "no bgp default local-preference",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip route {<ip-prefix> <mask>| <ip-prefix>|<prefix-length>} null0 [<distance>]",
+    "params": {
+      "<ip-prefix>": "目标网络前缀",
+      "<mask>|<prefix-length>": "子网掩码或前缀长度",
+      "<distance>": "管理距离"
+    },
+    "desc": "配置静态黑洞路由",
+    "requires": "",
+    "state_key": "ip.route.blackhole",
+    "no_cmd": "no ip route {<ip-prefix> <mask>| <ip-prefix>|<prefix-length>} null0",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "maximum-paths <1-32>",
+    "params": {
+      "<1-32>": "最大路径数"
+    },
+    "desc": "配置等价路由的最大数目",
+    "requires": "",
+    "state_key": "router.ecmp.maximum_paths",
+    "no_cmd": "no maximum-paths",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "load-balance {dst-src-mac | dst-src-ip | dst-src-mac-ip }",
+    "params": {
+      "{dst-src-mac | dst-src-ip | dst-src-mac-ip}": "负载均衡模式"
+    },
+    "desc": "设置交换机的 load-balance，同时作用于 port-group与 ECMP功能",
+    "requires": "",
+    "state_key": "system.load_balance",
+    "no_cmd": "",
+    "output_example": ""
+  }
+]

@@ -1,0 +1,275 @@
+[
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "switchport port-security",
+    "params": {},
+    "desc": "配置端口的port-security功能",
+    "requires": "",
+    "state_key": "interface.port_security.enable",
+    "no_cmd": "no switchport port-security",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "switchport port-security mac-address <mac-address> [vlan <vlan-id>]",
+    "params": {
+      "<mac-address>": "静态安全MAC地址",
+      "<vlan-id>": "VLAN ID"
+    },
+    "desc": "配置端口的静态安全 MAC",
+    "requires": "需要先开启 switchport port-security",
+    "state_key": "interface.port_security.mac_address",
+    "no_cmd": "no switchport port-security mac-address <mac-address>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "switchport port-security maximum <value> [vlan <vlan-list>]",
+    "params": {
+      "<value>": "最大MAC地址数量",
+      "<vlan-list>": "VLAN列表"
+    },
+    "desc": "配置端口允许的最大安全 MAC地址数",
+    "requires": "需要先开启 switchport port-security",
+    "state_key": "interface.port_security.maximum",
+    "no_cmd": "no switchport port-security maximum <value> [vlan <vlan-list>]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "switchport port-security violation {protect | recovery | restrict | shutdown}",
+    "params": {
+      "{protect | recovery | restrict | shutdown}": "违规处理动作模式"
+    },
+    "desc": "配置MAC地址数量违规或非安全MAC访问时引发的安全动作",
+    "requires": "需要先开启 switchport port-security",
+    "state_key": "interface.port_security.violation",
+    "no_cmd": "no switchport port-security violation",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "switchport port-security aging {static | time <value> | type {absolute | inactivity}}",
+    "params": {
+      "static": "静态老化",
+      "time <value>": "老化时间数值",
+      "type": "老化类型"
+    },
+    "desc": "使能端口的 port-security老化表项的功能，指定老化时间以及类型等",
+    "requires": "需要先开启 switchport port-security",
+    "state_key": "interface.port_security.aging",
+    "no_cmd": "no switchport port-security violation aging {static | time | type}",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "clear port-security {all | configured | dynamic | sticky} [[address <mac-addr> | interface <interface-id>] [vlan <vlan-id> ]]",
+    "params": {
+      "{all | configured | dynamic | sticky}": "需要清除的MAC表项类型"
+    },
+    "desc": "清除端口的安全 MAC表项",
+    "requires": "",
+    "state_key": "system.port_security.clear",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv",
+      "global"
+    ],
+    "syntax": "show port-security [interface <interface-id>] [address | vlan]",
+    "params": {
+      "<interface-id>": "端口编号"
+    },
+    "desc": "显示 port-security 配置信息",
+    "requires": "",
+    "state_key": "show.port_security",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "access-list <num> {deny | permit} {{<sIpAddr> <sMask>} | any-source | {host-source <sIpAddr>}}",
+    "params": {
+      "<num>": "标准IP ACL编号",
+      "{deny | permit}": "拒绝或允许"
+    },
+    "desc": "创建或追加一条数字标准 IPv4访问列表规则(rule)",
+    "requires": "",
+    "state_key": "acl.ipv4.standard.numbered",
+    "no_cmd": "no access-list <num>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip access-list standard <name>",
+    "params": {
+      "<name>": "命名标准ACL名称"
+    },
+    "desc": "创建一条命名标准 IPv4访问列表并进入配置模式",
+    "requires": "",
+    "state_key": "acl.ipv4.standard.named",
+    "no_cmd": "no ip access-list standard <name>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "[no] {deny | permit} {{<sIpAddr> <sMask >} | any-source | {host-source <sIpAddr>}}",
+    "params": {},
+    "desc": "创建一条命名标准 IPv4 访问规则（rule）",
+    "requires": "需进入命名标准IP访问列表配置模式",
+    "state_key": "acl.ipv4.standard.named.rule",
+    "no_cmd": "no {deny | permit} ...",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip access-list extended <name>",
+    "params": {
+      "<name>": "命名扩展ACL名称"
+    },
+    "desc": "创建一条命名扩展 IPv4 访问列表并进入配置模式",
+    "requires": "",
+    "state_key": "acl.ipv4.extended.named",
+    "no_cmd": "no ip access-list extended <name>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "firewall enable",
+    "params": {},
+    "desc": "全局打开包过滤功能",
+    "requires": "",
+    "state_key": "firewall.enable",
+    "no_cmd": "firewall disable",
+    "output_example": "Switch#show firewall\nFirewall Status: Enable."
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ip access-group <acl-name> {in|out} [traffic-statistic]",
+    "params": {
+      "<acl-name>": "绑定的IPv4 ACL名称或编号",
+      "{in|out}": "入口或出口方向"
+    },
+    "desc": "在端口的入口或出口方向上应用一条 IPv4 access-list",
+    "requires": "需全局开启 firewall enable",
+    "state_key": "interface.ip_access_group",
+    "no_cmd": "no ip access-group <acl-name> {in|out}",
+    "output_example": "Switch(Config-If-Ethernet1/0/10)#ip access-group 110 in"
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "clear access-group (in | out) statistic interface { <interface-name> | ethernet <interface-name> }",
+    "params": {
+      "(in | out)": "数据流方向",
+      "<interface-name>": "接口名称"
+    },
+    "desc": "在指定端口清除出口或入口方向包过滤统计信息",
+    "requires": "",
+    "state_key": "acl.statistic.clear",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "time-range <time_range_name>",
+    "params": {
+      "<time_range_name>": "时间范围名称"
+    },
+    "desc": "创建一个时间范围名称",
+    "requires": "",
+    "state_key": "time_range.create",
+    "no_cmd": "no time-range <time_range_name>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "absolute-periodic {Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday} <start_time> to {Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday} <end_time>",
+    "params": {
+      "<start_time>": "开始时间",
+      "<end_time>": "结束时间"
+    },
+    "desc": "配置一周内的各种不同要求的时间范围，每周循环",
+    "requires": "需进入 time-range 配置模式",
+    "state_key": "time_range.absolute_periodic",
+    "no_cmd": "no absolute-periodic",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "periodic {{Monday+Tuesday+Wednesday+Thursday+Friday+Saturday+ Sunday} | daily | weekdays | weekend} <start_time> to <end_time>",
+    "params": {
+      "<start_time>": "开始时间",
+      "<end_time>": "结束时间"
+    },
+    "desc": "配置周期性时段",
+    "requires": "需进入 time-range 配置模式",
+    "state_key": "time_range.periodic",
+    "no_cmd": "no periodic",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "absolute start <start_time> <start_data> [end <end_time> <end_data>]",
+    "params": {
+      "<start_time> <start_data>": "开始时间日期",
+      "<end_time> <end_data>": "结束时间日期"
+    },
+    "desc": "创建一个绝对时间范围",
+    "requires": "",
+    "state_key": "time_range.absolute",
+    "no_cmd": "no absolute start <start_time> <start_data> [end <end_time> <end_data>]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "access-list <num> {deny | permit} {icmp | igmp | tcp | udp | eigrp | gre | igrp | ipinip | ip | ospf | <protocol-num>} {{<sIpAddr> <sMask>} | any-source | {host-source <sIpAddr>}} {{<dIpAddr> <dMask>} | any-destination | {host-destination <dIpAddr>}} [options]",
+    "params": {
+      "<num>": "扩展IP ACL编号",
+      "protocol": "协议类型",
+      "options": "端口范围、DSCP、时间范围等可选参数"
+    },
+    "desc": "创建或追加一条数字扩展 IPv4访问列表规则(rule)",
+    "requires": "",
+    "state_key": "acl.ipv4.extended.numbered",
+    "no_cmd": "no access-list <num>",
+    "output_example": ""
+  }
+]

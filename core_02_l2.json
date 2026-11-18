@@ -1,0 +1,255 @@
+[
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "vlan WORD",
+    "params": {
+      "WORD": "VLAN ID列表或范围（如 2 或 2-5, 8）"
+    },
+    "desc": "创建/删除 VLAN 或进入 VLAN 模式",
+    "requires": "",
+    "state_key": "vlan.create",
+    "no_cmd": "no vlan WORD",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "vlan"
+    ],
+    "syntax": "name <vlan-name>",
+    "params": {
+      "<vlan-name>": "VLAN名称字符串"
+    },
+    "desc": "设置 VLAN名称",
+    "requires": "",
+    "state_key": "vlan.name",
+    "no_cmd": "no name",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "switchport mode {trunk | access | hybrid}",
+    "params": {
+      "{trunk | access | hybrid}": "端口二层工作模式"
+    },
+    "desc": "设置当前端口为 Trunk，Access 端口或Hybrid端口",
+    "requires": "",
+    "state_key": "interface.switchport_mode",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "switchport access vlan <vlan-id>",
+    "params": {
+      "<vlan-id>": "VLAN ID"
+    },
+    "desc": "将当前端口加入到指定 Access VLAN",
+    "requires": "当前端口需为 Access 模式",
+    "state_key": "interface.access_vlan",
+    "no_cmd": "no switchport access vlan",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "switchport trunk allowed vlan {WORD | all | add WORD | except WORD | remove WORD}",
+    "params": {
+      "WORD": "VLAN ID列表"
+    },
+    "desc": "设置 Trunk 端口允许通过的 VLAN",
+    "requires": "当前端口需为 Trunk 模式",
+    "state_key": "interface.trunk_allowed_vlan",
+    "no_cmd": "no switchport trunk allowed vlan",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "switchport trunk native vlan <vlan-id>",
+    "params": {
+      "<vlan-id>": "PVID (Native VLAN ID)"
+    },
+    "desc": "设置Trunk 端口的 PVID",
+    "requires": "当前端口需为 Trunk 模式",
+    "state_key": "interface.trunk_native_vlan",
+    "no_cmd": "no switchport trunk native vlan",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "switchport hybrid allowed vlan {WORD | all | add WORD | except WORD | remove WORD} {tag | untag}",
+    "params": {
+      "WORD": "VLAN ID列表",
+      "{tag | untag}": "带标签或去标签"
+    },
+    "desc": "设置Hybrid端口允许以tag 或 untag方式通过的VLAN",
+    "requires": "当前端口需为 Hybrid 模式",
+    "state_key": "interface.hybrid_allowed_vlan",
+    "no_cmd": "no switchport hybrid allowed vlan",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "switchport hybrid native vlan <vlan-id>",
+    "params": {
+      "<vlan-id>": "PVID"
+    },
+    "desc": "设置端口的PVID",
+    "requires": "当前端口需为 Hybrid 模式",
+    "state_key": "interface.hybrid_native_vlan",
+    "no_cmd": "no switchport hybrid native vlan",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "port-group <port-group-number>",
+    "params": {
+      "<port-group-number>": "聚合组编号"
+    },
+    "desc": "创建一个port group",
+    "requires": "",
+    "state_key": "system.port_group.create",
+    "no_cmd": "no port-group <port-group-number>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "port-group <port-group-number> mode {active | passive | on}",
+    "params": {
+      "<port-group-number>": "聚合组编号",
+      "{active | passive | on}": "LACP主动、被动模式或静态ON模式"
+    },
+    "desc": "把端口加入port group，并设置聚合模式",
+    "requires": "",
+    "state_key": "interface.port_group_member",
+    "no_cmd": "no port-group",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "lacp timeout {short | long}",
+    "params": {
+      "{short | long}": "超时时间模式"
+    },
+    "desc": "设置当前端口 LACP 协议中的端口 Timeout模式",
+    "requires": "",
+    "state_key": "interface.lacp_timeout",
+    "no_cmd": "no lacp timeout",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "lacp port-priority <port-priority>",
+    "params": {
+      "<port-priority>": "端口优先级数值"
+    },
+    "desc": "设置当前端口LACP协议中的端口优先级",
+    "requires": "",
+    "state_key": "interface.lacp_port_priority",
+    "no_cmd": "no lacp port-priority",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "lacp system-priority <system-priority>",
+    "params": {
+      "<system-priority>": "系统优先级数值"
+    },
+    "desc": "设置 LACP 协议的系统优先级",
+    "requires": "",
+    "state_key": "system.lacp_system_priority",
+    "no_cmd": "no lacp system-priority",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global",
+      "if"
+    ],
+    "syntax": "spanning-tree",
+    "params": {},
+    "desc": "启动 MSTP协议",
+    "requires": "",
+    "state_key": "spanning_tree.enable",
+    "no_cmd": "no spanning-tree",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "spanning-tree mode {mstp | stp | rstp}",
+    "params": {
+      "{mstp | stp | rstp}": "生成树模式"
+    },
+    "desc": "设置 MSTP的运行模式",
+    "requires": "",
+    "state_key": "spanning_tree.mode",
+    "no_cmd": "no spanning-tree mode",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "spanning-tree mst configuration",
+    "params": {},
+    "desc": "进入 MSTP 域配置模式",
+    "requires": "",
+    "state_key": "spanning_tree.mst_configuration",
+    "no_cmd": "no spanning-tree mst configuration",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "spanning-tree mst <instance-id> priority <bridge-priority>",
+    "params": {
+      "<instance-id>": "MST实例ID",
+      "<bridge-priority>": "网桥优先级"
+    },
+    "desc": "设置交换机在指定实例的网桥优先级",
+    "requires": "",
+    "state_key": "spanning_tree.mst.priority",
+    "no_cmd": "no spanning-tree mst <instance-id> priority",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "spanning-tree portfast [bpdufilter | bpduguard] [recovery <30-3600>]",
+    "params": {
+      "[bpdufilter | bpduguard]": "BPDU过滤或保护",
+      "<30-3600>": "恢复时间"
+    },
+    "desc": "设置端口为边缘端口",
+    "requires": "",
+    "state_key": "interface.spanning_tree.portfast",
+    "no_cmd": "no spanning-tree portfast",
+    "output_example": ""
+  }
+]

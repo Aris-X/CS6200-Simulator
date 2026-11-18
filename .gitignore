@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# 虚拟环境
+.venv/
+venv/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 大体积参考资料（如需纳入版本管理，删除下面两行）
+CS6200_part1.pdf
+CS6200_part2.pdf
+
+# 运行时生成 / 日志
+*.log

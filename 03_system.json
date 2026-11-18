@@ -1,0 +1,474 @@
+[
+  {
+    "mode": [
+      "vlan"
+    ],
+    "syntax": "description <text>",
+    "params": {
+      "<text>": "VLAN接口的描述信息"
+    },
+    "desc": "配置 VLAN 接口的描述信息",
+    "requires": "",
+    "state_key": "vlan.description",
+    "no_cmd": "no description",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "vlan"
+    ],
+    "syntax": "shutdown",
+    "params": {},
+    "desc": "打开或关闭 VLAN接口",
+    "requires": "",
+    "state_key": "vlan.shutdown",
+    "no_cmd": "no shutdown",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip vrf <vrf-name>",
+    "params": {
+      "<vrf-name>": "VRF实例名称"
+    },
+    "desc": "创建VRF实例",
+    "requires": "",
+    "state_key": "vrf.instance",
+    "no_cmd": "no ip vrf <vrf-name>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "rd <ASN:nn_or_IP-address:nn>",
+    "params": {
+      "<ASN:nn_or_IP-address:nn>": "Route Distinguisher标识"
+    },
+    "desc": "配置VRF实例的RD",
+    "requires": "需要进入VRF配置模式",
+    "state_key": "vrf.rd",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "route-target {import | export | both} <rt-value>",
+    "params": {
+      "import | export | both": "导入/导出方向",
+      "<rt-value>": "Route Target值"
+    },
+    "desc": "配置 VRF实例的RT",
+    "requires": "需要进入VRF配置模式",
+    "state_key": "vrf.rt",
+    "no_cmd": "no route-target {import | export | both} <rt-value>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ip vrf forwarding < vrf-name >",
+    "params": {
+      "< vrf-name >": "VRF实例名称"
+    },
+    "desc": "配置 VRF实例与接口关联",
+    "requires": "",
+    "state_key": "interface.vrf_forwarding",
+    "no_cmd": "no ip vrf forwarding < vrf-name >",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ip address <ip-address> <mask>",
+    "params": {
+      "<ip-address>": "IP地址",
+      "<mask>": "子网掩码"
+    },
+    "desc": "配置直连接口的私网 IP地址",
+    "requires": "",
+    "state_key": "interface.ip_address",
+    "no_cmd": "no ip address <ip-address> <mask>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ipv6 address <ipv6-address/prefix-length> [eui-64]",
+    "params": {
+      "<ipv6-address/prefix-length>": "IPv6地址及前缀长度",
+      "eui-64": "可选，使用EUI-64格式生成接口ID"
+    },
+    "desc": "配置 IPv6地址，包括可聚合全球单播地址，本地站点地址，本地链路地址",
+    "requires": "",
+    "state_key": "interface.ipv6_address",
+    "no_cmd": "no ipv6 address <ipv6-address/prefix-length>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "tunnel nexthop <ipv4-address>",
+    "params": {
+      "<ipv4-address>": "下一跳IPv4地址"
+    },
+    "desc": "配置隧道的下一跳 IPv4地址",
+    "requires": "需要进入隧道配置模式",
+    "state_key": "tunnel.nexthop",
+    "no_cmd": "no tunnel nexthop",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "tunnel mode [[gre] | ipv6ip [ 6to4 | isatap]]",
+    "params": {
+      "[gre] | ipv6ip": "隧道模式",
+      "[ 6to4 | isatap]": "IPv6过渡技术"
+    },
+    "desc": "配置隧道模式",
+    "requires": "需要进入隧道配置模式",
+    "state_key": "tunnel.mode",
+    "no_cmd": "no tunnel mode",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ipv6 route <ipv6-address/prefix-length> {<interface-type interface-number> | tunnel <tnl-id>}",
+    "params": {
+      "<ipv6-address/prefix-length>": "IPv6目标网络及前缀",
+      "<interface-type interface-number> | tunnel <tnl-id>": "出接口或隧道ID"
+    },
+    "desc": "配置隧道路由",
+    "requires": "",
+    "state_key": "route.ipv6",
+    "no_cmd": "no ipv6 route <ipv6-address/prefix-length> {<interface-type interface-number> | tunnel <tnl-id>}",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip fib optimize",
+    "params": {},
+    "desc": "配置交换机使用优化 IP路由聚合算法",
+    "requires": "",
+    "state_key": "ip.fib.optimize",
+    "no_cmd": "no ip fib optimize",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "l3-station-move",
+    "params": {},
+    "desc": "启动或者关闭 l3 station move 功能",
+    "requires": "",
+    "state_key": "ip.l3_station_move",
+    "no_cmd": "no l3-station-move",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "hardware tunnel-capacity <size>",
+    "params": {
+      "<size>": "容量大小数值"
+    },
+    "desc": "设置硬件隧道和 MPLS容量",
+    "requires": "修改后必须作配置保留并重启交换机才能生效",
+    "state_key": "hardware.tunnel_capacity",
+    "no_cmd": "no hardware tunnel-capacity",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "anti-arpscan enable",
+    "params": {},
+    "desc": "打开防 ARP 扫描功能",
+    "requires": "",
+    "state_key": "arp.anti_arpscan.enable",
+    "no_cmd": "no anti-arpscan enable",
+    "output_example": "SwitchB(config)#anti-arpscan enable"
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "anti-arpscan trust port",
+    "params": {},
+    "desc": "配置端口为防 ARP 扫描的信任端口",
+    "requires": "需在接口模式下配置，且全局已开启 anti-arpscan enable",
+    "state_key": "interface.anti_arpscan.trust",
+    "no_cmd": "no anti-arpscan trust port",
+    "output_example": "SwitchB(Config-If-Ethernet1/0/1)#anti-arpscan trust port"
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "debug anti-arpscan",
+    "params": {},
+    "desc": "打开防 ARP 扫描调试开关，查看调试信息",
+    "requires": "全局需开启防 ARP 扫描",
+    "state_key": "debug.anti_arpscan",
+    "no_cmd": "no debug anti-arpscan",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "hardware-address <hardware-address> [{Ethernet | IEEE802|<type-number>}]",
+    "params": {
+      "<hardware-address>": "MAC地址等硬件地址",
+      "{Ethernet | IEEE802|<type-number>}": "网络类型或类型数值，可选"
+    },
+    "desc": "在手工分配地址时，指定/删除用户的硬件地址",
+    "requires": "需要进入DHCP地址池配置模式",
+    "state_key": "dhcp.pool.hardware_address",
+    "no_cmd": "no hardware-address",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "host <address> [<mask> | <prefix-length> ]",
+    "params": {
+      "<address>": "IP地址",
+      "<mask> | <prefix-length>": "子网掩码或前缀长度"
+    },
+    "desc": "在手工绑定地址时，配置/删除分配给指定客户机的用户的 IP地址",
+    "requires": "需要进入DHCP地址池配置模式",
+    "state_key": "dhcp.pool.host",
+    "no_cmd": "no host",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "client-identifier <unique-identifier>",
+    "params": {
+      "<unique-identifier>": "客户唯一标识字符串"
+    },
+    "desc": "在手工绑定地址时，指定/删除用户的唯一标识",
+    "requires": "需要进入DHCP地址池配置模式",
+    "state_key": "dhcp.pool.client_identifier",
+    "no_cmd": "no client-identifier",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip dhcp conflict logging",
+    "params": {},
+    "desc": "打开/关闭 DHCP 服务器检测地址冲突的日志功能",
+    "requires": "",
+    "state_key": "dhcp.conflict.logging",
+    "no_cmd": "no ip dhcp conflict logging",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "clear ip dhcp conflict <address | all>",
+    "params": {
+      "<address | all>": "特定的冲突IP地址或所有(all)"
+    },
+    "desc": "删除单条地址冲突的记录或全部地址的冲突记录",
+    "requires": "",
+    "state_key": "dhcp.conflict.clear",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip user helper-address A.B.C.D [port <udpport>] source <ipAddr> (secondary|)",
+    "params": {
+      "A.B.C.D": "helper server目的IP地址",
+      "<udpport>": "UDP端口，可选",
+      "<ipAddr>": "源IP地址",
+      "secondary": "辅助地址标记"
+    },
+    "desc": "配置或删除 helper address地址",
+    "requires": "",
+    "state_key": "ip.user_helper_address",
+    "no_cmd": "no ip user helper-address (secondary|)",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip dhcp snooping binding arp",
+    "params": {},
+    "desc": "开启或关闭 DHCP snooping绑定 ARP功能",
+    "requires": "",
+    "state_key": "dhcp.snooping.binding_arp",
+    "no_cmd": "no ip dhcp snooping binding arp",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ip dhcp snooping trust",
+    "params": {},
+    "desc": "设置或删除端口的 DHCP snooping信任属性",
+    "requires": "",
+    "state_key": "interface.dhcp_snooping_trust",
+    "no_cmd": "no Ip dhcp snooping trust",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ip dhcp snooping binding dot1x",
+    "params": {},
+    "desc": "开启或关闭 DHCP snooping绑定 dot1x 功能",
+    "requires": "",
+    "state_key": "interface.dhcp_snooping_binding_dot1x",
+    "no_cmd": "no ip dhcp snooping binding dot1x",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "option 60 ascii LINE",
+    "params": {
+      "LINE": "ASCII格式的字符串内容"
+    },
+    "desc": "在 ip dhcp pool 模式下以ascii 格式配置option 60字符串",
+    "requires": "需要进入DHCP地址池配置模式",
+    "state_key": "dhcp.pool.option60.ascii",
+    "no_cmd": "no option 60",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "option 43 ascii LINE",
+    "params": {
+      "LINE": "ASCII格式的字符串内容"
+    },
+    "desc": "在 ip dhcp pool 模式下以ascii 格式配置option 43字符串",
+    "requires": "需要进入DHCP地址池配置模式",
+    "state_key": "dhcp.pool.option43.ascii",
+    "no_cmd": "no option 43",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "option 60 hex WORD",
+    "params": {
+      "WORD": "十六进制格式的字符串内容"
+    },
+    "desc": "在 ip dhcp pool 模式下以 hex 格式配置option 60字符串",
+    "requires": "需要进入DHCP地址池配置模式",
+    "state_key": "dhcp.pool.option60.hex",
+    "no_cmd": "no option 60",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "option 43 hex WORD",
+    "params": {
+      "WORD": "十六进制格式的字符串内容"
+    },
+    "desc": "在 ip dhcp pool 模式下以 hex 格式配置option 43字符串",
+    "requires": "需要进入DHCP地址池配置模式",
+    "state_key": "dhcp.pool.option43.hex",
+    "no_cmd": "no option 43",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "option 60 ip A.B.C.D",
+    "params": {
+      "A.B.C.D": "IP地址"
+    },
+    "desc": "在 ip dhcp pool 模式下以 IP格式配置option 60 字符串",
+    "requires": "需要进入DHCP地址池配置模式",
+    "state_key": "dhcp.pool.option60.ip",
+    "no_cmd": "no option 60",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "option 43 ip A.B.C.D",
+    "params": {
+      "A.B.C.D": "IP地址"
+    },
+    "desc": "在 ip dhcp pool 模式下以 IP格式配置option 43 字符串",
+    "requires": "需要进入DHCP地址池配置模式",
+    "state_key": "dhcp.pool.option43.ip",
+    "no_cmd": "no option 43",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "no option 60",
+    "params": {},
+    "desc": "在地址池模式下删除配置的 option 60",
+    "requires": "需要进入DHCP地址池配置模式",
+    "state_key": "dhcp.pool.option60",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "no option 43",
+    "params": {},
+    "desc": "在地址池模式下删除配置的 option 43",
+    "requires": "需要进入DHCP地址池配置模式",
+    "state_key": "dhcp.pool.option43",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+  "mode": ["global"],
+  "syntax": "ipv6 enable",
+  "params": {},
+  "desc": "在交换机上全局启动IPv6功能",
+  "requires": "",
+  "state_key": "ipv6.enable",
+  "no_cmd": "no ipv6 enable",
+  "output_example": ""
+  }
+]

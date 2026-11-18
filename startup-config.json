@@ -1,0 +1,2784 @@
+{
+  "system": {
+    "hostname": "SW",
+    "enable_password": null,
+    "enable_level": 15,
+    "load_balance": "dst-src-mac-ip",
+    "vty_lines": {},
+    "time_ranges": {},
+    "vrfs": {},
+    "tunnels": {}
+  },
+  "vlans": {
+    "1": {
+      "name": "default",
+      "description": "",
+      "shutdown": false
+    },
+    "21": {
+      "name": "VLAN0021",
+      "description": "",
+      "shutdown": false
+    },
+    "22": {
+      "name": "VLAN0022",
+      "description": "",
+      "shutdown": false
+    },
+    "222": {
+      "name": "VLAN0222",
+      "description": "",
+      "shutdown": false
+    },
+    "24": {
+      "name": "VLAN0024",
+      "description": "",
+      "shutdown": false
+    },
+    "25": {
+      "name": "VLAN0025",
+      "description": "",
+      "shutdown": false
+    },
+    "30": {
+      "name": "CW-30",
+      "description": "",
+      "shutdown": false
+    },
+    "31": {
+      "name": "CW-31",
+      "description": "",
+      "shutdown": false
+    },
+    "40": {
+      "name": "XiaoShou",
+      "description": "",
+      "shutdown": false
+    },
+    "50": {
+      "name": "ChanPin",
+      "description": "",
+      "shutdown": false
+    },
+    "60": {
+      "name": "XinXi",
+      "description": "",
+      "shutdown": false
+    },
+    "100": {
+      "name": "AP-Manage",
+      "description": "",
+      "shutdown": false
+    }
+  },
+  "interfaces": {
+    "Ethernet1/0/1": {
+      "name": "Ethernet1/0/1",
+      "shutdown": false,
+      "description": "",
+      "switchport_mode": "access",
+      "access_vlan": 1,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "vrf": null,
+      "port_group": {
+        "group_id": "1",
+        "mode": "on"
+      },
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Ethernet1/0/2": {
+      "name": "Ethernet1/0/2",
+      "shutdown": false,
+      "description": "",
+      "switchport_mode": "access",
+      "access_vlan": 1,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "vrf": null,
+      "port_group": {
+        "group_id": "1",
+        "mode": "on"
+      },
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Ethernet1/0/3": {
+      "name": "Ethernet1/0/3",
+      "shutdown": false,
+      "description": "",
+      "switchport_mode": "access",
+      "access_vlan": 25,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "vrf": null,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Ethernet1/0/4": {
+      "name": "Ethernet1/0/4",
+      "shutdown": false,
+      "description": "",
+      "switchport_mode": "access",
+      "access_vlan": 30,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "vrf": null,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Ethernet1/0/5": {
+      "name": "Ethernet1/0/5",
+      "shutdown": false,
+      "description": "",
+      "switchport_mode": "trunk",
+      "access_vlan": 1,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "vrf": null,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Ethernet1/0/6": {
+      "name": "Ethernet1/0/6",
+      "shutdown": false,
+      "description": "",
+      "switchport_mode": "trunk",
+      "access_vlan": 1,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "vrf": null,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Vlan21": {
+      "name": "Vlan21",
+      "shutdown": false,
+      "description": "",
+      "switchport_mode": "access",
+      "access_vlan": 1,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "ip_address": "20.1.0.2/255.255.255.252",
+      "ipv6_addresses": [],
+      "vrf": null,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Vlan22": {
+      "name": "Vlan22",
+      "shutdown": false,
+      "description": "",
+      "switchport_mode": "access",
+      "access_vlan": 1,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "ip_address": "20.1.1.2/255.255.255.252",
+      "ipv6_addresses": [],
+      "vrf": null,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Vlan222": {
+      "name": "Vlan222",
+      "shutdown": false,
+      "description": "",
+      "switchport_mode": "access",
+      "access_vlan": 1,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "ip_address": "222.22.1.2/255.255.255.248",
+      "ipv6_addresses": [],
+      "vrf": null,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Vlan24": {
+      "name": "Vlan24",
+      "shutdown": false,
+      "description": "",
+      "switchport_mode": "access",
+      "access_vlan": 1,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "ip_address": "223.23.1.2/255.255.255.248",
+      "ipv6_addresses": [],
+      "vrf": null,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Vlan25": {
+      "name": "Vlan25",
+      "shutdown": false,
+      "description": "",
+      "switchport_mode": "access",
+      "access_vlan": 1,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "ip_address": "20.1.0.9/255.255.255.252",
+      "ipv6_addresses": [
+        "2001:da8:20:1:0::1/96"
+      ],
+      "vrf": null,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Vlan30": {
+      "name": "Vlan30",
+      "shutdown": false,
+      "description": "",
+      "switchport_mode": "access",
+      "access_vlan": 1,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "ip_address": "20.1.0.5/255.255.255.252",
+      "ipv6_addresses": [],
+      "vrf": null,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Vlan31": {
+      "name": "Vlan31",
+      "shutdown": false,
+      "description": "",
+      "switchport_mode": "access",
+      "access_vlan": 1,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "ip_address": "20.1.3.1/255.255.255.128",
+      "ipv6_addresses": [],
+      "vrf": null,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Vlan40": {
+      "name": "Vlan40",
+      "shutdown": false,
+      "description": "",
+      "switchport_mode": "access",
+      "access_vlan": 1,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "ip_address": "192.168.40.1/255.255.255.0",
+      "ipv6_addresses": [
+        "2001:da8:192:168:40::1/96"
+      ],
+      "vrf": null,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Vlan50": {
+      "name": "Vlan50",
+      "shutdown": false,
+      "description": "",
+      "switchport_mode": "access",
+      "access_vlan": 1,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "ip_address": "192.168.50.1/255.255.255.0",
+      "ipv6_addresses": [
+        "2001:da8:192:168:50::1/96"
+      ],
+      "vrf": null,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Vlan60": {
+      "name": "Vlan60",
+      "shutdown": false,
+      "description": "",
+      "switchport_mode": "access",
+      "access_vlan": 1,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "ip_address": "192.168.60.1/255.255.255.0",
+      "ipv6_addresses": [
+        "2001:da8:192:168:60::1/96"
+      ],
+      "vrf": null,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Loopback1": {
+      "name": "Loopback1",
+      "shutdown": false,
+      "description": "",
+      "switchport_mode": "access",
+      "access_vlan": 1,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "ip_address": "20.0.0.253/255.255.255.255",
+      "ipv6_addresses": [],
+      "vrf": null,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Port-Channel1": {
+      "name": "Port-Channel1",
+      "shutdown": false,
+      "description": "",
+      "switchport_mode": "trunk",
+      "access_vlan": 1,
+      "trunk_allowed_vlans": "none",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "vrf": null,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false,
+      "trunk_allowed_vlan_list": []
+    },
+    "Ethernet1/0/24": {
+      "name": "Ethernet1/0/24",
+      "shutdown": false,
+      "description": "",
+      "switchport_mode": "access",
+      "access_vlan": 24,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "vrf": null,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Ethernet1/0/10": {
+      "name": "Ethernet1/0/10",
+      "shutdown": false,
+      "description": "",
+      "switchport_mode": "access",
+      "access_vlan": 31,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "vrf": null,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Ethernet1/0/11": {
+      "name": "Ethernet1/0/11",
+      "shutdown": false,
+      "description": "",
+      "switchport_mode": "access",
+      "access_vlan": 31,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "vrf": null,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Ethernet1/0/12": {
+      "name": "Ethernet1/0/12",
+      "shutdown": false,
+      "description": "",
+      "switchport_mode": "access",
+      "access_vlan": 31,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "vrf": null,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Ethernet1/0/8": {
+      "name": "Ethernet1/0/8",
+      "shutdown": false,
+      "description": "",
+      "switchport_mode": "access",
+      "access_vlan": 40,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "vrf": null,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Ethernet1/0/9": {
+      "name": "Ethernet1/0/9",
+      "shutdown": false,
+      "description": "",
+      "switchport_mode": "access",
+      "access_vlan": 40,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "vrf": null,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Ethernet1/0/13": {
+      "name": "Ethernet1/0/13",
+      "shutdown": false,
+      "description": "",
+      "switchport_mode": "access",
+      "access_vlan": 50,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "vrf": null,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Ethernet1/0/14": {
+      "name": "Ethernet1/0/14",
+      "shutdown": false,
+      "description": "",
+      "switchport_mode": "access",
+      "access_vlan": 50,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "vrf": null,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Ethernet1/0/15": {
+      "name": "Ethernet1/0/15",
+      "shutdown": false,
+      "description": "",
+      "switchport_mode": "access",
+      "access_vlan": 60,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "vrf": null,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Ethernet1/0/16": {
+      "name": "Ethernet1/0/16",
+      "shutdown": false,
+      "description": "",
+      "switchport_mode": "access",
+      "access_vlan": 60,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "vrf": null,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    }
+  },
+  "port_groups": {
+    "1": {
+      "id": "1",
+      "mode": "on",
+      "protocol": "Static",
+      "members": [
+        "Ethernet1/0/1",
+        "Ethernet1/0/2"
+      ]
+    }
+  },
+  "spanning_tree": {
+    "enabled": false,
+    "mode": "mstp",
+    "mst_priorities": {}
+  },
+  "static_routes": [],
+  "ipv6_routes": [],
+  "ospf": {
+    "processes": {}
+  },
+  "bgp": {
+    "timers": null,
+    "default_local_preference": 100,
+    "neighbors": {}
+  },
+  "dhcp_pools": {},
+  "dhcp_snooping": {
+    "binding_arp": false,
+    "conflict_logging": false
+  },
+  "acls": {
+    "standard_numbered": {},
+    "extended_numbered": {},
+    "standard_named": {},
+    "extended_named": {},
+    "source_control": {}
+  },
+  "prefix_lists": {},
+  "route_maps": {},
+  "firewall_enabled": false,
+  "anti_arpscan_enabled": false,
+  "multicast": {
+    "igmp_snooping": false,
+    "igmp_snooping_vlans": [],
+    "mld_snooping": false,
+    "mld_snooping_vlans": [],
+    "static_rp": [],
+    "ssm_range": null,
+    "msdp_peers": {}
+  },
+  "running_config": {
+    "system": {
+      "hostname": "SW",
+      "enable_password": null,
+      "enable_level": 15,
+      "load_balance": "dst-src-mac-ip",
+      "vty_lines": {},
+      "time_ranges": {},
+      "vrfs": {},
+      "tunnels": {}
+    },
+    "vlans": {
+      "1": {
+        "name": "default",
+        "description": "",
+        "shutdown": false
+      },
+      "21": {
+        "name": "VLAN0021",
+        "description": "",
+        "shutdown": false
+      },
+      "22": {
+        "name": "VLAN0022",
+        "description": "",
+        "shutdown": false
+      },
+      "222": {
+        "name": "VLAN0222",
+        "description": "",
+        "shutdown": false
+      },
+      "24": {
+        "name": "VLAN0024",
+        "description": "",
+        "shutdown": false
+      },
+      "25": {
+        "name": "VLAN0025",
+        "description": "",
+        "shutdown": false
+      },
+      "30": {
+        "name": "CW-30",
+        "description": "",
+        "shutdown": false
+      },
+      "31": {
+        "name": "CW-31",
+        "description": "",
+        "shutdown": false
+      },
+      "40": {
+        "name": "XiaoShou",
+        "description": "",
+        "shutdown": false
+      },
+      "50": {
+        "name": "ChanPin",
+        "description": "",
+        "shutdown": false
+      },
+      "60": {
+        "name": "XinXi",
+        "description": "",
+        "shutdown": false
+      },
+      "100": {
+        "name": "AP-Manage",
+        "description": "",
+        "shutdown": false
+      }
+    },
+    "interfaces": {
+      "Ethernet1/0/1": {
+        "name": "Ethernet1/0/1",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 1,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": null,
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": {
+          "group_id": "1",
+          "mode": "on"
+        },
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Ethernet1/0/2": {
+        "name": "Ethernet1/0/2",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 1,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": null,
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": {
+          "group_id": "1",
+          "mode": "on"
+        },
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Ethernet1/0/3": {
+        "name": "Ethernet1/0/3",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 25,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": null,
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Ethernet1/0/4": {
+        "name": "Ethernet1/0/4",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 30,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": null,
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Ethernet1/0/5": {
+        "name": "Ethernet1/0/5",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "trunk",
+        "access_vlan": 1,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": null,
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Ethernet1/0/6": {
+        "name": "Ethernet1/0/6",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "trunk",
+        "access_vlan": 1,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": null,
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Vlan21": {
+        "name": "Vlan21",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 1,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": "20.1.0.2/255.255.255.252",
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Vlan22": {
+        "name": "Vlan22",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 1,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": "20.1.1.2/255.255.255.252",
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Vlan222": {
+        "name": "Vlan222",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 1,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": "222.22.1.2/255.255.255.248",
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Vlan24": {
+        "name": "Vlan24",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 1,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": "223.23.1.2/255.255.255.248",
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Vlan25": {
+        "name": "Vlan25",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 1,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": "20.1.0.9/255.255.255.252",
+        "ipv6_addresses": [
+          "2001:da8:20:1:0::1/96"
+        ],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Vlan30": {
+        "name": "Vlan30",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 1,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": "20.1.0.5/255.255.255.252",
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Vlan31": {
+        "name": "Vlan31",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 1,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": "20.1.3.1/255.255.255.128",
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Vlan40": {
+        "name": "Vlan40",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 1,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": "192.168.40.1/255.255.255.0",
+        "ipv6_addresses": [
+          "2001:da8:192:168:40::1/96"
+        ],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Vlan50": {
+        "name": "Vlan50",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 1,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": "192.168.50.1/255.255.255.0",
+        "ipv6_addresses": [
+          "2001:da8:192:168:50::1/96"
+        ],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Vlan60": {
+        "name": "Vlan60",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 1,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": "192.168.60.1/255.255.255.0",
+        "ipv6_addresses": [
+          "2001:da8:192:168:60::1/96"
+        ],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Loopback1": {
+        "name": "Loopback1",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 1,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": "20.0.0.253/255.255.255.255",
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Port-Channel1": {
+        "name": "Port-Channel1",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "trunk",
+        "access_vlan": 1,
+        "trunk_allowed_vlans": "none",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": null,
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false,
+        "trunk_allowed_vlan_list": []
+      },
+      "Ethernet1/0/24": {
+        "name": "Ethernet1/0/24",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 24,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": null,
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Ethernet1/0/10": {
+        "name": "Ethernet1/0/10",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 31,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": null,
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Ethernet1/0/11": {
+        "name": "Ethernet1/0/11",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 31,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": null,
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Ethernet1/0/12": {
+        "name": "Ethernet1/0/12",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 31,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": null,
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Ethernet1/0/8": {
+        "name": "Ethernet1/0/8",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 40,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": null,
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Ethernet1/0/9": {
+        "name": "Ethernet1/0/9",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 40,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": null,
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Ethernet1/0/13": {
+        "name": "Ethernet1/0/13",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 50,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": null,
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Ethernet1/0/14": {
+        "name": "Ethernet1/0/14",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 50,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": null,
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Ethernet1/0/15": {
+        "name": "Ethernet1/0/15",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 60,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": null,
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Ethernet1/0/16": {
+        "name": "Ethernet1/0/16",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 60,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": null,
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      }
+    },
+    "port_groups": {
+      "1": {
+        "id": "1",
+        "mode": "on",
+        "protocol": "Static",
+        "members": [
+          "Ethernet1/0/1",
+          "Ethernet1/0/2"
+        ]
+      }
+    },
+    "spanning_tree": {
+      "enabled": false,
+      "mode": "mstp",
+      "mst_priorities": {}
+    },
+    "static_routes": [],
+    "ipv6_routes": [],
+    "ospf": {
+      "processes": {}
+    },
+    "bgp": {
+      "timers": null,
+      "default_local_preference": 100,
+      "neighbors": {}
+    },
+    "dhcp_pools": {},
+    "dhcp_snooping": {
+      "binding_arp": false,
+      "conflict_logging": false
+    },
+    "acls": {
+      "standard_numbered": {},
+      "extended_numbered": {},
+      "standard_named": {},
+      "extended_named": {},
+      "source_control": {}
+    },
+    "prefix_lists": {},
+    "route_maps": {},
+    "firewall_enabled": false,
+    "anti_arpscan_enabled": false,
+    "multicast": {
+      "igmp_snooping": false,
+      "igmp_snooping_vlans": [],
+      "mld_snooping": false,
+      "mld_snooping_vlans": [],
+      "static_rp": [],
+      "ssm_range": null,
+      "msdp_peers": {}
+    },
+    "dhcp_bindings": [],
+    "mac_address_table": []
+  },
+  "startup_config": {
+    "system": {
+      "hostname": "Switch",
+      "enable_password": null,
+      "enable_level": 15,
+      "load_balance": "dst-src-mac-ip",
+      "vty_lines": {},
+      "time_ranges": {},
+      "vrfs": {},
+      "tunnels": {}
+    },
+    "vlans": {
+      "1": {
+        "name": "default",
+        "description": "",
+        "shutdown": false
+      },
+      "21": {
+        "name": "VLAN0021",
+        "description": "",
+        "shutdown": false
+      },
+      "22": {
+        "name": "VLAN0022",
+        "description": "",
+        "shutdown": false
+      },
+      "222": {
+        "name": "VLAN0222",
+        "description": "",
+        "shutdown": false
+      },
+      "24": {
+        "name": "VLAN0024",
+        "description": "",
+        "shutdown": false
+      },
+      "25": {
+        "name": "VLAN0025",
+        "description": "",
+        "shutdown": false
+      },
+      "30": {
+        "name": "CW-30",
+        "description": "",
+        "shutdown": false
+      },
+      "31": {
+        "name": "CW-31",
+        "description": "",
+        "shutdown": false
+      },
+      "40": {
+        "name": "XiaoShou",
+        "description": "",
+        "shutdown": false
+      },
+      "50": {
+        "name": "ChanPin",
+        "description": "",
+        "shutdown": false
+      },
+      "60": {
+        "name": "XinXi",
+        "description": "",
+        "shutdown": false
+      },
+      "100": {
+        "name": "AP-Manage",
+        "description": "",
+        "shutdown": false
+      }
+    },
+    "interfaces": {
+      "Ethernet1/0/1": {
+        "name": "Ethernet1/0/1",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 1,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": null,
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": {
+          "group_id": "1",
+          "mode": "on"
+        },
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Ethernet1/0/2": {
+        "name": "Ethernet1/0/2",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 1,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": null,
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": {
+          "group_id": "1",
+          "mode": "on"
+        },
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Ethernet1/0/3": {
+        "name": "Ethernet1/0/3",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 25,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": null,
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Ethernet1/0/4": {
+        "name": "Ethernet1/0/4",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 30,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": null,
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Ethernet1/0/5": {
+        "name": "Ethernet1/0/5",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "trunk",
+        "access_vlan": 1,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": null,
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Ethernet1/0/6": {
+        "name": "Ethernet1/0/6",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "trunk",
+        "access_vlan": 1,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": null,
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Vlan21": {
+        "name": "Vlan21",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 1,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": "20.1.0.2/255.255.255.252",
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Vlan22": {
+        "name": "Vlan22",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 1,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": "20.1.1.2/255.255.255.252",
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Vlan222": {
+        "name": "Vlan222",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 1,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": "222.22.1.2/255.255.255.248",
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Vlan24": {
+        "name": "Vlan24",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 1,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": "223.23.1.2/255.255.255.248",
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Vlan25": {
+        "name": "Vlan25",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 1,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": "20.1.0.9/255.255.255.252",
+        "ipv6_addresses": [
+          "2001:da8:20:1:0::1/96"
+        ],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Vlan30": {
+        "name": "Vlan30",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 1,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": "20.1.0.5/255.255.255.252",
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Vlan31": {
+        "name": "Vlan31",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 1,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": "20.1.3.1/255.255.255.128",
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Vlan40": {
+        "name": "Vlan40",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 1,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": "192.168.40.1/255.255.255.0",
+        "ipv6_addresses": [
+          "2001:da8:192:168:40::1/96"
+        ],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Vlan50": {
+        "name": "Vlan50",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 1,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": "192.168.50.1/255.255.255.0",
+        "ipv6_addresses": [
+          "2001:da8:192:168:50::1/96"
+        ],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Vlan60": {
+        "name": "Vlan60",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 1,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": "192.168.60.1/255.255.255.0",
+        "ipv6_addresses": [
+          "2001:da8:192:168:60::1/96"
+        ],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Loopback1": {
+        "name": "Loopback1",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 1,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": "20.0.0.253/255.255.255.255",
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Port-Channel1": {
+        "name": "Port-Channel1",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "trunk",
+        "access_vlan": 1,
+        "trunk_allowed_vlans": "none",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": null,
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false,
+        "trunk_allowed_vlan_list": []
+      },
+      "Ethernet1/0/24": {
+        "name": "Ethernet1/0/24",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 24,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": null,
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Ethernet1/0/10": {
+        "name": "Ethernet1/0/10",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 31,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": null,
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Ethernet1/0/11": {
+        "name": "Ethernet1/0/11",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 31,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": null,
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Ethernet1/0/12": {
+        "name": "Ethernet1/0/12",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 31,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": null,
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Ethernet1/0/8": {
+        "name": "Ethernet1/0/8",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 40,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": null,
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Ethernet1/0/9": {
+        "name": "Ethernet1/0/9",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 40,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": null,
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Ethernet1/0/13": {
+        "name": "Ethernet1/0/13",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 50,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": null,
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Ethernet1/0/14": {
+        "name": "Ethernet1/0/14",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 50,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": null,
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Ethernet1/0/15": {
+        "name": "Ethernet1/0/15",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 60,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": null,
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      },
+      "Ethernet1/0/16": {
+        "name": "Ethernet1/0/16",
+        "shutdown": false,
+        "description": "",
+        "switchport_mode": "access",
+        "access_vlan": 60,
+        "trunk_allowed_vlans": "1-4094",
+        "trunk_native_vlan": 1,
+        "hybrid_allowed_vlans": [],
+        "hybrid_native_vlan": 1,
+        "ip_address": null,
+        "ipv6_addresses": [],
+        "vrf": null,
+        "port_group": null,
+        "port_security": {
+          "enabled": false,
+          "maximum": 1,
+          "violation": "shutdown",
+          "mac_addresses": [],
+          "aging": {}
+        },
+        "ip_access_group": {
+          "in": null,
+          "out": null
+        },
+        "dhcp_snooping_trust": false,
+        "anti_arpscan_trust": false
+      }
+    },
+    "port_groups": {
+      "1": {
+        "id": "1",
+        "mode": "on",
+        "protocol": "Static",
+        "members": [
+          "Ethernet1/0/1",
+          "Ethernet1/0/2"
+        ]
+      }
+    },
+    "spanning_tree": {
+      "enabled": false,
+      "mode": "mstp",
+      "mst_priorities": {}
+    },
+    "static_routes": [],
+    "ipv6_routes": [],
+    "ospf": {
+      "processes": {}
+    },
+    "bgp": {
+      "timers": null,
+      "default_local_preference": 100,
+      "neighbors": {}
+    },
+    "dhcp_pools": {},
+    "dhcp_snooping": {
+      "binding_arp": false,
+      "conflict_logging": false
+    },
+    "acls": {
+      "standard_numbered": {},
+      "extended_numbered": {},
+      "standard_named": {},
+      "extended_named": {},
+      "source_control": {}
+    },
+    "prefix_lists": {},
+    "route_maps": {},
+    "firewall_enabled": false,
+    "anti_arpscan_enabled": false,
+    "multicast": {
+      "igmp_snooping": false,
+      "igmp_snooping_vlans": [],
+      "mld_snooping": false,
+      "mld_snooping_vlans": [],
+      "static_rp": [],
+      "ssm_range": null,
+      "msdp_peers": {}
+    },
+    "dhcp_bindings": [],
+    "mac_address_table": []
+  },
+  "dhcp_bindings": [],
+  "mac_address_table": []
+}
