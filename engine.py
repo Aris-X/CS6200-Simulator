@@ -204,6 +204,12 @@ class SyntaxParser:
             sub = cls.parse(inner)
             return SyntaxToken(raw=part, kind="group", sub_tokens=sub)
 
+        # 紧邻斜杠的复合参数（如 <ip-prefix>/<prefix-length>）：整个 token
+        # 仍作为单个输入词匹配，但按 '/' 拆成两个参数分别捕获与校验。
+        pair = re.fullmatch(r"<([^<>/]+)>/<([^<>/]+)>", part)
+        if pair:
+            return SyntaxToken(raw=part, kind="param_pair", choices=[pair.group(1), pair.group(2)])
+
         # 参数占位符 <...> 或大写变量 WORD / IFNAME / LINE / A.B.C.D
         if (part.startswith("<") and part.endswith(">")) or part in {
             "WORD", "IFNAME", "LINE", "A.B.C.D", "X:X::X:X"
@@ -243,6 +249,7 @@ class CS6200CLIEngine:
         "router-rip": "{hostname}(Config-Router)#",
         "router-bgp": "{hostname}(Config-Router)#",
         "router-msdp": "{hostname}(Config-Router)#",
+        "router-msdp-peer": "{hostname}(Config-MSDP-Peer)#",
     }
 
     # 需要重映射的 requires 关键词规则 (顺序敏感，优先匹配更具体的规则)
@@ -420,6 +427,7 @@ class CS6200CLIEngine:
             "ip_address": None,
             "ipv6_addresses": [],
             "ipv6_enable": False,
+            "ipv6_enable_explicit": False,
             "autostate": True,
             "vrf": None,
             "ip_access_group": {"in": None, "out": None},
@@ -537,6 +545,21 @@ class CS6200CLIEngine:
                         saved_if["mtu"] = 3924
                 state["interfaces"][if_name] = self._merge_state_defaults(default_if, saved_if)
 
+        # IPv6 一致性迁移：配置了 IPv6 地址的接口自动置为 IPv6 使能；
+        # 只要存在 IPv6 地址，则全局 IPv6 记录为使能，避免“有地址但协议 Down”。
+        if isinstance(interfaces, dict):
+            has_v6 = False
+            for iinfo in interfaces.values():
+                if isinstance(iinfo, dict) and iinfo.get("ipv6_addresses"):
+                    iinfo["ipv6_enable"] = True
+                    has_v6 = True
+            if has_v6:
+                state.setdefault("system", {})["ipv6_enabled"] = True
+
+        # 清理已删除的 line vty 模型残留
+        if isinstance(state.get("system"), dict):
+            state["system"].pop("vty_lines", None)
+
     def save_startup_config(self, path: Optional[str] = None) -> bool:
         """把 startup_config 写入磁盘（模拟 write 保存到 Flash），成功返回 True"""
         target = path or self.persist_path
@@ -644,7 +667,11 @@ class CS6200CLIEngine:
             elif any(syntax.startswith(kw) for kw in self.GLOBAL_SHOW_KEYWORDS):
                 # show / ping / debug 等查询命令在特权模式及所有配置模式可用，
                 # 但一般用户模式 (Switch>) 下不可执行。
-                target_modes = [m for m in self.PROMPT_TEMPLATES.keys() if m != "user"]
+                # 例外：show privilege 在一般用户模式下也可查看当前权限级别。
+                if syntax.startswith("show privilege"):
+                    target_modes = list(self.PROMPT_TEMPLATES.keys())
+                else:
+                    target_modes = [m for m in self.PROMPT_TEMPLATES.keys() if m != "user"]
             elif syntax.startswith("enable"):
                 target_modes = ["user", "priv"]
 
@@ -929,13 +956,28 @@ class CS6200CLIEngine:
             if m_eth and len(tokens) >= 1 and "interface".startswith(tokens[-1].lower()):
                 tokens.extend(["ethernet", m_eth.group(2)])
                 offsets.extend([start_pos, start_pos + len(m_eth.group(1))])
-            elif m_po and len(tokens) >= 1 and "interface".startswith(tokens[-1].lower()):
+            elif (
+                m_po
+                and tokens
+                and tokens[0].lower().startswith("interface")
+                and "interface".startswith(tokens[-1].lower())
+            ):
                 tokens.extend(["port-channel", m_po.group(2)])
                 offsets.extend([start_pos, start_pos + len(m_po.group(1))])
-            elif m_vlan and len(tokens) >= 1 and "interface".startswith(tokens[-1].lower()):
+            elif (
+                m_vlan
+                and tokens
+                and tokens[0].lower().startswith("interface")
+                and "interface".startswith(tokens[-1].lower())
+            ):
                 tokens.extend(["vlan", m_vlan.group(2)])
                 offsets.extend([start_pos, start_pos + len(m_vlan.group(1))])
-            elif m_lo and len(tokens) >= 1 and "interface".startswith(tokens[-1].lower()):
+            elif (
+                m_lo
+                and tokens
+                and tokens[0].lower().startswith("interface")
+                and "interface".startswith(tokens[-1].lower())
+            ):
                 tokens.extend(["loopback", m_lo.group(2)])
                 offsets.extend([start_pos, start_pos + len(m_lo.group(1))])
             else:
@@ -1045,6 +1087,18 @@ class CS6200CLIEngine:
                     return dfs(in_idx + 1, tok_idx + 1, new_cap)
                 return False, in_idx, captured, [cur_tok.param_name]
 
+            # 3.1) 复合参数 <prefix>/<length>：按 '/' 拆分并分别捕获
+            if cur_tok.kind == "param_pair":
+                parts = word.split("/", 1)
+                if len(parts) == 2:
+                    left_name, right_name = f"<{cur_tok.choices[0]}>", f"<{cur_tok.choices[1]}>"
+                    if self._validate_param_value(parts[0], left_name) and self._validate_param_value(parts[1], right_name):
+                        new_cap = dict(captured)
+                        new_cap[left_name] = parts[0]
+                        new_cap[right_name] = parts[1]
+                        return dfs(in_idx + 1, tok_idx + 1, new_cap)
+                return False, in_idx, captured, [cur_tok.raw]
+
             # 4) 复杂组合 { <ip> <mask> | any-source | host-source <ip> }
             if cur_tok.kind == "group":
                 if cur_tok.choices:
@@ -1148,6 +1202,8 @@ class CS6200CLIEngine:
             return list(tok.choices)
         if tok.kind == "param":
             return [tok.param_name]
+        if tok.kind == "param_pair":
+            return [tok.raw]
         if tok.kind in ("group", "optional"):
             if tok.choices:
                 return list(tok.choices)
@@ -1560,6 +1616,17 @@ class CS6200CLIEngine:
                 self.return_to_global()
                 return ""
             self.push_view("router-msdp", context_name="msdp")
+            return ""
+
+        if state_key == "msdp.peer":
+            if is_no:
+                self.pop_view()
+                return ""
+            peer = args.get("<peer-address>", "0.0.0.0")
+            self.state.setdefault("multicast", {}).setdefault("msdp_peers", {}).setdefault(
+                peer, {"connect_source": None, "description": "", "remote_as": None, "mesh_group": None}
+            )
+            self.push_view("router-msdp-peer", context_name=peer)
             return ""
 
         if state_key == "route_map.create":

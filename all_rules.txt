@@ -2,14 +2,12 @@
 [
   {
     "mode": [
-      "priv"
+      "any"
     ],
     "syntax": "show privilege",
-    "params": {
-      "无": ""
-    },
+    "params": {},
     "desc": "显示当前用户权限。",
-    "requires": "无",
+    "requires": "",
     "state_key": "show.privilege",
     "no_cmd": "",
     "output_example": ""
@@ -20,11 +18,11 @@
     ],
     "syntax": "clock set <HH:MM:SS> [YYYY.MM.DD]",
     "params": {
-      "<HH": "MM:SS>: 时间",
+      "<HH:MM:SS>": "时间",
       "[YYYY.MM.DD]": "日期"
     },
     "desc": "设置系统日期和时钟。",
-    "requires": "无",
+    "requires": "",
     "state_key": "system.clock",
     "no_cmd": "",
     "output_example": ""
@@ -34,11 +32,9 @@
       "priv"
     ],
     "syntax": "show version",
-    "params": {
-      "无": ""
-    },
+    "params": {},
     "desc": "显示交换机版本信息。",
-    "requires": "无",
+    "requires": "",
     "state_key": "show.version",
     "no_cmd": "",
     "output_example": ""
@@ -48,11 +44,9 @@
       "priv"
     ],
     "syntax": "write",
-    "params": {
-      "无": ""
-    },
+    "params": {},
     "desc": "将当前运行时配置参数(running-config)保存到 Flash Memory。",
-    "requires": "无",
+    "requires": "",
     "state_key": "builtin.write",
     "no_cmd": "",
     "output_example": ""
@@ -62,11 +56,9 @@
       "priv"
     ],
     "syntax": "show users",
-    "params": {
-      "无": ""
-    },
+    "params": {},
     "desc": "显示通过 telnet 和 ssh 登陆的用户信息，包括线路号，登陆的用户名及用户的IP。",
-    "requires": "无",
+    "requires": "",
     "state_key": "show.users",
     "no_cmd": "",
     "output_example": ""
@@ -76,11 +68,9 @@
       "global"
     ],
     "syntax": "snmp-server enable",
-    "params": {
-      "无": ""
-    },
+    "params": {},
     "desc": "打开交换机作为 SNMP 代理服务器功能。",
-    "requires": "无",
+    "requires": "",
     "state_key": "snmp.enable",
     "no_cmd": "no snmp-server enable",
     "output_example": ""
@@ -111,7 +101,7 @@
       "<VID>": "集群 VLAN ID"
     },
     "desc": "启动或停止交换机本设备的集群功能。",
-    "requires": "无",
+    "requires": "",
     "state_key": "cluster.run",
     "no_cmd": "no cluster run",
     "output_example": ""
@@ -122,7 +112,7 @@
     ],
     "syntax": "cd usb:",
     "params": {
-      "usb": ": 目标盘符"
+      "usb:": "目标盘符"
     },
     "desc": "进行USB存储设备的挂载，并进入 USB盘符。",
     "requires": "设备必须插入有效的USB存储设备，且未报过流警报",
@@ -140,7 +130,7 @@
       "<slot-id>": "槽位号"
     },
     "desc": "显示各板卡基本信息。",
-    "requires": "无",
+    "requires": "",
     "state_key": "show.slot",
     "no_cmd": "",
     "output_example": ""
@@ -184,9 +174,7 @@
       "if"
     ],
     "syntax": "clear lldp remote-table",
-    "params": {
-      "无": ""
-    },
+    "params": {},
     "desc": "清空端口Remote-table。",
     "requires": "无",
     "state_key": "interface.lldp.clear",
@@ -237,6 +225,7 @@
   },
   {
     "mode": [
+      "user",
       "priv",
       "global"
     ],
@@ -316,9 +305,7 @@
       "if"
     ],
     "syntax": "ethernet-oam",
-    "params": {
-      "无": ""
-    },
+    "params": {},
     "desc": "使能端口 EFM OAM 功能。",
     "requires": "配置OAM参数前需要先启动该功能",
     "state_key": "interface.ethernet_oam",
@@ -330,9 +317,7 @@
       "vlan"
     ],
     "syntax": "supervlan",
-    "params": {
-      "无": ""
-    },
+    "params": {},
     "desc": "创建 supervlan。",
     "requires": "无",
     "state_key": "vlan.supervlan",
@@ -359,7 +344,8 @@
     ],
     "syntax": "ip-addr-range <ipv4-address> to <ipv4-address>",
     "params": {
-      "<ipv4-addrss>": "IP地址范围起点和终点"
+      "<ipv4-address>": "起始/结束 IPv4 地址",
+      "to": "关键字"
     },
     "desc": "指定接口的地址范围。",
     "requires": "无",
@@ -505,7 +491,7 @@
     "mode": [
       "global"
     ],
-    "syntax": "ipv6 route <ipv6-address/prefix-length> {<interface-type interface-number> | tunnel <tnl-id>}",
+    "syntax": "ipv6 route <ipv6-address/prefix-length> {<interface-type> <interface-number> | tunnel <tnl-id>}",
     "params": {
       "<ipv6-address/prefix-length>": "IPv6目标网络及前缀",
       "<interface-type interface-number> | tunnel <tnl-id>": "出接口或隧道ID"
@@ -513,7 +499,7 @@
     "desc": "配置隧道路由",
     "requires": "",
     "state_key": "route.ipv6",
-    "no_cmd": "no ipv6 route <ipv6-address/prefix-length> {<interface-type interface-number> | tunnel <tnl-id>}",
+    "no_cmd": "no ipv6 route <ipv6-address/prefix-length> {<interface-type> <interface-number> | tunnel <tnl-id>}",
     "output_example": ""
   },
   {
@@ -828,30 +814,6 @@
   },
   {
     "mode": [
-      "dhcp-pool"
-    ],
-    "syntax": "no option 60",
-    "params": {},
-    "desc": "在地址池模式下删除配置的 option 60",
-    "requires": "需要进入DHCP地址池配置模式",
-    "state_key": "dhcp.pool.option60",
-    "no_cmd": "",
-    "output_example": ""
-  },
-  {
-    "mode": [
-      "dhcp-pool"
-    ],
-    "syntax": "no option 43",
-    "params": {},
-    "desc": "在地址池模式下删除配置的 option 43",
-    "requires": "需要进入DHCP地址池配置模式",
-    "state_key": "dhcp.pool.option43",
-    "no_cmd": "",
-    "output_example": ""
-  },
-  {
-    "mode": [
       "global"
     ],
     "syntax": "ipv6 enable",
@@ -914,6 +876,32 @@
     "requires": "",
     "state_key": "interface.ip_address",
     "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "shutdown",
+    "params": {},
+    "desc": "关闭或激活当前接口",
+    "requires": "",
+    "state_key": "interface.shutdown",
+    "no_cmd": "no shutdown",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "interface tunnel <tnl-id>",
+    "params": {
+      "<tnl-id>": "隧道接口编号"
+    },
+    "desc": "创建或进入 Tunnel 隧道接口配置模式",
+    "requires": "",
+    "state_key": "interface.tunnel",
+    "no_cmd": "no interface tunnel <tnl-id>",
     "output_example": ""
   }
 ]
@@ -1040,14 +1028,14 @@
     "mode": [
       "route-map"
     ],
-    "syntax": "set metric {<+metric_val> | <-metric_val> | <metric_val>}",
+    "syntax": "set metric <metric_val>",
     "params": {
-      "< +/- metric_val | metric_val>": "度量值或增减量"
+      "<metric_val>": "度量值或增减量"
     },
     "desc": "设置路由度量值",
     "requires": "",
     "state_key": "route_map.set.metric",
-    "no_cmd": "no set metric [{<+metric_val> | <-metric_val> | <metric_val>}]",
+    "no_cmd": "no set metric [<metric_val>]",
     "output_example": ""
   },
   {
@@ -1070,7 +1058,7 @@
     ],
     "syntax": "set origin {egp | igp | incomplete}",
     "params": {
-      "<egp | igp | incomplete >": "路由源类型"
+      "<origin>": "路由源类型"
     },
     "desc": "设置BGP路由源",
     "requires": "",
@@ -1279,7 +1267,7 @@
     ],
     "syntax": "ip ospf dead-interval <time>",
     "params": {
-      "<time >": "失效时间间隔"
+      "<time>": "失效时间间隔"
     },
     "desc": "配置认定相邻三层交换机失效的时间间隔",
     "requires": "",
@@ -1349,7 +1337,7 @@
     "mode": [
       "router-ospf"
     ],
-    "syntax": "overflow database {<max-LSA> [hard | soft] | external <max-LSA> <recover time>}",
+    "syntax": "overflow database {<max-LSA> [hard | soft] | external <max-LSA> <recover-time>}",
     "params": {
       "<max-LSA>": "最大LSA数量",
       "<recover time>": "恢复时间"
@@ -1357,7 +1345,7 @@
     "desc": "配置当前 OSPF 进程数据库中 LSA 的限制",
     "requires": "",
     "state_key": "router.ospf.overflow_database",
-    "no_cmd": "no overflow database [external <max-LSA > < recover time >]",
+    "no_cmd": "no overflow database [external <max-LSA> <recover-time>]",
     "output_example": ""
   },
   {
@@ -1468,7 +1456,7 @@
     "mode": [
       "global"
     ],
-    "syntax": "ip route {<ip-prefix> <mask> | <ip-prefix>} null0 [<distance>]",
+    "syntax": "ip route {<ip-prefix> <mask> | <ip-prefix>/<prefix-length>} null0 [<distance>]",
     "params": {
       "<ip-prefix>": "目标网络前缀",
       "<mask>|<prefix-length>": "子网掩码或前缀长度",
@@ -1477,7 +1465,7 @@
     "desc": "配置静态黑洞路由",
     "requires": "",
     "state_key": "ip.route.blackhole",
-    "no_cmd": "no ip route {<ip-prefix> <mask> | <ip-prefix>} null0",
+    "no_cmd": "no ip route {<ip-prefix> <mask> | <ip-prefix>/<prefix-length>} null0",
     "output_example": ""
   },
   {
@@ -1657,7 +1645,7 @@
     "desc": "为全局或某个组播地址范围的组播组配置静态 RP",
     "requires": "",
     "state_key": "global.pim_sm.rp_address",
-    "no_cmd": "no ip pim rp-address <A.B.C.D> {<all> | <A.B.C.D/M>}",
+    "no_cmd": "no ip pim rp-address <A.B.C.D> {all | <A.B.C.D/M>}",
     "output_example": ""
   },
   {
@@ -1702,7 +1690,7 @@
   },
   {
     "mode": [
-      "router-msdp"
+      "router-msdp-peer"
     ],
     "syntax": "connect-source <interface-type> <interface-number>",
     "params": {
@@ -1717,7 +1705,7 @@
   },
   {
     "mode": [
-      "router-msdp"
+      "router-msdp-peer"
     ],
     "syntax": "description <text>",
     "params": {
@@ -1731,7 +1719,7 @@
   },
   {
     "mode": [
-      "router-msdp"
+      "router-msdp-peer"
     ],
     "syntax": "remote-as <as-num>",
     "params": {
@@ -1745,7 +1733,7 @@
   },
   {
     "mode": [
-      "router-msdp"
+      "router-msdp-peer"
     ],
     "syntax": "mesh-group <name>",
     "params": {
@@ -1809,7 +1797,7 @@
   },
   {
     "mode": [
-      "router-msdp"
+      "router-msdp-peer"
     ],
     "syntax": "sa-request",
     "params": {},
@@ -1839,7 +1827,7 @@
     ],
     "syntax": "ip multicast ssm {default | range <access-list-number>}",
     "params": {
-      "<access-list-number >": "访问控制列表编号"
+      "<access-list-number>": "访问控制列表编号"
     },
     "desc": "配置 pim ssm 组播组地址范围",
     "requires": "",
@@ -1918,14 +1906,14 @@
     "mode": [
       "vlan"
     ],
-    "syntax": "multicast-vlan association interface (ethernet | port-channel|) IFNAME",
+    "syntax": "multicast-vlan association interface {ethernet | port-channel} <IFNAME>",
     "params": {
       "IFNAME": "接口名称"
     },
     "desc": "将特定端口关联到组播 VLAN 上",
     "requires": "",
     "state_key": "vlan.multicast_vlan.association.interface",
-    "no_cmd": "no multicast-vlan association interface (ethernet | port-channel|) IFNAME",
+    "no_cmd": "no multicast-vlan association interface {ethernet | port-channel} <IFNAME>",
     "output_example": ""
   },
   {
@@ -2190,7 +2178,24 @@
   },
   {
     "mode": [
-      "any"
+      "priv",
+      "global",
+      "if",
+      "vlan",
+      "router",
+      "router-ospf",
+      "router-rip",
+      "router-bgp",
+      "router-msdp",
+      "router-msdp-peer",
+      "dhcp-pool",
+      "line",
+      "acl-std",
+      "acl-ext",
+      "time-range",
+      "vrf",
+      "tunnel",
+      "route-map"
     ],
     "syntax": "show running-config current-mode",
     "params": {},
@@ -2247,9 +2252,9 @@
     "mode": [
       "global"
     ],
-    "syntax": "authentication enable {local | radius | tacacs}",
+    "syntax": "authentication enable {local | radius | tacacs | enable}",
     "params": {
-      "{local | radius | tacacs}": "enable 认证方法"
+      "{local | radius | tacacs | enable}": "enable 认证方法"
     },
     "desc": "配置 enable 认证方法列表",
     "requires": "",
@@ -2276,12 +2281,12 @@
     "mode": [
       "global"
     ],
-    "syntax": "accounting line {console | vty} command <1-15> {start-stop | stop-only | none} {local | radius | tacacs}",
+    "syntax": "accounting line {console | vty} command <1-15> {start-stop | stop-only | none} {radius | tacacs}",
     "params": {
-      "{console | vty}": "登录方式",
+      " {console | vty}": "登录方式",
       "<1-15>": "命令权限级别",
       "{start-stop | stop-only | none}": "记账方式",
-      "{local | radius | tacacs}": "记账方法"
+      "{radius | tacacs}": "记账方法"
     },
     "desc": "配置登录记账方法列表",
     "requires": "",
@@ -2617,7 +2622,24 @@
   },
   {
     "mode": [
-      "any"
+      "priv",
+      "global",
+      "if",
+      "vlan",
+      "router",
+      "router-ospf",
+      "router-rip",
+      "router-bgp",
+      "router-msdp",
+      "router-msdp-peer",
+      "dhcp-pool",
+      "line",
+      "acl-std",
+      "acl-ext",
+      "time-range",
+      "vrf",
+      "tunnel",
+      "route-map"
     ],
     "syntax": "show loopback-detection [interface <interface-list>]",
     "params": {
@@ -2631,7 +2653,24 @@
   },
   {
     "mode": [
-      "any"
+      "priv",
+      "global",
+      "if",
+      "vlan",
+      "router",
+      "router-ospf",
+      "router-rip",
+      "router-bgp",
+      "router-msdp",
+      "router-msdp-peer",
+      "dhcp-pool",
+      "line",
+      "acl-std",
+      "acl-ext",
+      "time-range",
+      "vrf",
+      "tunnel",
+      "route-map"
     ],
     "syntax": "show loopback-detection interface ethernet <interface-list>",
     "params": {
@@ -2668,15 +2707,15 @@
     "mode": [
       "global"
     ],
-    "syntax": "router ospf [<id>] [VRF Name]",
+    "syntax": "router ospf [<id>] [vrf <vrf-name>]",
     "params": {
-      "<id>": "OSPF进程号",
-      "[VRF Name]": "VRF名称"
+      "<id>": "OSPF 进程号（可选）",
+      "<vrf-name>": "VRF 实例名称（可选）"
     },
     "desc": "启动 OSPF协议进程",
     "requires": "",
     "state_key": "router.ospf",
-    "no_cmd": "no router ospf [<id>]",
+    "no_cmd": "no router ospf [process <id>]",
     "output_example": ""
   },
   {
@@ -2770,7 +2809,24 @@
   },
   {
     "mode": [
-      "any"
+      "priv",
+      "global",
+      "if",
+      "vlan",
+      "router",
+      "router-ospf",
+      "router-rip",
+      "router-bgp",
+      "router-msdp",
+      "router-msdp-peer",
+      "dhcp-pool",
+      "line",
+      "acl-std",
+      "acl-ext",
+      "time-range",
+      "vrf",
+      "tunnel",
+      "route-map"
     ],
     "syntax": "show ip route",
     "params": {},
@@ -2782,7 +2838,24 @@
   },
   {
     "mode": [
-      "any"
+      "priv",
+      "global",
+      "if",
+      "vlan",
+      "router",
+      "router-ospf",
+      "router-rip",
+      "router-bgp",
+      "router-msdp",
+      "router-msdp-peer",
+      "dhcp-pool",
+      "line",
+      "acl-std",
+      "acl-ext",
+      "time-range",
+      "vrf",
+      "tunnel",
+      "route-map"
     ],
     "syntax": "show ip ospf neighbor",
     "params": {},
@@ -2794,7 +2867,24 @@
   },
   {
     "mode": [
-      "any"
+      "priv",
+      "global",
+      "if",
+      "vlan",
+      "router",
+      "router-ospf",
+      "router-rip",
+      "router-bgp",
+      "router-msdp",
+      "router-msdp-peer",
+      "dhcp-pool",
+      "line",
+      "acl-std",
+      "acl-ext",
+      "time-range",
+      "vrf",
+      "tunnel",
+      "route-map"
     ],
     "syntax": "show ip interface {vlan <vlan-id> | ethernet <interface-list> | port-channel <port-channel-number> | loopback <loopback-id>}",
     "params": {
@@ -2811,19 +2901,24 @@
   },
   {
     "mode": [
-      "any"
-    ],
-    "syntax": "show ip interface",
-    "params": {},
-    "desc": "显示所有三层接口的IP配置及状态信息",
-    "requires": "",
-    "state_key": "show.ip.interface",
-    "no_cmd": "",
-    "output_example": ""
-  },
-  {
-    "mode": [
-      "any"
+      "priv",
+      "global",
+      "if",
+      "vlan",
+      "router",
+      "router-ospf",
+      "router-rip",
+      "router-bgp",
+      "router-msdp",
+      "router-msdp-peer",
+      "dhcp-pool",
+      "line",
+      "acl-std",
+      "acl-ext",
+      "time-range",
+      "vrf",
+      "tunnel",
+      "route-map"
     ],
     "syntax": "show ip interface <interface-name>",
     "params": {
@@ -2837,7 +2932,24 @@
   },
   {
     "mode": [
-      "any"
+      "priv",
+      "global",
+      "if",
+      "vlan",
+      "router",
+      "router-ospf",
+      "router-rip",
+      "router-bgp",
+      "router-msdp",
+      "router-msdp-peer",
+      "dhcp-pool",
+      "line",
+      "acl-std",
+      "acl-ext",
+      "time-range",
+      "vrf",
+      "tunnel",
+      "route-map"
     ],
     "syntax": "show interface",
     "params": {},
@@ -2849,7 +2961,24 @@
   },
   {
     "mode": [
-      "any"
+      "priv",
+      "global",
+      "if",
+      "vlan",
+      "router",
+      "router-ospf",
+      "router-rip",
+      "router-bgp",
+      "router-msdp",
+      "router-msdp-peer",
+      "dhcp-pool",
+      "line",
+      "acl-std",
+      "acl-ext",
+      "time-range",
+      "vrf",
+      "tunnel",
+      "route-map"
     ],
     "syntax": "show interface loopback <loopback-id>",
     "params": {
@@ -2863,7 +2992,24 @@
   },
   {
     "mode": [
-      "any"
+      "priv",
+      "global",
+      "if",
+      "vlan",
+      "router",
+      "router-ospf",
+      "router-rip",
+      "router-bgp",
+      "router-msdp",
+      "router-msdp-peer",
+      "dhcp-pool",
+      "line",
+      "acl-std",
+      "acl-ext",
+      "time-range",
+      "vrf",
+      "tunnel",
+      "route-map"
     ],
     "syntax": "show interface vlan <vlan-id>",
     "params": {
@@ -2877,7 +3023,24 @@
   },
   {
     "mode": [
-      "any"
+      "priv",
+      "global",
+      "if",
+      "vlan",
+      "router",
+      "router-ospf",
+      "router-rip",
+      "router-bgp",
+      "router-msdp",
+      "router-msdp-peer",
+      "dhcp-pool",
+      "line",
+      "acl-std",
+      "acl-ext",
+      "time-range",
+      "vrf",
+      "tunnel",
+      "route-map"
     ],
     "syntax": "show interface ethernet <interface-list>",
     "params": {
@@ -2891,7 +3054,24 @@
   },
   {
     "mode": [
-      "any"
+      "priv",
+      "global",
+      "if",
+      "vlan",
+      "router",
+      "router-ospf",
+      "router-rip",
+      "router-bgp",
+      "router-msdp",
+      "router-msdp-peer",
+      "dhcp-pool",
+      "line",
+      "acl-std",
+      "acl-ext",
+      "time-range",
+      "vrf",
+      "tunnel",
+      "route-map"
     ],
     "syntax": "show interface port-channel <port-channel-number>",
     "params": {
@@ -2905,19 +3085,24 @@
   },
   {
     "mode": [
-      "any"
-    ],
-    "syntax": "show ipv6 interface",
-    "params": {},
-    "desc": "显示所有三层接口的 IPv6 使能状态与地址信息",
-    "requires": "",
-    "state_key": "show.ipv6.interface",
-    "no_cmd": "",
-    "output_example": ""
-  },
-  {
-    "mode": [
-      "any"
+      "priv",
+      "global",
+      "if",
+      "vlan",
+      "router",
+      "router-ospf",
+      "router-rip",
+      "router-bgp",
+      "router-msdp",
+      "router-msdp-peer",
+      "dhcp-pool",
+      "line",
+      "acl-std",
+      "acl-ext",
+      "time-range",
+      "vrf",
+      "tunnel",
+      "route-map"
     ],
     "syntax": "show ipv6 interface loopback <loopback-id>",
     "params": {
@@ -2931,7 +3116,24 @@
   },
   {
     "mode": [
-      "any"
+      "priv",
+      "global",
+      "if",
+      "vlan",
+      "router",
+      "router-ospf",
+      "router-rip",
+      "router-bgp",
+      "router-msdp",
+      "router-msdp-peer",
+      "dhcp-pool",
+      "line",
+      "acl-std",
+      "acl-ext",
+      "time-range",
+      "vrf",
+      "tunnel",
+      "route-map"
     ],
     "syntax": "show ipv6 interface vlan <vlan-id>",
     "params": {
@@ -2945,7 +3147,24 @@
   },
   {
     "mode": [
-      "any"
+      "priv",
+      "global",
+      "if",
+      "vlan",
+      "router",
+      "router-ospf",
+      "router-rip",
+      "router-bgp",
+      "router-msdp",
+      "router-msdp-peer",
+      "dhcp-pool",
+      "line",
+      "acl-std",
+      "acl-ext",
+      "time-range",
+      "vrf",
+      "tunnel",
+      "route-map"
     ],
     "syntax": "show ipv6 interface ethernet <interface-list>",
     "params": {
@@ -2959,7 +3178,24 @@
   },
   {
     "mode": [
-      "any"
+      "priv",
+      "global",
+      "if",
+      "vlan",
+      "router",
+      "router-ospf",
+      "router-rip",
+      "router-bgp",
+      "router-msdp",
+      "router-msdp-peer",
+      "dhcp-pool",
+      "line",
+      "acl-std",
+      "acl-ext",
+      "time-range",
+      "vrf",
+      "tunnel",
+      "route-map"
     ],
     "syntax": "show ipv6 interface port-channel <port-channel-number>",
     "params": {
@@ -3162,7 +3398,7 @@
     "mode": [
       "priv"
     ],
-    "syntax": "clear access-group (in | out) statistic interface { <interface-name> | ethernet <interface-name> }",
+    "syntax": "clear access-group {in | out} statistic interface { <interface-name> | ethernet <interface-name> }",
     "params": {
       "(in | out)": "数据流方向",
       "<interface-name>": "接口名称"
@@ -3206,7 +3442,7 @@
     "mode": [
       "time-range"
     ],
-    "syntax": "periodic {{Monday+Tuesday+Wednesday+Thursday+Friday+Saturday+ Sunday} | daily | weekdays | weekend} <start_time> to <end_time>",
+    "syntax": "periodic {daily | weekdays | weekend | Monday+Tuesday+Wednesday+Thursday+Friday+Saturday+Sunday} <start_time> to <end_time>",
     "params": {
       "<start_time>": "开始时间",
       "<end_time>": "结束时间"
@@ -3259,10 +3495,11 @@
     "enable_password": null,
     "enable_level": 15,
     "load_balance": "dst-src-mac-ip",
-    "vty_lines": {},
+    "authentication_lines": {},
     "time_ranges": {},
     "vrfs": {},
-    "tunnels": {}
+    "tunnels": {},
+    "ipv6_enabled": true
   },
   "vlans": {
     "1": {
@@ -3312,6 +3549,7 @@
       "ip_address": null,
       "ipv6_addresses": [],
       "ipv6_enable": false,
+      "ipv6_enable_explicit": false,
       "autostate": true,
       "vrf": null,
       "ip_access_group": {
@@ -3353,6 +3591,7 @@
       "ip_address": null,
       "ipv6_addresses": [],
       "ipv6_enable": false,
+      "ipv6_enable_explicit": false,
       "autostate": true,
       "vrf": null,
       "ip_access_group": {
@@ -3394,6 +3633,7 @@
       "ip_address": null,
       "ipv6_addresses": [],
       "ipv6_enable": false,
+      "ipv6_enable_explicit": false,
       "autostate": true,
       "vrf": null,
       "ip_access_group": {
@@ -3432,6 +3672,7 @@
       "ip_address": null,
       "ipv6_addresses": [],
       "ipv6_enable": false,
+      "ipv6_enable_explicit": false,
       "autostate": true,
       "vrf": null,
       "ip_access_group": {
@@ -3470,6 +3711,7 @@
       "ip_address": null,
       "ipv6_addresses": [],
       "ipv6_enable": false,
+      "ipv6_enable_explicit": false,
       "autostate": true,
       "vrf": null,
       "ip_access_group": {
@@ -3512,6 +3754,7 @@
       "ip_address": null,
       "ipv6_addresses": [],
       "ipv6_enable": false,
+      "ipv6_enable_explicit": false,
       "autostate": true,
       "vrf": null,
       "ip_access_group": {
@@ -3554,6 +3797,7 @@
       "ip_address": "20.1.0.2/255.255.255.252",
       "ipv6_addresses": [],
       "ipv6_enable": false,
+      "ipv6_enable_explicit": false,
       "autostate": true,
       "vrf": null,
       "ip_access_group": {
@@ -3570,6 +3814,7 @@
       "ip_address": "20.1.1.2/255.255.255.252",
       "ipv6_addresses": [],
       "ipv6_enable": false,
+      "ipv6_enable_explicit": false,
       "autostate": true,
       "vrf": null,
       "ip_access_group": {
@@ -3586,6 +3831,7 @@
       "ip_address": "222.22.1.2/255.255.255.248",
       "ipv6_addresses": [],
       "ipv6_enable": false,
+      "ipv6_enable_explicit": false,
       "autostate": true,
       "vrf": null,
       "ip_access_group": {
@@ -3602,6 +3848,7 @@
       "ip_address": "223.23.1.2/255.255.255.248",
       "ipv6_addresses": [],
       "ipv6_enable": false,
+      "ipv6_enable_explicit": false,
       "autostate": true,
       "vrf": null,
       "ip_access_group": {
@@ -3619,7 +3866,8 @@
       "ipv6_addresses": [
         "2001:da8:20:1:0::1/96"
       ],
-      "ipv6_enable": false,
+      "ipv6_enable": true,
+      "ipv6_enable_explicit": false,
       "autostate": true,
       "vrf": null,
       "ip_access_group": {
@@ -3636,6 +3884,7 @@
       "ip_address": "20.1.0.5/255.255.255.252",
       "ipv6_addresses": [],
       "ipv6_enable": false,
+      "ipv6_enable_explicit": false,
       "autostate": true,
       "vrf": null,
       "ip_access_group": {
@@ -3652,6 +3901,7 @@
       "ip_address": "20.1.3.1/255.255.255.128",
       "ipv6_addresses": [],
       "ipv6_enable": false,
+      "ipv6_enable_explicit": false,
       "autostate": true,
       "vrf": null,
       "ip_access_group": {
@@ -3669,7 +3919,8 @@
       "ipv6_addresses": [
         "2001:da8:192:168:40::1/96"
       ],
-      "ipv6_enable": false,
+      "ipv6_enable": true,
+      "ipv6_enable_explicit": false,
       "autostate": true,
       "vrf": null,
       "ip_access_group": {
@@ -3687,7 +3938,8 @@
       "ipv6_addresses": [
         "2001:da8:192:168:50::1/96"
       ],
-      "ipv6_enable": false,
+      "ipv6_enable": true,
+      "ipv6_enable_explicit": false,
       "autostate": true,
       "vrf": null,
       "ip_access_group": {
@@ -3705,7 +3957,8 @@
       "ipv6_addresses": [
         "2001:da8:192:168:60::1/96"
       ],
-      "ipv6_enable": false,
+      "ipv6_enable": true,
+      "ipv6_enable_explicit": false,
       "autostate": true,
       "vrf": null,
       "ip_access_group": {
@@ -3722,6 +3975,7 @@
       "ip_address": "20.0.0.253/255.255.255.255",
       "ipv6_addresses": [],
       "ipv6_enable": false,
+      "ipv6_enable_explicit": false,
       "autostate": true,
       "vrf": null,
       "ip_access_group": {
@@ -3738,6 +3992,7 @@
       "ip_address": null,
       "ipv6_addresses": [],
       "ipv6_enable": false,
+      "ipv6_enable_explicit": false,
       "autostate": true,
       "vrf": null,
       "ip_access_group": {
@@ -3781,6 +4036,7 @@
       "ip_address": null,
       "ipv6_addresses": [],
       "ipv6_enable": false,
+      "ipv6_enable_explicit": false,
       "autostate": true,
       "vrf": null,
       "ip_access_group": {
@@ -3819,6 +4075,7 @@
       "ip_address": null,
       "ipv6_addresses": [],
       "ipv6_enable": false,
+      "ipv6_enable_explicit": false,
       "autostate": true,
       "vrf": null,
       "ip_access_group": {
@@ -3857,6 +4114,7 @@
       "ip_address": null,
       "ipv6_addresses": [],
       "ipv6_enable": false,
+      "ipv6_enable_explicit": false,
       "autostate": true,
       "vrf": null,
       "ip_access_group": {
@@ -3895,6 +4153,7 @@
       "ip_address": null,
       "ipv6_addresses": [],
       "ipv6_enable": false,
+      "ipv6_enable_explicit": false,
       "autostate": true,
       "vrf": null,
       "ip_access_group": {
@@ -3933,6 +4192,7 @@
       "ip_address": null,
       "ipv6_addresses": [],
       "ipv6_enable": false,
+      "ipv6_enable_explicit": false,
       "autostate": true,
       "vrf": null,
       "ip_access_group": {
@@ -3971,6 +4231,7 @@
       "ip_address": null,
       "ipv6_addresses": [],
       "ipv6_enable": false,
+      "ipv6_enable_explicit": false,
       "autostate": true,
       "vrf": null,
       "ip_access_group": {
@@ -4009,6 +4270,7 @@
       "ip_address": null,
       "ipv6_addresses": [],
       "ipv6_enable": false,
+      "ipv6_enable_explicit": false,
       "autostate": true,
       "vrf": null,
       "ip_access_group": {
@@ -4047,6 +4309,7 @@
       "ip_address": null,
       "ipv6_addresses": [],
       "ipv6_enable": false,
+      "ipv6_enable_explicit": false,
       "autostate": true,
       "vrf": null,
       "ip_access_group": {
@@ -4085,6 +4348,7 @@
       "ip_address": null,
       "ipv6_addresses": [],
       "ipv6_enable": false,
+      "ipv6_enable_explicit": false,
       "autostate": true,
       "vrf": null,
       "ip_access_group": {
@@ -4123,6 +4387,7 @@
       "ip_address": null,
       "ipv6_addresses": [],
       "ipv6_enable": false,
+      "ipv6_enable_explicit": false,
       "autostate": true,
       "vrf": null,
       "ip_access_group": {
@@ -4161,6 +4426,7 @@
       "ip_address": null,
       "ipv6_addresses": [],
       "ipv6_enable": false,
+      "ipv6_enable_explicit": false,
       "autostate": true,
       "vrf": null,
       "ip_access_group": {

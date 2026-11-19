@@ -186,7 +186,7 @@
     "mode": [
       "priv"
     ],
-    "syntax": "clear access-group (in | out) statistic interface { <interface-name> | ethernet <interface-name> }",
+    "syntax": "clear access-group {in | out} statistic interface { <interface-name> | ethernet <interface-name> }",
     "params": {
       "(in | out)": "数据流方向",
       "<interface-name>": "接口名称"
@@ -230,7 +230,7 @@
     "mode": [
       "time-range"
     ],
-    "syntax": "periodic {{Monday+Tuesday+Wednesday+Thursday+Friday+Saturday+ Sunday} | daily | weekdays | weekend} <start_time> to <end_time>",
+    "syntax": "periodic {daily | weekdays | weekend | Monday+Tuesday+Wednesday+Thursday+Friday+Saturday+Sunday} <start_time> to <end_time>",
     "params": {
       "<start_time>": "开始时间",
       "<end_time>": "结束时间"

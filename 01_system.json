@@ -1,14 +1,12 @@
 [
   {
     "mode": [
-      "priv"
+      "any"
     ],
     "syntax": "show privilege",
-    "params": {
-      "无": ""
-    },
+    "params": {},
     "desc": "显示当前用户权限。",
-    "requires": "无",
+    "requires": "",
     "state_key": "show.privilege",
     "no_cmd": "",
     "output_example": ""
@@ -19,11 +17,11 @@
     ],
     "syntax": "clock set <HH:MM:SS> [YYYY.MM.DD]",
     "params": {
-      "<HH": "MM:SS>: 时间",
+      "<HH:MM:SS>": "时间",
       "[YYYY.MM.DD]": "日期"
     },
     "desc": "设置系统日期和时钟。",
-    "requires": "无",
+    "requires": "",
     "state_key": "system.clock",
     "no_cmd": "",
     "output_example": ""
@@ -33,11 +31,9 @@
       "priv"
     ],
     "syntax": "show version",
-    "params": {
-      "无": ""
-    },
+    "params": {},
     "desc": "显示交换机版本信息。",
-    "requires": "无",
+    "requires": "",
     "state_key": "show.version",
     "no_cmd": "",
     "output_example": ""
@@ -47,11 +43,9 @@
       "priv"
     ],
     "syntax": "write",
-    "params": {
-      "无": ""
-    },
+    "params": {},
     "desc": "将当前运行时配置参数(running-config)保存到 Flash Memory。",
-    "requires": "无",
+    "requires": "",
     "state_key": "builtin.write",
     "no_cmd": "",
     "output_example": ""
@@ -61,11 +55,9 @@
       "priv"
     ],
     "syntax": "show users",
-    "params": {
-      "无": ""
-    },
+    "params": {},
     "desc": "显示通过 telnet 和 ssh 登陆的用户信息，包括线路号，登陆的用户名及用户的IP。",
-    "requires": "无",
+    "requires": "",
     "state_key": "show.users",
     "no_cmd": "",
     "output_example": ""
@@ -75,11 +67,9 @@
       "global"
     ],
     "syntax": "snmp-server enable",
-    "params": {
-      "无": ""
-    },
+    "params": {},
     "desc": "打开交换机作为 SNMP 代理服务器功能。",
-    "requires": "无",
+    "requires": "",
     "state_key": "snmp.enable",
     "no_cmd": "no snmp-server enable",
     "output_example": ""
@@ -110,7 +100,7 @@
       "<VID>": "集群 VLAN ID"
     },
     "desc": "启动或停止交换机本设备的集群功能。",
-    "requires": "无",
+    "requires": "",
     "state_key": "cluster.run",
     "no_cmd": "no cluster run",
     "output_example": ""
@@ -121,7 +111,7 @@
     ],
     "syntax": "cd usb:",
     "params": {
-      "usb": ": 目标盘符"
+      "usb:": "目标盘符"
     },
     "desc": "进行USB存储设备的挂载，并进入 USB盘符。",
     "requires": "设备必须插入有效的USB存储设备，且未报过流警报",
@@ -139,7 +129,7 @@
       "<slot-id>": "槽位号"
     },
     "desc": "显示各板卡基本信息。",
-    "requires": "无",
+    "requires": "",
     "state_key": "show.slot",
     "no_cmd": "",
     "output_example": ""

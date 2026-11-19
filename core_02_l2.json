@@ -323,7 +323,24 @@
   },
   {
     "mode": [
-      "any"
+      "priv",
+      "global",
+      "if",
+      "vlan",
+      "router",
+      "router-ospf",
+      "router-rip",
+      "router-bgp",
+      "router-msdp",
+      "router-msdp-peer",
+      "dhcp-pool",
+      "line",
+      "acl-std",
+      "acl-ext",
+      "time-range",
+      "vrf",
+      "tunnel",
+      "route-map"
     ],
     "syntax": "show loopback-detection [interface <interface-list>]",
     "params": {
@@ -337,7 +354,24 @@
   },
   {
     "mode": [
-      "any"
+      "priv",
+      "global",
+      "if",
+      "vlan",
+      "router",
+      "router-ospf",
+      "router-rip",
+      "router-bgp",
+      "router-msdp",
+      "router-msdp-peer",
+      "dhcp-pool",
+      "line",
+      "acl-std",
+      "acl-ext",
+      "time-range",
+      "vrf",
+      "tunnel",
+      "route-map"
     ],
     "syntax": "show loopback-detection interface ethernet <interface-list>",
     "params": {

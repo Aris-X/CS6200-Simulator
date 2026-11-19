@@ -34,9 +34,7 @@
       "if"
     ],
     "syntax": "clear lldp remote-table",
-    "params": {
-      "无": ""
-    },
+    "params": {},
     "desc": "清空端口Remote-table。",
     "requires": "无",
     "state_key": "interface.lldp.clear",
@@ -87,6 +85,7 @@
   },
   {
     "mode": [
+      "user",
       "priv",
       "global"
     ],
@@ -166,9 +165,7 @@
       "if"
     ],
     "syntax": "ethernet-oam",
-    "params": {
-      "无": ""
-    },
+    "params": {},
     "desc": "使能端口 EFM OAM 功能。",
     "requires": "配置OAM参数前需要先启动该功能",
     "state_key": "interface.ethernet_oam",
@@ -180,9 +177,7 @@
       "vlan"
     ],
     "syntax": "supervlan",
-    "params": {
-      "无": ""
-    },
+    "params": {},
     "desc": "创建 supervlan。",
     "requires": "无",
     "state_key": "vlan.supervlan",
@@ -209,7 +204,8 @@
     ],
     "syntax": "ip-addr-range <ipv4-address> to <ipv4-address>",
     "params": {
-      "<ipv4-addrss>": "IP地址范围起点和终点"
+      "<ipv4-address>": "起始/结束 IPv4 地址",
+      "to": "关键字"
     },
     "desc": "指定接口的地址范围。",
     "requires": "无",

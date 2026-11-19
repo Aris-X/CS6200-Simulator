@@ -179,7 +179,24 @@
   },
   {
     "mode": [
-      "any"
+      "priv",
+      "global",
+      "if",
+      "vlan",
+      "router",
+      "router-ospf",
+      "router-rip",
+      "router-bgp",
+      "router-msdp",
+      "router-msdp-peer",
+      "dhcp-pool",
+      "line",
+      "acl-std",
+      "acl-ext",
+      "time-range",
+      "vrf",
+      "tunnel",
+      "route-map"
     ],
     "syntax": "show running-config current-mode",
     "params": {},
@@ -236,9 +253,9 @@
     "mode": [
       "global"
     ],
-    "syntax": "authentication enable {local | radius | tacacs}",
+    "syntax": "authentication enable {local | radius | tacacs | enable}",
     "params": {
-      "{local | radius | tacacs}": "enable 认证方法"
+      "{local | radius | tacacs | enable}": "enable 认证方法"
     },
     "desc": "配置 enable 认证方法列表",
     "requires": "",
@@ -265,12 +282,12 @@
     "mode": [
       "global"
     ],
-    "syntax": "accounting line {console | vty} command <1-15> {start-stop | stop-only | none} {local | radius | tacacs}",
+    "syntax": "accounting line {console | vty} command <1-15> {start-stop | stop-only | none} {radius | tacacs}",
     "params": {
-      "{console | vty}": "登录方式",
+      " {console | vty}": "登录方式",
       "<1-15>": "命令权限级别",
       "{start-stop | stop-only | none}": "记账方式",
-      "{local | radius | tacacs}": "记账方法"
+      "{radius | tacacs}": "记账方法"
     },
     "desc": "配置登录记账方法列表",
     "requires": "",

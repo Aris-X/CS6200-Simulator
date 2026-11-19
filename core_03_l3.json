@@ -20,15 +20,15 @@
     "mode": [
       "global"
     ],
-    "syntax": "router ospf [<id>] [VRF Name]",
+    "syntax": "router ospf [<id>] [vrf <vrf-name>]",
     "params": {
-      "<id>": "OSPF进程号",
-      "[VRF Name]": "VRF名称"
+      "<id>": "OSPF 进程号（可选）",
+      "<vrf-name>": "VRF 实例名称（可选）"
     },
     "desc": "启动 OSPF协议进程",
     "requires": "",
     "state_key": "router.ospf",
-    "no_cmd": "no router ospf [<id>]",
+    "no_cmd": "no router ospf [process <id>]",
     "output_example": ""
   },
   {
@@ -122,7 +122,24 @@
   },
   {
     "mode": [
-      "any"
+      "priv",
+      "global",
+      "if",
+      "vlan",
+      "router",
+      "router-ospf",
+      "router-rip",
+      "router-bgp",
+      "router-msdp",
+      "router-msdp-peer",
+      "dhcp-pool",
+      "line",
+      "acl-std",
+      "acl-ext",
+      "time-range",
+      "vrf",
+      "tunnel",
+      "route-map"
     ],
     "syntax": "show ip route",
     "params": {},
@@ -134,7 +151,24 @@
   },
   {
     "mode": [
-      "any"
+      "priv",
+      "global",
+      "if",
+      "vlan",
+      "router",
+      "router-ospf",
+      "router-rip",
+      "router-bgp",
+      "router-msdp",
+      "router-msdp-peer",
+      "dhcp-pool",
+      "line",
+      "acl-std",
+      "acl-ext",
+      "time-range",
+      "vrf",
+      "tunnel",
+      "route-map"
     ],
     "syntax": "show ip ospf neighbor",
     "params": {},
@@ -146,7 +180,24 @@
   },
   {
     "mode": [
-      "any"
+      "priv",
+      "global",
+      "if",
+      "vlan",
+      "router",
+      "router-ospf",
+      "router-rip",
+      "router-bgp",
+      "router-msdp",
+      "router-msdp-peer",
+      "dhcp-pool",
+      "line",
+      "acl-std",
+      "acl-ext",
+      "time-range",
+      "vrf",
+      "tunnel",
+      "route-map"
     ],
     "syntax": "show ip interface {vlan <vlan-id> | ethernet <interface-list> | port-channel <port-channel-number> | loopback <loopback-id>}",
     "params": {
@@ -163,19 +214,24 @@
   },
   {
     "mode": [
-      "any"
-    ],
-    "syntax": "show ip interface",
-    "params": {},
-    "desc": "显示所有三层接口的IP配置及状态信息",
-    "requires": "",
-    "state_key": "show.ip.interface",
-    "no_cmd": "",
-    "output_example": ""
-  },
-  {
-    "mode": [
-      "any"
+      "priv",
+      "global",
+      "if",
+      "vlan",
+      "router",
+      "router-ospf",
+      "router-rip",
+      "router-bgp",
+      "router-msdp",
+      "router-msdp-peer",
+      "dhcp-pool",
+      "line",
+      "acl-std",
+      "acl-ext",
+      "time-range",
+      "vrf",
+      "tunnel",
+      "route-map"
     ],
     "syntax": "show ip interface <interface-name>",
     "params": {
@@ -189,7 +245,24 @@
   },
   {
     "mode": [
-      "any"
+      "priv",
+      "global",
+      "if",
+      "vlan",
+      "router",
+      "router-ospf",
+      "router-rip",
+      "router-bgp",
+      "router-msdp",
+      "router-msdp-peer",
+      "dhcp-pool",
+      "line",
+      "acl-std",
+      "acl-ext",
+      "time-range",
+      "vrf",
+      "tunnel",
+      "route-map"
     ],
     "syntax": "show interface",
     "params": {},
@@ -201,7 +274,24 @@
   },
   {
     "mode": [
-      "any"
+      "priv",
+      "global",
+      "if",
+      "vlan",
+      "router",
+      "router-ospf",
+      "router-rip",
+      "router-bgp",
+      "router-msdp",
+      "router-msdp-peer",
+      "dhcp-pool",
+      "line",
+      "acl-std",
+      "acl-ext",
+      "time-range",
+      "vrf",
+      "tunnel",
+      "route-map"
     ],
     "syntax": "show interface loopback <loopback-id>",
     "params": {
@@ -215,7 +305,24 @@
   },
   {
     "mode": [
-      "any"
+      "priv",
+      "global",
+      "if",
+      "vlan",
+      "router",
+      "router-ospf",
+      "router-rip",
+      "router-bgp",
+      "router-msdp",
+      "router-msdp-peer",
+      "dhcp-pool",
+      "line",
+      "acl-std",
+      "acl-ext",
+      "time-range",
+      "vrf",
+      "tunnel",
+      "route-map"
     ],
     "syntax": "show interface vlan <vlan-id>",
     "params": {
@@ -229,7 +336,24 @@
   },
   {
     "mode": [
-      "any"
+      "priv",
+      "global",
+      "if",
+      "vlan",
+      "router",
+      "router-ospf",
+      "router-rip",
+      "router-bgp",
+      "router-msdp",
+      "router-msdp-peer",
+      "dhcp-pool",
+      "line",
+      "acl-std",
+      "acl-ext",
+      "time-range",
+      "vrf",
+      "tunnel",
+      "route-map"
     ],
     "syntax": "show interface ethernet <interface-list>",
     "params": {
@@ -243,7 +367,24 @@
   },
   {
     "mode": [
-      "any"
+      "priv",
+      "global",
+      "if",
+      "vlan",
+      "router",
+      "router-ospf",
+      "router-rip",
+      "router-bgp",
+      "router-msdp",
+      "router-msdp-peer",
+      "dhcp-pool",
+      "line",
+      "acl-std",
+      "acl-ext",
+      "time-range",
+      "vrf",
+      "tunnel",
+      "route-map"
     ],
     "syntax": "show interface port-channel <port-channel-number>",
     "params": {
@@ -257,19 +398,24 @@
   },
   {
     "mode": [
-      "any"
-    ],
-    "syntax": "show ipv6 interface",
-    "params": {},
-    "desc": "显示所有三层接口的 IPv6 使能状态与地址信息",
-    "requires": "",
-    "state_key": "show.ipv6.interface",
-    "no_cmd": "",
-    "output_example": ""
-  },
-  {
-    "mode": [
-      "any"
+      "priv",
+      "global",
+      "if",
+      "vlan",
+      "router",
+      "router-ospf",
+      "router-rip",
+      "router-bgp",
+      "router-msdp",
+      "router-msdp-peer",
+      "dhcp-pool",
+      "line",
+      "acl-std",
+      "acl-ext",
+      "time-range",
+      "vrf",
+      "tunnel",
+      "route-map"
     ],
     "syntax": "show ipv6 interface loopback <loopback-id>",
     "params": {
@@ -283,7 +429,24 @@
   },
   {
     "mode": [
-      "any"
+      "priv",
+      "global",
+      "if",
+      "vlan",
+      "router",
+      "router-ospf",
+      "router-rip",
+      "router-bgp",
+      "router-msdp",
+      "router-msdp-peer",
+      "dhcp-pool",
+      "line",
+      "acl-std",
+      "acl-ext",
+      "time-range",
+      "vrf",
+      "tunnel",
+      "route-map"
     ],
     "syntax": "show ipv6 interface vlan <vlan-id>",
     "params": {
@@ -297,7 +460,24 @@
   },
   {
     "mode": [
-      "any"
+      "priv",
+      "global",
+      "if",
+      "vlan",
+      "router",
+      "router-ospf",
+      "router-rip",
+      "router-bgp",
+      "router-msdp",
+      "router-msdp-peer",
+      "dhcp-pool",
+      "line",
+      "acl-std",
+      "acl-ext",
+      "time-range",
+      "vrf",
+      "tunnel",
+      "route-map"
     ],
     "syntax": "show ipv6 interface ethernet <interface-list>",
     "params": {
@@ -311,7 +491,24 @@
   },
   {
     "mode": [
-      "any"
+      "priv",
+      "global",
+      "if",
+      "vlan",
+      "router",
+      "router-ospf",
+      "router-rip",
+      "router-bgp",
+      "router-msdp",
+      "router-msdp-peer",
+      "dhcp-pool",
+      "line",
+      "acl-std",
+      "acl-ext",
+      "time-range",
+      "vrf",
+      "tunnel",
+      "route-map"
     ],
     "syntax": "show ipv6 interface port-channel <port-channel-number>",
     "params": {

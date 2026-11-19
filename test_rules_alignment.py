@@ -84,7 +84,7 @@ def run_alignment_suite() -> None:
     print("\n--- [1/4] Schema / mode / duplicate / forbidden-syntax checks ---")
     known_modes = {
         "any", "user", "priv", "global", "if", "vlan", "router",
-        "router-ospf", "router-rip", "router-bgp", "router-msdp",
+        "router-ospf", "router-rip", "router-bgp", "router-msdp", "router-msdp-peer",
         "dhcp-pool", "line", "acl-std", "acl-ext", "time-range",
         "vrf", "tunnel", "route-map",
     }
@@ -118,10 +118,13 @@ def run_alignment_suite() -> None:
     expected = {
         "show running-config current-mode",
         "authentication line {console | vty | web} login {local | radius | tacacs | none}",
-        "authentication enable {local | radius | tacacs}",
+        "authentication enable {local | radius | tacacs | enable}",
         "authorization line {console | vty | web} exec {local | radius | tacacs}",
-        "accounting line {console | vty} command <1-15> {start-stop | stop-only | none} {local | radius | tacacs}",
-        "ip route {<ip-prefix> <mask> | <ip-prefix>} null0 [<distance>]",
+        "accounting line {console | vty} command <1-15> {start-stop | stop-only | none} {radius | tacacs}",
+        "shutdown",
+        "interface tunnel <tnl-id>",
+        "ip route {<ip-prefix> <mask> | <ip-prefix>/<prefix-length>} null0 [<distance>]",
+        "router ospf [<id>] [vrf <vrf-name>]",
         "ip prefix-list <list_name> [seq <sequence_number>] {deny | permit} {any | <ip_addr/mask_length> [ge <min_prefix_len>] [le <max_prefix_len>]}",
         "set metric-type {type-1 | type-2}",
         "set extcommunity {rt | soo} <AA:NN>",
@@ -145,6 +148,8 @@ def run_alignment_suite() -> None:
     assert not named_rule["syntax"].startswith("[no]"), named_rule["syntax"]
     assert "..." not in named_rule["no_cmd"], named_rule["no_cmd"]
     assert find("time_range.absolute")[0]["mode"] == ["time-range"]
+    assert not any(r["syntax"] == "show ip interface" for r in find("show.ip.interface"))
+    assert any(r["syntax"] == "show privilege" and r["mode"] == ["any"] for r in find("show.privilege"))
     assert all(r["mode"] == ["dhcp-pool"] for r in find("dhcp.pool.network_address"))
     print("  [PASS] replacements, no_cmd and mode fixes verified")
 
@@ -157,9 +162,32 @@ def run_alignment_suite() -> None:
 
     # 一般用户模式不得执行 show
     assert_invalid(engine, "show ip route")
+    # 一般用户模式仍可查看权限级别与收发器状态
+    assert "Current privilege level" in exec_line(engine, "show privilege")
+    assert "Ethernet1/0/1" in exec_line(engine, "show transceiver interface ethernet 1/0/1")
+
     exec_line(engine, "enable")
     assert engine.get_prompt() == "Switch#"
+    exec_line(engine, "show ip interface")
     exec_line(engine, "config terminal")
+    # 接口启停命令必须仍然有效
+    exec_line(engine, "interface ethernet 1/0/1")
+    exec_line(engine, "shutdown")
+    assert engine.state["interfaces"]["Ethernet1/0/1"]["shutdown"] is True
+    exec_line(engine, "no shutdown")
+    assert engine.state["interfaces"]["Ethernet1/0/1"]["shutdown"] is False
+    exec_line(engine, "exit")
+
+    # Tunnel 视图必须可从全局进入
+    exec_line(engine, "interface tunnel 1")
+    assert engine.get_prompt() == "Switch(Config-If-Tunnel1)#"
+    exec_line(engine, "exit")
+
+    # 黑洞路由 CIDR 形式必须可解析
+    exec_line(engine, "ip route 192.168.0.0/21 null0 50")
+    assert any(r["network"] == "192.168.0.0" and r["prefix_len"] == 21
+               for r in engine.state["static_routes"])
+
     for cmd in ("ip routing", "ipv6 unicast-routing", "show this"):
         assert_invalid(engine, cmd)
     exec_line(engine, "end")
@@ -190,6 +218,9 @@ def run_alignment_suite() -> None:
     exec_line(engine, "exit")
     exec_line(engine, "router msdp")
     assert engine.get_prompt() == "Switch(Config-Router)#"
+    exec_line(engine, "peer 10.0.0.1")
+    assert engine.get_prompt() == "Switch(Config-MSDP-Peer)#"
+    exec_line(engine, "exit")
     exec_line(engine, "exit")
 
     exec_line(engine, "interface ethernet 1/0/1,1/0/2")

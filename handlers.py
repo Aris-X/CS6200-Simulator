@@ -854,14 +854,18 @@ class CS6200CommandHandlers:
         if is_no:
             if v6 in v6_list:
                 v6_list.remove(v6)
-        elif v6 and v6 not in v6_list:
-            v6_list.append(v6)
+        elif v6:
+            if v6 not in v6_list:
+                v6_list.append(v6)
+            # CS6200 真机配置 IPv6 地址后接口 IPv6 协议自动进入使能状态
+            if_obj["ipv6_enable"] = True
         return ""
 
     def _handle_if_ipv6_enable(self, args: Dict[str, Any], is_no: bool) -> str:
         if_obj = self._get_current_interface()
         if if_obj is not None:
             if_obj["ipv6_enable"] = not is_no
+            if_obj["ipv6_enable_explicit"] = not is_no
         return ""
 
     def _handle_if_autostate(self, args: Dict[str, Any], is_no: bool) -> str:
@@ -1306,7 +1310,7 @@ class CS6200CommandHandlers:
             self.engine.state["system"].pop("authentication_enable", None)
             return ""
         self.engine.state["system"]["authentication_enable"] = str(
-            args.get("{local | radius | tacacs}") or "local"
+            args.get("{local | radius | tacacs | enable}") or "local"
         ).lower()
         return ""
 
@@ -1328,7 +1332,7 @@ class CS6200CommandHandlers:
             return ""
         acct[f"{line_type}-{level}"] = {
             "mode": str(args.get("{start-stop | stop-only | none}") or "stop-only").lower(),
-            "method": str(args.get("{local | radius | tacacs}") or "local").lower(),
+            "method": str(args.get("{radius | tacacs}") or "radius").lower(),
         }
         return ""
 
@@ -1414,7 +1418,8 @@ class CS6200CommandHandlers:
             lines.append(f" ip address {ip_part} {mask_part}")
 
         # IPv6 双栈配置（接口使能 / 地址 / autostate）
-        if iinfo.get("ipv6_enable"):
+        # 仅显式执行过 ipv6 enable 时才回显，地址配置触发的隐式使能不写入配置
+        if iinfo.get("ipv6_enable_explicit"):
             lines.append(" ipv6 enable")
         for v6_addr in iinfo.get("ipv6_addresses", []):
             lines.append(f" ipv6 address {v6_addr}")
@@ -1861,6 +1866,8 @@ class CS6200CommandHandlers:
             blocks.append(f"router bgp {asn}")
         elif mode == "router-msdp":
             blocks.append("router msdp")
+        elif mode == "router-msdp-peer":
+            blocks.append(f"peer {frame.context_name}")
         elif mode == "route-map":
             map_name = frame.context_name
             rmap = st.get("route_maps", {}).get(map_name)

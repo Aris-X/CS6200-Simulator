@@ -89,7 +89,7 @@
     "desc": "为全局或某个组播地址范围的组播组配置静态 RP",
     "requires": "",
     "state_key": "global.pim_sm.rp_address",
-    "no_cmd": "no ip pim rp-address <A.B.C.D> {<all> | <A.B.C.D/M>}",
+    "no_cmd": "no ip pim rp-address <A.B.C.D> {all | <A.B.C.D/M>}",
     "output_example": ""
   },
   {
@@ -134,7 +134,7 @@
   },
   {
     "mode": [
-      "router-msdp"
+      "router-msdp-peer"
     ],
     "syntax": "connect-source <interface-type> <interface-number>",
     "params": {
@@ -149,7 +149,7 @@
   },
   {
     "mode": [
-      "router-msdp"
+      "router-msdp-peer"
     ],
     "syntax": "description <text>",
     "params": {
@@ -163,7 +163,7 @@
   },
   {
     "mode": [
-      "router-msdp"
+      "router-msdp-peer"
     ],
     "syntax": "remote-as <as-num>",
     "params": {
@@ -177,7 +177,7 @@
   },
   {
     "mode": [
-      "router-msdp"
+      "router-msdp-peer"
     ],
     "syntax": "mesh-group <name>",
     "params": {
@@ -241,7 +241,7 @@
   },
   {
     "mode": [
-      "router-msdp"
+      "router-msdp-peer"
     ],
     "syntax": "sa-request",
     "params": {},
@@ -271,7 +271,7 @@
     ],
     "syntax": "ip multicast ssm {default | range <access-list-number>}",
     "params": {
-      "<access-list-number >": "访问控制列表编号"
+      "<access-list-number>": "访问控制列表编号"
     },
     "desc": "配置 pim ssm 组播组地址范围",
     "requires": "",
@@ -350,14 +350,14 @@
     "mode": [
       "vlan"
     ],
-    "syntax": "multicast-vlan association interface (ethernet | port-channel|) IFNAME",
+    "syntax": "multicast-vlan association interface {ethernet | port-channel} <IFNAME>",
     "params": {
       "IFNAME": "接口名称"
     },
     "desc": "将特定端口关联到组播 VLAN 上",
     "requires": "",
     "state_key": "vlan.multicast_vlan.association.interface",
-    "no_cmd": "no multicast-vlan association interface (ethernet | port-channel|) IFNAME",
+    "no_cmd": "no multicast-vlan association interface {ethernet | port-channel} <IFNAME>",
     "output_example": ""
   },
   {

@@ -195,6 +195,7 @@ def enable_001sw_extensions(engine: CS6200CLIEngine) -> Dict[str, int]:
                     iface = ensure_interface_exists(engine, ifname)
                     if low == "ipv6 enable":
                         iface["ipv6_enable"] = True
+                        iface["ipv6_enable_explicit"] = True
                     else:
                         iface["autostate"] = False
             return ""
@@ -478,8 +479,8 @@ def run_001sw_verification() -> None:
     # -------------------------------------------------------------------------
     # STAGE 7: Inspect Show Outputs & Extension Telemetry
     # -------------------------------------------------------------------------
-    print("\n--- [Stage 7/7] Verify 'show vlan', 'show ip interface', 'show ip route' ---")
-    for sh_cmd in ("show vlan", "show port-group", "show ip interface", "show ip route"):
+    print("\n--- [Stage 7/7] Verify 'show vlan', 'show interface', 'show ip route' ---")
+    for sh_cmd in ("show vlan", "show port-group", "show interface", "show ip route"):
         print(f"\n>>> {sh_cmd}")
         exec_ok(engine, sh_cmd)
 

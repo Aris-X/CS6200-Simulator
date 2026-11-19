@@ -119,7 +119,7 @@
     "mode": [
       "global"
     ],
-    "syntax": "ipv6 route <ipv6-address/prefix-length> {<interface-type interface-number> | tunnel <tnl-id>}",
+    "syntax": "ipv6 route <ipv6-address/prefix-length> {<interface-type> <interface-number> | tunnel <tnl-id>}",
     "params": {
       "<ipv6-address/prefix-length>": "IPv6目标网络及前缀",
       "<interface-type interface-number> | tunnel <tnl-id>": "出接口或隧道ID"
@@ -127,7 +127,7 @@
     "desc": "配置隧道路由",
     "requires": "",
     "state_key": "route.ipv6",
-    "no_cmd": "no ipv6 route <ipv6-address/prefix-length> {<interface-type interface-number> | tunnel <tnl-id>}",
+    "no_cmd": "no ipv6 route <ipv6-address/prefix-length> {<interface-type> <interface-number> | tunnel <tnl-id>}",
     "output_example": ""
   },
   {
@@ -442,30 +442,6 @@
   },
   {
     "mode": [
-      "dhcp-pool"
-    ],
-    "syntax": "no option 60",
-    "params": {},
-    "desc": "在地址池模式下删除配置的 option 60",
-    "requires": "需要进入DHCP地址池配置模式",
-    "state_key": "dhcp.pool.option60",
-    "no_cmd": "",
-    "output_example": ""
-  },
-  {
-    "mode": [
-      "dhcp-pool"
-    ],
-    "syntax": "no option 43",
-    "params": {},
-    "desc": "在地址池模式下删除配置的 option 43",
-    "requires": "需要进入DHCP地址池配置模式",
-    "state_key": "dhcp.pool.option43",
-    "no_cmd": "",
-    "output_example": ""
-  },
-  {
-    "mode": [
       "global"
     ],
     "syntax": "ipv6 enable",
@@ -528,6 +504,32 @@
     "requires": "",
     "state_key": "interface.ip_address",
     "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "shutdown",
+    "params": {},
+    "desc": "关闭或激活当前接口",
+    "requires": "",
+    "state_key": "interface.shutdown",
+    "no_cmd": "no shutdown",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "interface tunnel <tnl-id>",
+    "params": {
+      "<tnl-id>": "隧道接口编号"
+    },
+    "desc": "创建或进入 Tunnel 隧道接口配置模式",
+    "requires": "",
+    "state_key": "interface.tunnel",
+    "no_cmd": "no interface tunnel <tnl-id>",
     "output_example": ""
   }
 ]

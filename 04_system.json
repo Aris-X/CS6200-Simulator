@@ -119,14 +119,14 @@
     "mode": [
       "route-map"
     ],
-    "syntax": "set metric {<+metric_val> | <-metric_val> | <metric_val>}",
+    "syntax": "set metric <metric_val>",
     "params": {
-      "< +/- metric_val | metric_val>": "度量值或增减量"
+      "<metric_val>": "度量值或增减量"
     },
     "desc": "设置路由度量值",
     "requires": "",
     "state_key": "route_map.set.metric",
-    "no_cmd": "no set metric [{<+metric_val> | <-metric_val> | <metric_val>}]",
+    "no_cmd": "no set metric [<metric_val>]",
     "output_example": ""
   },
   {
@@ -149,7 +149,7 @@
     ],
     "syntax": "set origin {egp | igp | incomplete}",
     "params": {
-      "<egp | igp | incomplete >": "路由源类型"
+      "<origin>": "路由源类型"
     },
     "desc": "设置BGP路由源",
     "requires": "",
@@ -358,7 +358,7 @@
     ],
     "syntax": "ip ospf dead-interval <time>",
     "params": {
-      "<time >": "失效时间间隔"
+      "<time>": "失效时间间隔"
     },
     "desc": "配置认定相邻三层交换机失效的时间间隔",
     "requires": "",
@@ -428,7 +428,7 @@
     "mode": [
       "router-ospf"
     ],
-    "syntax": "overflow database {<max-LSA> [hard | soft] | external <max-LSA> <recover time>}",
+    "syntax": "overflow database {<max-LSA> [hard | soft] | external <max-LSA> <recover-time>}",
     "params": {
       "<max-LSA>": "最大LSA数量",
       "<recover time>": "恢复时间"
@@ -436,7 +436,7 @@
     "desc": "配置当前 OSPF 进程数据库中 LSA 的限制",
     "requires": "",
     "state_key": "router.ospf.overflow_database",
-    "no_cmd": "no overflow database [external <max-LSA > < recover time >]",
+    "no_cmd": "no overflow database [external <max-LSA> <recover-time>]",
     "output_example": ""
   },
   {
@@ -547,7 +547,7 @@
     "mode": [
       "global"
     ],
-    "syntax": "ip route {<ip-prefix> <mask> | <ip-prefix>} null0 [<distance>]",
+    "syntax": "ip route {<ip-prefix> <mask> | <ip-prefix>/<prefix-length>} null0 [<distance>]",
     "params": {
       "<ip-prefix>": "目标网络前缀",
       "<mask>|<prefix-length>": "子网掩码或前缀长度",
@@ -556,7 +556,7 @@
     "desc": "配置静态黑洞路由",
     "requires": "",
     "state_key": "ip.route.blackhole",
-    "no_cmd": "no ip route {<ip-prefix> <mask> | <ip-prefix>} null0",
+    "no_cmd": "no ip route {<ip-prefix> <mask> | <ip-prefix>/<prefix-length>} null0",
     "output_example": ""
   },
   {
