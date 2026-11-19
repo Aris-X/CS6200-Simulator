@@ -19,6 +19,8 @@ enterprise / skills-competition switch configuration workflow:
      - show port-group
      - show ip route
      - show ip ospf neighbor
+  9. Port loopback-detection (global interval / port VLAN list & control mode),
+     'show loopback-detection' and 'show this' in Config-If-Port-Range view.
 """
 
 from __future__ import annotations
@@ -59,7 +61,7 @@ def load_rule_files() -> List[str]:
 def section(step_num: int, title: str) -> None:
     """Print a clean section divider for test readability."""
     print(f"\n{'=' * 78}")
-    print(f"[STEP {step_num}/8] {title}")
+    print(f"[STEP {step_num}/9] {title}")
     print(f"{'=' * 78}")
 
 
@@ -104,7 +106,7 @@ def exec_cmd(
 
 
 def run_acceptance_suite() -> None:
-    """Run all 8 end-to-end configuration & verification stages."""
+    """Run all 9 end-to-end configuration & verification stages."""
     rule_paths = load_rule_files()
     engine = CS6200CLIEngine(rule_paths)
     _handlers = CS6200CommandHandlers(engine)
@@ -298,6 +300,53 @@ def run_acceptance_suite() -> None:
         if cmd == "show running-config":
             # DCN uses ';' as the VLAN-list separator in running-config
             assert " switchport trunk allowed vlan 10;20" in out, out
+
+    # -------------------------------------------------------------------------
+    # STEP 9: Port Loopback-Detection & 'show this' in Port-Range View
+    # -------------------------------------------------------------------------
+    section(9, "Port Loopback-Detection & 'show this' (Config-If-Port-Range)")
+    exec_cmd(engine, "config terminal")
+    exec_cmd(engine, "loopback-detection interval-time 35 15")
+    exec_cmd(engine, "loopback-detection control-recovery timeout 60")
+
+    exec_cmd(engine, "interface ethernet 1/0/3,1/0/4")
+    assert engine.get_prompt() == "CS6200-Core(Config-If-Port-Range)#", engine.get_prompt()
+    exec_cmd(engine, "loopback-detection specified-vlan 10;20")
+    exec_cmd(engine, "loopback-detection control block")
+
+    # 'show this' must dump every target port of the Port-Range view
+    this_out = exec_cmd(engine, "show this")
+    assert "interface Ethernet1/0/3" in this_out, this_out
+    assert "interface Ethernet1/0/4" in this_out, this_out
+    assert "loopback-detection specified-vlan 10;20" in this_out, this_out
+    assert "loopback-detection control block" in this_out, this_out
+    exec_cmd(engine, "exit")
+    exec_cmd(engine, "end")
+    assert engine.get_prompt() == "CS6200-Core#", engine.get_prompt()
+
+    ld_eth3 = engine.state["interfaces"]["Ethernet1/0/3"]["loopback_detection"]
+    assert ld_eth3["enabled"] is True
+    assert ld_eth3["vlans"] == [10, 20], ld_eth3
+    assert ld_eth3["control"] == "block", ld_eth3
+
+    ld_eth1 = engine.state["interfaces"]["Ethernet1/0/1"]["loopback_detection"]
+    assert ld_eth1["enabled"] is False, ld_eth1
+
+    # Both manual-compatible forms must work
+    show_ld = exec_cmd(
+        engine,
+        "show loopback-detection interface ethernet 1/0/3",
+        expected_substr="Ethernet1/0/3",
+    )
+    assert "Enabled" in show_ld and "block" in show_ld and "10;20" in show_ld, show_ld
+    show_ld2 = exec_cmd(engine, "show loopback-detection interface 1/0/3", expected_substr="Ethernet1/0/3")
+    assert "Enabled" in show_ld2, show_ld2
+
+    running = exec_cmd(engine, "show running-config", expected_substr="hostname CS6200-Core")
+    assert "loopback-detection interval-time 35 15" in running, running
+    assert "loopback-detection control-recovery timeout 60" in running, running
+    assert " loopback-detection specified-vlan 10;20" in running, running
+    assert " loopback-detection control block" in running, running
 
     # Validate JSON state snapshot export works cleanly
     snapshot = engine.export_state()

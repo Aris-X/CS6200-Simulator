@@ -214,5 +214,17 @@
     "state_key": "interface.loopback",
     "no_cmd": "no interface loopback <loopback-id>",
     "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show this",
+    "params": {},
+    "desc": "显示当前配置视图下的配置信息（端口范围视图显示全部目标端口）",
+    "requires": "",
+    "state_key": "show.this",
+    "no_cmd": "",
+    "output_example": ""
   }
 ]

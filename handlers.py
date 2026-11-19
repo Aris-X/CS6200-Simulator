@@ -158,6 +158,10 @@ class CS6200CommandHandlers:
             "interface.bandwidth": self._handle_if_bandwidth,
             "interface.mtu": self._handle_if_mtu,
             "interface.port_loopback": self._handle_if_port_loopback,
+            "interface.loopback_detection.specified_vlan": self._handle_if_loopback_detection_vlan,
+            "interface.loopback_detection.control": self._handle_if_loopback_detection_control,
+            "loopback_detection.interval": self._handle_loopback_detection_interval,
+            "loopback_detection.control_recovery": self._handle_loopback_detection_recovery,
             "interface.switchport_mode": self._handle_switchport_mode,
             "interface.access_vlan": self._handle_switchport_access_vlan,
             "interface.trunk_allowed_vlan": self._handle_switchport_trunk_allowed,
@@ -216,6 +220,8 @@ class CS6200CommandHandlers:
             "show.ip.interface.brief": self._render_show_ip_int_brief,
             "show.interface": self._render_show_interface,
             "show.ipv6.interface": self._render_show_ipv6_interface,
+            "show.loopback_detection": self._render_show_loopback_detection,
+            "show.this": self._render_show_this,
             "show.port_security": self._render_show_port_security,
             "show.ip.ospf.neighbor": self._render_show_ospf_neighbor,
             "show.mac_address_table": self._render_show_mac_table,
@@ -440,6 +446,65 @@ class CS6200CommandHandlers:
         if if_obj is None:
             return "% Command only valid in interface configuration mode."
         if_obj["port_loopback"] = not is_no
+        return ""
+
+    @staticmethod
+    def _loopback_detection_defaults() -> Dict[str, Any]:
+        return {"enabled": False, "vlans": [], "control": None, "status": "Normal"}
+
+    def _handle_if_loopback_detection_vlan(self, args: Dict[str, Any], is_no: bool) -> str:
+        """在端口上启动/关闭环路检测，并记录需要检测的 VLAN 列表"""
+        if_obj = self._get_current_interface()
+        if if_obj is None:
+            return "% Command only valid in interface configuration mode."
+        ld = if_obj.setdefault("loopback_detection", self._loopback_detection_defaults())
+        if is_no:
+            ld["enabled"] = False
+            ld["vlans"] = []
+            return ""
+        raw = str(args.get("<vlan-list>") or "").strip()
+        vlan_ids = self._parse_vlan_word(raw)
+        if not vlan_ids:
+            return "% Invalid VLAN list."
+        ld["enabled"] = True
+        ld["vlans"] = vlan_ids
+        return ""
+
+    def _handle_if_loopback_detection_control(self, args: Dict[str, Any], is_no: bool) -> str:
+        """配置环路检测受控方式：shutdown / block / learning"""
+        if_obj = self._get_current_interface()
+        if if_obj is None:
+            return "% Command only valid in interface configuration mode."
+        ld = if_obj.setdefault("loopback_detection", self._loopback_detection_defaults())
+        if is_no:
+            ld["control"] = None
+            return ""
+        ld["control"] = str(args.get("{shutdown | block | learning}") or "shutdown").lower()
+        return ""
+
+    def _handle_loopback_detection_interval(self, args: Dict[str, Any], is_no: bool) -> str:
+        ld = self.engine.state.setdefault("loopback_detection", {})
+        if is_no:
+            ld["interval_time"] = None
+            ld["no_loopback_time"] = None
+            return ""
+        raw_interval = str(args.get("<loopback>") or "").strip()
+        raw_no_loop = str(args.get("<no-loopback>") or "").strip()
+        if not raw_interval.isdigit() or not raw_no_loop.isdigit():
+            return "% Invalid interval time."
+        interval, no_loop = int(raw_interval), int(raw_no_loop)
+        if not (1 <= interval <= 3600) or not (1 <= no_loop <= 3600):
+            return "% Invalid interval time, range is 1-3600."
+        ld["interval_time"] = interval
+        ld["no_loopback_time"] = no_loop
+        return ""
+
+    def _handle_loopback_detection_recovery(self, args: Dict[str, Any], is_no: bool) -> str:
+        ld = self.engine.state.setdefault("loopback_detection", {})
+        if is_no:
+            ld["control_recovery"] = None
+            return ""
+        ld["control_recovery"] = int(args.get("<0-3600>", 0))
         return ""
 
     def _handle_switchport_mode(self, args: Dict[str, Any], is_no: bool) -> str:
@@ -1176,6 +1241,98 @@ class CS6200CommandHandlers:
     # 8. 完整 `show running-config` 与对齐表格渲染器
     # ========================================================================
 
+    def _interface_config_lines(self, if_name: str, iinfo: Dict[str, Any]) -> List[str]:
+        """渲染单个接口的配置块（不含结尾 '!'），供 running-config 与 show this 复用"""
+        lines: List[str] = [f"interface {if_name}"]
+        if iinfo.get("description"):
+            lines.append(f" description {iinfo['description']}")
+        if iinfo.get("bandwidth"):
+            lines.append(f" bandwidth {iinfo['bandwidth']}")
+        if iinfo.get("mtu") and int(iinfo.get("mtu") or 1500) != 1500:
+            lines.append(f" mtu {iinfo['mtu']}")
+        is_l3_logical = if_name.startswith(("Vlan", "Loopback", "Tunnel"))
+        sw_mode = iinfo.get("switchport_mode", "access")
+        if not is_l3_logical:
+            if sw_mode != "access":
+                lines.append(f" switchport mode {sw_mode}")
+            if sw_mode == "access" and iinfo.get("access_vlan", 1) != 1:
+                lines.append(f" switchport access vlan {iinfo['access_vlan']}")
+            if sw_mode == "trunk":
+                if iinfo.get("trunk_allowed_vlans") not in (None, "all", "1-4094"):
+                    lines.append(f" switchport trunk allowed vlan {iinfo['trunk_allowed_vlans']}")
+                if iinfo.get("trunk_native_vlan", 1) != 1:
+                    lines.append(f" switchport trunk native vlan {iinfo['trunk_native_vlan']}")
+
+        pg = iinfo.get("port_group")
+        if not is_l3_logical and pg:
+            lines.append(f" port-group {pg['group_id']} mode {pg['mode']}")
+
+        ld = iinfo.get("loopback_detection") or {}
+        if ld.get("vlans"):
+            lines.append(f" loopback-detection specified-vlan {self._format_vlan_set(set(ld['vlans']))}")
+        if ld.get("control"):
+            lines.append(f" loopback-detection control {ld['control']}")
+
+        if iinfo.get("ip_address"):
+            ip_part, mask_part = iinfo["ip_address"].split("/")
+            lines.append(f" ip address {ip_part} {mask_part}")
+
+        # IPv6 双栈配置（接口使能 / 地址 / autostate）
+        if iinfo.get("ipv6_enable"):
+            lines.append(" ipv6 enable")
+        for v6_addr in iinfo.get("ipv6_addresses", []):
+            lines.append(f" ipv6 address {v6_addr}")
+        if iinfo.get("autostate") is False:
+            lines.append(" no autostate")
+
+        ag = iinfo.get("ip_access_group", {})
+        if ag.get("in"):
+            lines.append(f" ip access-group {ag['in']} in")
+        if ag.get("out"):
+            lines.append(f" ip access-group {ag['out']} out")
+
+        psec = iinfo.get("port_security", {})
+        if psec.get("enabled"):
+            lines.append(" switchport port-security")
+            if psec.get("maximum", 1) != 1:
+                lines.append(f" switchport port-security maximum {psec['maximum']}")
+            if psec.get("violation", "shutdown") != "shutdown":
+                lines.append(f" switchport port-security violation {psec['violation']}")
+            for m in psec.get("mac_addresses", []):
+                lines.append(f" switchport port-security mac-address {m['mac']} vlan {m['vlan']}")
+
+        if iinfo.get("shutdown"):
+            lines.append(" shutdown")
+        return lines
+
+    def _vlan_config_lines(self, vid: Any, vinfo: Dict[str, Any]) -> List[str]:
+        lines: List[str] = [f"vlan {vid}"]
+        if vinfo.get("name") and vinfo["name"] != f"VLAN{int(vid):04d}":
+            lines.append(f" name {vinfo['name']}")
+        if vinfo.get("description"):
+            lines.append(f" description {vinfo['description']}")
+        return lines
+
+    def _dhcp_pool_config_lines(self, pool_name: str, pinfo: Dict[str, Any]) -> List[str]:
+        lines: List[str] = [f"ip dhcp pool {pool_name}"]
+        if pinfo.get("network"):
+            lines.append(f" network-address {pinfo['network']}")
+        if pinfo.get("default_router"):
+            lines.append(f" default-router {pinfo['default_router']}")
+        for sh in pinfo.get("static_hosts", []):
+            if sh.get("mac"):
+                lines.append(f" hardware-address {sh['mac']}")
+            lines.append(f" host {sh['ip']} {sh['mask']}")
+        for code, opt in sorted(pinfo.get("options", {}).items()):
+            lines.append(f" option {code} {opt['format']} {opt['value']}")
+        return lines
+
+    def _ospf_config_lines(self, pid: Any, pdata: Dict[str, Any]) -> List[str]:
+        lines: List[str] = [f"router ospf {pid}"]
+        for net in pdata.get("networks", []):
+            lines.append(f" network {net['network']} {net['wildcard_or_mask']} area {net['area']}")
+        return lines
+
     def _render_running_config(self, args: Dict[str, Any], is_no: bool) -> str:
         """遍历完整状态树输出神州数码 CS6200 标准配置脚本"""
         st = self.engine.state
@@ -1208,32 +1365,27 @@ class CS6200CommandHandlers:
             for inst_id, pri in sorted(stp.get("mst_priorities", {}).items()):
                 if pri != 32768:
                     lines.append(f"spanning-tree mst {inst_id} priority {pri}")
+
+        # 全局环路检测配置段
+        ld_global = st.get("loopback_detection", {})
+        if ld_global.get("interval_time") is not None and ld_global.get("no_loopback_time") is not None:
+            lines.append(
+                f"loopback-detection interval-time {ld_global['interval_time']} {ld_global['no_loopback_time']}"
+            )
+        if ld_global.get("control_recovery") is not None:
+            lines.append(f"loopback-detection control-recovery timeout {ld_global['control_recovery']}")
         lines.append("!")
 
         # VLAN 配置段
         for vid, vinfo in sorted(st.get("vlans", {}).items()):
             if int(vid) == 1:
                 continue
-            lines.append(f"vlan {vid}")
-            if vinfo.get("name") and vinfo["name"] != f"VLAN{int(vid):04d}":
-                lines.append(f" name {vinfo['name']}")
-            if vinfo.get("description"):
-                lines.append(f" description {vinfo['description']}")
+            lines.extend(self._vlan_config_lines(vid, vinfo))
             lines.append("!")
 
         # DHCP 地址池配置段
         for pool_name, pinfo in st.get("dhcp_pools", {}).items():
-            lines.append(f"ip dhcp pool {pool_name}")
-            if pinfo.get("network"):
-                lines.append(f" network-address {pinfo['network']}")
-            if pinfo.get("default_router"):
-                lines.append(f" default-router {pinfo['default_router']}")
-            for sh in pinfo.get("static_hosts", []):
-                if sh.get("mac"):
-                    lines.append(f" hardware-address {sh['mac']}")
-                lines.append(f" host {sh['ip']} {sh['mask']}")
-            for code, opt in sorted(pinfo.get("options", {}).items()):
-                lines.append(f" option {code} {opt['format']} {opt['value']}")
+            lines.extend(self._dhcp_pool_config_lines(pool_name, pinfo))
             lines.append("!")
 
         # ACL 配置段
@@ -1257,60 +1409,7 @@ class CS6200CommandHandlers:
 
         # 接口配置段
         for if_name, iinfo in st.get("interfaces", {}).items():
-            lines.append(f"interface {if_name}")
-            if iinfo.get("description"):
-                lines.append(f" description {iinfo['description']}")
-            if iinfo.get("bandwidth"):
-                lines.append(f" bandwidth {iinfo['bandwidth']}")
-            if iinfo.get("mtu") and int(iinfo.get("mtu") or 1500) != 1500:
-                lines.append(f" mtu {iinfo['mtu']}")
-            is_l3_logical = if_name.startswith(("Vlan", "Loopback", "Tunnel"))
-            sw_mode = iinfo.get("switchport_mode", "access")
-            if not is_l3_logical:
-                if sw_mode != "access":
-                    lines.append(f" switchport mode {sw_mode}")
-                if sw_mode == "access" and iinfo.get("access_vlan", 1) != 1:
-                    lines.append(f" switchport access vlan {iinfo['access_vlan']}")
-                if sw_mode == "trunk":
-                    if iinfo.get("trunk_allowed_vlans") not in (None, "all", "1-4094"):
-                        lines.append(f" switchport trunk allowed vlan {iinfo['trunk_allowed_vlans']}")
-                    if iinfo.get("trunk_native_vlan", 1) != 1:
-                        lines.append(f" switchport trunk native vlan {iinfo['trunk_native_vlan']}")
-
-            pg = iinfo.get("port_group")
-            if not is_l3_logical and pg:
-                lines.append(f" port-group {pg['group_id']} mode {pg['mode']}")
-
-            if iinfo.get("ip_address"):
-                ip_part, mask_part = iinfo["ip_address"].split("/")
-                lines.append(f" ip address {ip_part} {mask_part}")
-
-            # IPv6 双栈配置（接口使能 / 地址 / autostate）
-            if iinfo.get("ipv6_enable"):
-                lines.append(" ipv6 enable")
-            for v6_addr in iinfo.get("ipv6_addresses", []):
-                lines.append(f" ipv6 address {v6_addr}")
-            if iinfo.get("autostate") is False:
-                lines.append(" no autostate")
-
-            ag = iinfo.get("ip_access_group", {})
-            if ag.get("in"):
-                lines.append(f" ip access-group {ag['in']} in")
-            if ag.get("out"):
-                lines.append(f" ip access-group {ag['out']} out")
-
-            psec = iinfo.get("port_security", {})
-            if psec.get("enabled"):
-                lines.append(" switchport port-security")
-                if psec.get("maximum", 1) != 1:
-                    lines.append(f" switchport port-security maximum {psec['maximum']}")
-                if psec.get("violation", "shutdown") != "shutdown":
-                    lines.append(f" switchport port-security violation {psec['violation']}")
-                for m in psec.get("mac_addresses", []):
-                    lines.append(f" switchport port-security mac-address {m['mac']} vlan {m['vlan']}")
-
-            if iinfo.get("shutdown"):
-                lines.append(" shutdown")
+            lines.extend(self._interface_config_lines(if_name, iinfo))
             lines.append("!")
 
         # 静态路由与 OSPF 配置段
@@ -1319,9 +1418,7 @@ class CS6200CommandHandlers:
             lines.append(f"ip route {rt['network']} {rt['mask']} {rt['next_hop']}{dist_suffix}")
 
         for pid, pdata in sorted(st.get("ospf", {}).get("processes", {}).items()):
-            lines.append(f"router ospf {pid}")
-            for net in pdata.get("networks", []):
-                lines.append(f" network {net['network']} {net['wildcard_or_mask']} area {net['area']}")
+            lines.extend(self._ospf_config_lines(pid, pdata))
             lines.append("!")
 
         lines.append("end")
@@ -1532,6 +1629,86 @@ class CS6200CommandHandlers:
                     lines.append("  No IPv6 address configured")
             blocks.append("\n".join(lines))
         return "\n\n".join(blocks)
+
+    def _render_show_loopback_detection(self, args: Dict[str, Any], is_no: bool) -> str:
+        """显示端口环路检测的全局参数及各端口检测状态"""
+        ld_global = self.engine.state.get("loopback_detection", {})
+        interval = ld_global.get("interval_time")
+        no_loop = ld_global.get("no_loopback_time")
+        recovery = ld_global.get("control_recovery")
+
+        lines: List[str] = [
+            f"Loopback detection interval time      : {interval if interval is not None else '-'}",
+            f"Loopback detection no-loopback time   : {no_loop if no_loop is not None else '-'}",
+            f"Loopback detection control recovery   : {recovery if recovery is not None else '-'}",
+            "",
+        ]
+
+        if "<interface-list>" in args:
+            raw = str(args["<interface-list>"])
+            try:
+                names = self.engine._expand_ethernet_list(raw)
+            except Exception:
+                names = [self.engine.normalize_interface_name("ethernet", raw)]
+        else:
+            names = [
+                name for name in sorted(self.engine.state.get("interfaces", {}))
+                if not name.startswith(("Vlan", "Loopback", "Tunnel"))
+            ]
+
+        rows: List[str] = [
+            f"{'Interface':<22} {'Detection':<12} {'Control':<12} {'Specified VLAN':<22} {'Status'}",
+            "-" * 80,
+        ]
+        for if_name in names:
+            iinfo = self.engine.state.get("interfaces", {}).get(if_name)
+            if iinfo is None:
+                rows.append(f"{if_name:<22} {'Not Found':<12} {'-':<12} {'-':<22} -")
+                continue
+            ld = iinfo.get("loopback_detection") or {}
+            enabled = bool(ld.get("enabled") or ld.get("vlans"))
+            detection = "Enabled" if enabled else "Disabled"
+            control = ld.get("control") or "-"
+            vlans = self._format_vlan_set(set(ld.get("vlans") or [])) if ld.get("vlans") else "-"
+            status = ld.get("status") or "Normal"
+            rows.append(f"{if_name:<22} {detection:<12} {control:<12} {vlans:<22} {status}")
+
+        lines.extend(rows)
+        return "\n".join(lines)
+
+    def _render_show_this(self, args: Dict[str, Any], is_no: bool) -> str:
+        """显示当前视图的配置；Config-If-Port-Range 视图会输出全部目标端口配置"""
+        frame = self.engine.current_frame
+        mode = self.engine.current_mode
+        st = self.engine.state
+        blocks: List[str] = []
+
+        if mode == "if":
+            targets = frame.meta.get("targets") or [frame.context_name]
+            for if_name in targets:
+                iinfo = st.get("interfaces", {}).get(if_name)
+                if iinfo:
+                    blocks.append("\n".join(self._interface_config_lines(if_name, iinfo)))
+        elif mode == "vlan":
+            vid = frame.context_name
+            if vid.isdigit() and int(vid) in st.get("vlans", {}):
+                blocks.append("\n".join(self._vlan_config_lines(int(vid), st["vlans"][int(vid)])))
+        elif mode == "router":
+            pid = frame.context_name.split("-", 1)[-1]
+            pdata = st.get("ospf", {}).get("processes", {}).get(pid)
+            if pdata is not None:
+                blocks.append("\n".join(self._ospf_config_lines(pid, pdata)))
+        elif mode == "dhcp-pool":
+            pool_name = frame.context_name
+            pinfo = st.get("dhcp_pools", {}).get(pool_name)
+            if pinfo is not None:
+                blocks.append("\n".join(self._dhcp_pool_config_lines(pool_name, pinfo)))
+        else:
+            return self._render_running_config(args, is_no)
+
+        if not blocks:
+            return "% No configuration in current view."
+        return "\n!\n".join(blocks) + "\n!"
 
     def _render_show_port_security(self, args: Dict[str, Any], is_no: bool) -> str:
         header = f"{'Secure Port':<20} {'Enabled':<10} {'MaxAddr':<9} {'CurrentAddr':<13} {'SecurityViolation'}"

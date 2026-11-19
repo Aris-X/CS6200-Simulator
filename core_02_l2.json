@@ -263,5 +263,90 @@
     "state_key": "interface.port_loopback",
     "no_cmd": "no loopback",
     "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "loopback-detection interval-time <loopback> <no-loopback>",
+    "params": {
+      "<loopback>": "环路检测时间间隔",
+      "<no-loopback>": "无环回确认次数/时间"
+    },
+    "desc": "设置环路检测的时间间隔",
+    "requires": "",
+    "state_key": "loopback_detection.interval",
+    "no_cmd": "no loopback-detection interval-time",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "loopback-detection control-recovery timeout <0-3600>",
+    "params": {
+      "<0-3600>": "受控端口自动恢复时间（秒），0 表示不自动恢复"
+    },
+    "desc": "配置环路检测受控方式是否自动恢复或恢复时间间隔",
+    "requires": "",
+    "state_key": "loopback_detection.control_recovery",
+    "no_cmd": "no loopback-detection control-recovery timeout",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "loopback-detection specified-vlan <vlan-list>",
+    "params": {
+      "<vlan-list>": "需要检测环路的 VLAN 列表，如 1-3 或 10;20"
+    },
+    "desc": "启动或关闭端口的环路检测功能",
+    "requires": "端口配置模式（以太网端口 / 聚合口）",
+    "state_key": "interface.loopback_detection.specified_vlan",
+    "no_cmd": "no loopback-detection specified-vlan",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "loopback-detection control {shutdown | block | learning}",
+    "params": {
+      "{shutdown | block | learning}": "环路受控方式：关闭端口 / 阻塞 / 仅学习"
+    },
+    "desc": "打开或关闭端口的环路检测受控功能",
+    "requires": "端口配置模式（以太网端口 / 聚合口）",
+    "state_key": "interface.loopback_detection.control",
+    "no_cmd": "no loopback-detection control",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show loopback-detection [interface <interface-list>]",
+    "params": {
+      "<interface-list>": "以太网端口列表"
+    },
+    "desc": "显示所有或指定端口的环路检测状态和检测结果",
+    "requires": "",
+    "state_key": "show.loopback_detection",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show loopback-detection interface ethernet <interface-list>",
+    "params": {
+      "<interface-list>": "以太网端口列表"
+    },
+    "desc": "显示指定以太网端口的环路检测状态和检测结果",
+    "requires": "",
+    "state_key": "show.loopback_detection",
+    "no_cmd": "",
+    "output_example": ""
   }
 ]

@@ -265,6 +265,8 @@ class CS6200CLIEngine:
         "interface.hybrid_native_vlan",
         "interface.port_group_member",
         "interface.port_loopback",
+        "interface.loopback_detection.specified_vlan",
+        "interface.loopback_detection.control",
         "interface.lacp_timeout",
         "interface.lacp_port_priority",
         "spanning_tree.enable",
@@ -349,6 +351,11 @@ class CS6200CLIEngine:
                 "mode": "mstp",
                 "mst_priorities": {},
             },
+            "loopback_detection": {
+                "interval_time": None,
+                "no_loopback_time": None,
+                "control_recovery": None,
+            },
             "static_routes": [],
             "ipv6_routes": [],
             "ospf": {
@@ -397,6 +404,12 @@ class CS6200CLIEngine:
             "bandwidth": None,
             "mtu": 1500,
             "port_loopback": False,
+            "loopback_detection": {
+                "enabled": False,
+                "vlans": [],
+                "control": None,
+                "status": "Normal",
+            },
             "switchport_mode": "access",
             "access_vlan": 1,
             "trunk_allowed_vlans": "1-4094",
