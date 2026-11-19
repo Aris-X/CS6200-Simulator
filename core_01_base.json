@@ -231,5 +231,51 @@
     "state_key": "system.telnet_server",
     "no_cmd": "no telnet-server enable",
     "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "authentication enable {local | radius | tacacs}",
+    "params": {
+      "{local | radius | tacacs}": "enable 认证方法"
+    },
+    "desc": "配置 enable 认证方法列表",
+    "requires": "",
+    "state_key": "system.authentication_enable",
+    "no_cmd": "no authentication enable",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "authorization line {console | vty | web} exec {local | radius | tacacs}",
+    "params": {
+      "{console | vty | web}": "登录方式",
+      "{local | radius | tacacs}": "授权方法"
+    },
+    "desc": "配置远程登录授权方法列表",
+    "requires": "",
+    "state_key": "system.authorization_line",
+    "no_cmd": "no authorization line {console | vty | web} exec",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "accounting line {console | vty} command <1-15> {start-stop | stop-only | none} {local | radius | tacacs}",
+    "params": {
+      "{console | vty}": "登录方式",
+      "<1-15>": "命令权限级别",
+      "{start-stop | stop-only | none}": "记账方式",
+      "{local | radius | tacacs}": "记账方法"
+    },
+    "desc": "配置登录记账方法列表",
+    "requires": "",
+    "state_key": "system.accounting_line",
+    "no_cmd": "no accounting line {console | vty} command <1-15>",
+    "output_example": ""
   }
 ]

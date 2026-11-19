@@ -197,8 +197,13 @@ class CS6200CommandHandlers:
             "system.enable_password": self._handle_enable_password,
             "system.load_balance": self._handle_load_balance,
             "system.authentication_line": self._handle_authentication_line,
+            "system.authentication_enable": self._handle_authentication_enable,
+            "system.authorization_line": self._handle_authorization_line,
+            "system.accounting_line": self._handle_accounting_line,
             "system.username": self._handle_username,
             "system.telnet_server": self._handle_telnet_server,
+            "system.mtu": self._handle_system_mtu,
+            "system.clock": self._handle_clock_set,
             "ipv6.enable": self._handle_ipv6_enable,
             "firewall.enable": self._handle_firewall_enable,
             "arp.anti_arpscan.enable": self._handle_anti_arpscan,
@@ -265,6 +270,12 @@ class CS6200CommandHandlers:
             "show.running_config": self._render_running_config,
             "show.startup_config": self._render_startup_config,
             "show.running_config.current_mode": self._render_show_current_mode,
+            "show.version": self._render_show_version,
+            "show.privilege": self._render_show_privilege,
+            "show.users": self._render_show_users,
+            "show.slot": self._render_show_slot,
+            "show.lldp": self._render_show_lldp,
+            "show.transceiver": self._render_show_transceiver,
             "show.vlan": self._render_show_vlan,
             "show.spanning_tree": self._render_show_spanning_tree,
             "show.port_group": self._render_show_port_group,
@@ -1290,6 +1301,37 @@ class CS6200CommandHandlers:
         lines_state[line_type] = method
         return ""
 
+    def _handle_authentication_enable(self, args: Dict[str, Any], is_no: bool) -> str:
+        if is_no:
+            self.engine.state["system"].pop("authentication_enable", None)
+            return ""
+        self.engine.state["system"]["authentication_enable"] = str(
+            args.get("{local | radius | tacacs}") or "local"
+        ).lower()
+        return ""
+
+    def _handle_authorization_line(self, args: Dict[str, Any], is_no: bool) -> str:
+        line_type = str(args.get("{console | vty | web}") or "vty").lower()
+        authz = self.engine.state["system"].setdefault("authorization_lines", {})
+        if is_no:
+            authz.pop(line_type, None)
+            return ""
+        authz[line_type] = str(args.get("{local | radius | tacacs}") or "local").lower()
+        return ""
+
+    def _handle_accounting_line(self, args: Dict[str, Any], is_no: bool) -> str:
+        line_type = str(args.get("{console | vty}") or "vty").lower()
+        level = str(args.get("<1-15>", "15"))
+        acct = self.engine.state["system"].setdefault("accounting_lines", {})
+        if is_no:
+            acct.pop(f"{line_type}-{level}", None)
+            return ""
+        acct[f"{line_type}-{level}"] = {
+            "mode": str(args.get("{start-stop | stop-only | none}") or "stop-only").lower(),
+            "method": str(args.get("{local | radius | tacacs}") or "local").lower(),
+        }
+        return ""
+
     def _handle_username(self, args: Dict[str, Any], is_no: bool) -> str:
         usernames = self.engine.state["system"].setdefault("usernames", {})
         name = str(args.get("<username>") or "")
@@ -1306,6 +1348,25 @@ class CS6200CommandHandlers:
 
     def _handle_telnet_server(self, args: Dict[str, Any], is_no: bool) -> str:
         self.engine.state["system"]["telnet_server"] = not is_no
+        return ""
+
+    def _handle_system_mtu(self, args: Dict[str, Any], is_no: bool) -> str:
+        if is_no:
+            self.engine.state["system"]["mtu"] = None
+            return ""
+        raw = str(args.get("<mtu-value>") or "").strip()
+        if raw and (not raw.isdigit() or not (64 <= int(raw) <= 12288)):
+            return "% Invalid MTU value."
+        self.engine.state["system"]["mtu"] = int(raw) if raw else 12288
+        return ""
+
+    def _handle_clock_set(self, args: Dict[str, Any], is_no: bool) -> str:
+        if is_no:
+            return ""
+        self.engine.state["system"]["clock"] = {
+            "time": args.get("<HH:MM:SS>"),
+            "date": args.get("[YYYY.MM.DD]"),
+        }
         return ""
 
     def _handle_ipv6_enable(self, args: Dict[str, Any], is_no: bool) -> str:
@@ -1426,6 +1487,8 @@ class CS6200CommandHandlers:
         sys_state = st.get("system", {})
         if sys_state.get("ipv6_enabled"):
             lines.append("ipv6 enable")
+        if sys_state.get("mtu"):
+            lines.append(f"mtu {sys_state['mtu']}")
 
         # 远程登录用户/服务/认证方式
         if sys_state.get("telnet_server"):
@@ -1440,6 +1503,15 @@ class CS6200CommandHandlers:
             method = auth_lines.get(line_type)
             if method:
                 lines.append(f"authentication line {line_type} login {method}")
+        if sys_state.get("authentication_enable"):
+            lines.append(f"authentication enable {sys_state['authentication_enable']}")
+        for line_type, method in sorted((sys_state.get("authorization_lines") or {}).items()):
+            lines.append(f"authorization line {line_type} exec {method}")
+        for key, info in sorted((sys_state.get("accounting_lines") or {}).items()):
+            line_type, level = key.split("-", 1)
+            lines.append(
+                f"accounting line {line_type} command {level} {info['mode']} {info['method']}"
+            )
 
         # 生成树全局配置
         stp = st.get("spanning_tree", {})
@@ -1810,6 +1882,59 @@ class CS6200CommandHandlers:
         if not blocks:
             return "% No configuration in current mode."
         return "\n!\n".join(blocks) + "\n!"
+
+    def _render_show_version(self, args: Dict[str, Any], is_no: bool) -> str:
+        return (
+            "Digital China Networks CS6200-28X-EI\n"
+            "Copyright (c) 2000-2026 Digital China Networks Ltd.\n"
+            "DCNOS Software, Version 1.0.0.0\n"
+            f"System uptime is 0 days, 0 hours, 0 minutes"
+        )
+
+    def _render_show_privilege(self, args: Dict[str, Any], is_no: bool) -> str:
+        level = self.engine.state.get("system", {}).get("enable_level", 15)
+        return f"Current privilege level is {level}"
+
+    def _render_show_users(self, args: Dict[str, Any], is_no: bool) -> str:
+        rows = [
+            f"{'Line':<8} {'User':<16} {'Location'}",
+            "-" * 44,
+            f"{'0':<8} {'-':<16} {'Console'}",
+        ]
+        for name in sorted((self.engine.state.get("system", {}).get("usernames") or {})):
+            rows.append(f"{'vty':<8} {name:<16} {'-':<22}")
+        return "\n".join(rows)
+
+    def _render_show_slot(self, args: Dict[str, Any], is_no: bool) -> str:
+        slot = args.get("<slot-id>", "1")
+        member = args.get("<member-id>", "1")
+        return (
+            f"{'Member':<8} {'Slot':<6} {'Type':<20} {'Status'}\n"
+            + "-" * 46 + "\n"
+            + f"{member:<8} {slot:<6} {'CS6200-28X-EI':<20} up"
+        )
+
+    def _render_show_lldp(self, args: Dict[str, Any], is_no: bool) -> str:
+        return (
+            "LLDP is enabled\n"
+            f"{'Interface':<22} {'Tx-Interval':<12} {'Status'}\n"
+            + "-" * 46 + "\n"
+            + f"{'All ports':<22} {'30':<12} {'Enabled'}"
+        )
+
+    def _render_show_transceiver(self, args: Dict[str, Any], is_no: bool) -> str:
+        if "<interface-list>" in args:
+            names = self.engine._expand_ethernet_list(str(args["<interface-list>"]))
+        else:
+            names = [n for n in sorted(self.engine.state.get("interfaces", {}))
+                     if n.startswith("Ethernet")]
+        rows = [
+            f"{'Interface':<16} {'Temp(C)':<10} {'Voltage(V)':<12} {'RX Power(dBm)':<16} {'TX Power(dBm)'}",
+            "-" * 76,
+        ]
+        for name in names:
+            rows.append(f"{name:<16} {'N/A':<10} {'N/A':<12} {'N/A':<16} {'N/A'}")
+        return "\n".join(rows)
 
     def _render_show_port_security(self, args: Dict[str, Any], is_no: bool) -> str:
         header = f"{'Secure Port':<20} {'Enabled':<10} {'MaxAddr':<9} {'CurrentAddr':<13} {'SecurityViolation'}"

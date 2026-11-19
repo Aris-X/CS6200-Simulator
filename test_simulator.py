@@ -43,6 +43,8 @@ RULE_FILENAMES: List[str] = [
     "03_system.json",
     "04_system.json",
     "05_system.json",
+    "01_system.json",
+    "02_system.json",
 ]
 
 

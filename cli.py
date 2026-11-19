@@ -5,7 +5,7 @@ Digital China (神州数码) CS6200 Switch Interactive CLI Terminal
 Entry Point: cli.py
 
 Features:
-1. Automatically discovers and loads all 7 JSON command rule files in the
+1. Automatically discovers and loads all 9 JSON command rule files in the
    project directory and attaches CS6200CommandHandlers to CS6200CLIEngine.
 2. Full prompt_toolkit TTY integration:
    - <Tab>   : Hardware-authentic keyword completion (auto-appends space on
@@ -55,7 +55,7 @@ BASE_DIR = Path(__file__).resolve().parent
 # Startup configuration persisted by 'write' and restored automatically on launch
 STARTUP_CONFIG_PATH = BASE_DIR / "startup-config.json"
 
-# Canonical 7 JSON rule files extracted from the CS6200 Command Reference
+# Canonical 9 JSON rule files extracted from the CS6200 Command Reference
 RULE_FILENAMES: List[str] = [
     "core_01_base.json",
     "core_02_l2.json",
@@ -64,12 +64,14 @@ RULE_FILENAMES: List[str] = [
     "03_system.json",
     "04_system.json",
     "05_system.json",
+    "01_system.json",
+    "02_system.json",
 ]
 
 
 def resolve_rule_paths(base_dir: Path = BASE_DIR) -> List[str]:
     """
-    Locate all 7 CS6200 JSON rule files relative to BASE_DIR (also checks
+    Locate all 9 CS6200 JSON rule files relative to BASE_DIR (also checks
     optional ./rules or ./data subdirectories). Raises FileNotFoundError if
     none of the rule sets can be found.
     """

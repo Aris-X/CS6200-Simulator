@@ -58,7 +58,7 @@
     "mode": [
       "route-map"
     ],
-    "syntax": "set community [AA:NN] [internet] [local-AS] [no-advertise] [no-export] [none] [additive]",
+    "syntax": "set community [<AA:NN>] [internet] [local-AS] [no-advertise] [no-export] [none] [additive]",
     "params": {
       "[AA:NN]": "团体属性值",
       "[internet]": "Internet属性",
@@ -69,7 +69,7 @@
     "desc": "设置BGP团体属性值",
     "requires": "",
     "state_key": "route_map.set.community",
-    "no_cmd": "no set community [AA:NN] [internet] [local-AS] [no-advertise] [no-export] [none] [additive]",
+    "no_cmd": "no set community [<AA:NN>] [internet] [local-AS] [no-advertise] [no-export] [none] [additive]",
     "output_example": ""
   },
   {

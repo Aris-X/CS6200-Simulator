@@ -2,35 +2,6 @@
 [
   {
     "mode": [
-      "user",
-      "priv"
-    ],
-    "syntax": "enable [<1-15>]",
-    "params": {
-      "<1-15>": "用户权限级别，范围1-15"
-    },
-    "desc": "从一般用户配置模式进入特权用户配置模式或修改当前用户权限级别。",
-    "requires": "需要预先配置特权用户口令（若有）",
-    "state_key": "system.enable",
-    "no_cmd": "disable",
-    "output_example": ""
-  },
-  {
-    "mode": [
-      "priv"
-    ],
-    "syntax": "config [terminal]",
-    "params": {
-      "terminal": "终端模式参数（可选）"
-    },
-    "desc": "从特权用户配置模式进入到全局配置模式。",
-    "requires": "当前必须处于特权用户模式",
-    "state_key": "system.config",
-    "no_cmd": "exit",
-    "output_example": ""
-  },
-  {
-    "mode": [
       "priv"
     ],
     "syntax": "show privilege",
@@ -84,36 +55,6 @@
     "requires": "无",
     "state_key": "builtin.write",
     "no_cmd": "",
-    "output_example": ""
-  },
-  {
-    "mode": [
-      "global"
-    ],
-    "syntax": "telnet-server enable",
-    "params": {
-      "无": ""
-    },
-    "desc": "打开交换机的 Telnet 服务器功能。",
-    "requires": "无",
-    "state_key": "system.telnet_server",
-    "no_cmd": "no telnet-server enable",
-    "output_example": ""
-  },
-  {
-    "mode": [
-      "global"
-    ],
-    "syntax": "username <username> [privilege <privilege>] [password [0 | 7] <password>]",
-    "params": {
-      "<username>": "本地用户名",
-      "<privilege>": "权限级别(Telnet用户必须设为15)",
-      "<password>": "密码字符串，0为明文，7为密文"
-    },
-    "desc": "配置Telnet登录到交换机的本地用户名和口令。",
-    "requires": "无",
-    "state_key": "system.username",
-    "no_cmd": "no username <username>",
     "output_example": ""
   },
   {
@@ -1038,7 +979,7 @@
     "mode": [
       "route-map"
     ],
-    "syntax": "set community [AA:NN] [internet] [local-AS] [no-advertise] [no-export] [none] [additive]",
+    "syntax": "set community [<AA:NN>] [internet] [local-AS] [no-advertise] [no-export] [none] [additive]",
     "params": {
       "[AA:NN]": "团体属性值",
       "[internet]": "Internet属性",
@@ -1049,7 +990,7 @@
     "desc": "设置BGP团体属性值",
     "requires": "",
     "state_key": "route_map.set.community",
-    "no_cmd": "no set community [AA:NN] [internet] [local-AS] [no-advertise] [no-export] [none] [additive]",
+    "no_cmd": "no set community [<AA:NN>] [internet] [local-AS] [no-advertise] [no-export] [none] [additive]",
     "output_example": ""
   },
   {
@@ -2300,6 +2241,52 @@
     "requires": "",
     "state_key": "system.telnet_server",
     "no_cmd": "no telnet-server enable",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "authentication enable {local | radius | tacacs}",
+    "params": {
+      "{local | radius | tacacs}": "enable 认证方法"
+    },
+    "desc": "配置 enable 认证方法列表",
+    "requires": "",
+    "state_key": "system.authentication_enable",
+    "no_cmd": "no authentication enable",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "authorization line {console | vty | web} exec {local | radius | tacacs}",
+    "params": {
+      "{console | vty | web}": "登录方式",
+      "{local | radius | tacacs}": "授权方法"
+    },
+    "desc": "配置远程登录授权方法列表",
+    "requires": "",
+    "state_key": "system.authorization_line",
+    "no_cmd": "no authorization line {console | vty | web} exec",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "accounting line {console | vty} command <1-15> {start-stop | stop-only | none} {local | radius | tacacs}",
+    "params": {
+      "{console | vty}": "登录方式",
+      "<1-15>": "命令权限级别",
+      "{start-stop | stop-only | none}": "记账方式",
+      "{local | radius | tacacs}": "记账方法"
+    },
+    "desc": "配置登录记账方法列表",
+    "requires": "",
+    "state_key": "system.accounting_line",
+    "no_cmd": "no accounting line {console | vty} command <1-15>",
     "output_example": ""
   }
 ]

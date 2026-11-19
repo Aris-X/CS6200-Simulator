@@ -1,35 +1,6 @@
 [
   {
     "mode": [
-      "user",
-      "priv"
-    ],
-    "syntax": "enable [<1-15>]",
-    "params": {
-      "<1-15>": "用户权限级别，范围1-15"
-    },
-    "desc": "从一般用户配置模式进入特权用户配置模式或修改当前用户权限级别。",
-    "requires": "需要预先配置特权用户口令（若有）",
-    "state_key": "system.enable",
-    "no_cmd": "disable",
-    "output_example": ""
-  },
-  {
-    "mode": [
-      "priv"
-    ],
-    "syntax": "config [terminal]",
-    "params": {
-      "terminal": "终端模式参数（可选）"
-    },
-    "desc": "从特权用户配置模式进入到全局配置模式。",
-    "requires": "当前必须处于特权用户模式",
-    "state_key": "system.config",
-    "no_cmd": "exit",
-    "output_example": ""
-  },
-  {
-    "mode": [
       "priv"
     ],
     "syntax": "show privilege",
@@ -83,36 +54,6 @@
     "requires": "无",
     "state_key": "builtin.write",
     "no_cmd": "",
-    "output_example": ""
-  },
-  {
-    "mode": [
-      "global"
-    ],
-    "syntax": "telnet-server enable",
-    "params": {
-      "无": ""
-    },
-    "desc": "打开交换机的 Telnet 服务器功能。",
-    "requires": "无",
-    "state_key": "system.telnet_server",
-    "no_cmd": "no telnet-server enable",
-    "output_example": ""
-  },
-  {
-    "mode": [
-      "global"
-    ],
-    "syntax": "username <username> [privilege <privilege>] [password [0 | 7] <password>]",
-    "params": {
-      "<username>": "本地用户名",
-      "<privilege>": "权限级别(Telnet用户必须设为15)",
-      "<password>": "密码字符串，0为明文，7为密文"
-    },
-    "desc": "配置Telnet登录到交换机的本地用户名和口令。",
-    "requires": "无",
-    "state_key": "system.username",
-    "no_cmd": "no username <username>",
     "output_example": ""
   },
   {
