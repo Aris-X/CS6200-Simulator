@@ -12,7 +12,7 @@ Verifies native Loopback interface support (no monkey-patching required):
      shutdown / no shutdown.
   3. Layer-2 port commands (switchport ...) are rejected on Loopback.
   4. 'no interface loopback <id>' removes the interface from the state tree.
-  5. show ip interface brief / show ip interface loopback / show interface
+  5. show ip interface / show ip interface loopback / show interface
      loopback / show ipv6 interface loopback / show ip route /
      show running-config render Loopback correctly (no switchport lines).
   6. 'write' persists the complete Loopback configuration into startup_config.
@@ -163,8 +163,8 @@ def run_loopback_suite() -> None:
     # ------------------------------------------------------------------
     # 3. Show commands render Loopback as a routed interface
     # ------------------------------------------------------------------
-    print("\n--- [3/5] show ip interface brief / show ip interface loopback 1 ---")
-    brief = exec_line(engine, "show ip interface brief")
+    print("\n--- [3/5] show ip interface / show ip interface loopback 1 ---")
+    brief = exec_line(engine, "show ip interface")
     assert "Loopback1" in brief and "10.255.255.1" in brief, brief
     assert "Loopback2" in brief and "10.255.255.2" in brief, brief
 

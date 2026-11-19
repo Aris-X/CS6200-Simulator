@@ -1,0 +1,4265 @@
+=== 01_system.json ===
+[
+  {
+    "mode": [
+      "user",
+      "priv"
+    ],
+    "syntax": "enable [<1-15>]",
+    "params": {
+      "<1-15>": "用户权限级别，范围1-15"
+    },
+    "desc": "从一般用户配置模式进入特权用户配置模式或修改当前用户权限级别。",
+    "requires": "需要预先配置特权用户口令（若有）",
+    "state_key": "system.enable",
+    "no_cmd": "disable",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "config [terminal]",
+    "params": {
+      "terminal": "终端模式参数（可选）"
+    },
+    "desc": "从特权用户配置模式进入到全局配置模式。",
+    "requires": "当前必须处于特权用户模式",
+    "state_key": "system.config",
+    "no_cmd": "exit",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "show privilege",
+    "params": {
+      "无": ""
+    },
+    "desc": "显示当前用户权限。",
+    "requires": "无",
+    "state_key": "show.privilege",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "clock set <HH:MM:SS> [YYYY.MM.DD]",
+    "params": {
+      "<HH": "MM:SS>: 时间",
+      "[YYYY.MM.DD]": "日期"
+    },
+    "desc": "设置系统日期和时钟。",
+    "requires": "无",
+    "state_key": "system.clock",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "show version",
+    "params": {
+      "无": ""
+    },
+    "desc": "显示交换机版本信息。",
+    "requires": "无",
+    "state_key": "show.version",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "write",
+    "params": {
+      "无": ""
+    },
+    "desc": "将当前运行时配置参数(running-config)保存到 Flash Memory。",
+    "requires": "无",
+    "state_key": "builtin.write",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "telnet-server enable",
+    "params": {
+      "无": ""
+    },
+    "desc": "打开交换机的 Telnet 服务器功能。",
+    "requires": "无",
+    "state_key": "system.telnet_server",
+    "no_cmd": "no telnet-server enable",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "username <username> [privilege <privilege>] [password [0 | 7] <password>]",
+    "params": {
+      "<username>": "本地用户名",
+      "<privilege>": "权限级别(Telnet用户必须设为15)",
+      "<password>": "密码字符串，0为明文，7为密文"
+    },
+    "desc": "配置Telnet登录到交换机的本地用户名和口令。",
+    "requires": "无",
+    "state_key": "system.username",
+    "no_cmd": "no username <username>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "show users",
+    "params": {
+      "无": ""
+    },
+    "desc": "显示通过 telnet 和 ssh 登陆的用户信息，包括线路号，登陆的用户名及用户的IP。",
+    "requires": "无",
+    "state_key": "show.users",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "snmp-server enable",
+    "params": {
+      "无": ""
+    },
+    "desc": "打开交换机作为 SNMP 代理服务器功能。",
+    "requires": "无",
+    "state_key": "snmp.enable",
+    "no_cmd": "no snmp-server enable",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "snmp-server community {ro | rw} {0 | 7} <string> [access {<num-std>|<name>}] [ipv6-access {<ipv6-num-std>|<ipv6-name>}] [read <read-view-name>] [write <write-view-name>]",
+    "params": {
+      "ro/rw": "只读/读写权限",
+      "0/7": "明文/密文存储",
+      "<string>": "团体名"
+    },
+    "desc": "设置交换机的 SNMP 团体字符串。",
+    "requires": "需开启 snmp-server enable",
+    "state_key": "snmp.community",
+    "no_cmd": "no snmp-server community <string> [access {<num-std>|<name>}] [ipv6-access {<ipv6-num-std>|<ipv6-name>}]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "cluster run [key <WORD>] [vid <VID>]",
+    "params": {
+      "<WORD>": "集群验证密钥",
+      "<VID>": "集群 VLAN ID"
+    },
+    "desc": "启动或停止交换机本设备的集群功能。",
+    "requires": "无",
+    "state_key": "cluster.run",
+    "no_cmd": "no cluster run",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "cd usb:",
+    "params": {
+      "usb": ": 目标盘符"
+    },
+    "desc": "进行USB存储设备的挂载，并进入 USB盘符。",
+    "requires": "设备必须插入有效的USB存储设备，且未报过流警报",
+    "state_key": "system.cd",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "show [member <member-id>] slot <slot-id>",
+    "params": {
+      "<member-id>": "堆叠/集群成员号",
+      "<slot-id>": "槽位号"
+    },
+    "desc": "显示各板卡基本信息。",
+    "requires": "无",
+    "state_key": "show.slot",
+    "no_cmd": "",
+    "output_example": ""
+  }
+]
+
+=== 02_system.json ===
+[
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "lldp tooManyNeighbors {discard|delete}",
+    "params": {
+      "discard": "丢弃新邻居信息",
+      "delete": "删除旧邻居信息"
+    },
+    "desc": "设置当 Remote Table 满时的操作类型。",
+    "requires": "无",
+    "state_key": "interface.lldp.too_many",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv",
+      "global"
+    ],
+    "syntax": "show lldp [interface ethernet <IFNAME>]",
+    "params": {
+      "<IFNAME>": "端口名称"
+    },
+    "desc": "显示当前(或指定端口)LLDP配置信息。",
+    "requires": "无",
+    "state_key": "show.lldp",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "clear lldp remote-table",
+    "params": {
+      "无": ""
+    },
+    "desc": "清空端口Remote-table。",
+    "requires": "无",
+    "state_key": "interface.lldp.clear",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "mtu [<mtu-value>]",
+    "params": {
+      "<mtu-value>": "mtu帧大小"
+    },
+    "desc": "启用 mtu帧的收发功能。",
+    "requires": "无",
+    "state_key": "system.mtu",
+    "no_cmd": "no mtu",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "bpdu-tunnel dmac <mac>",
+    "params": {
+      "<mac>": "隧道MAC地址"
+    },
+    "desc": "配置全局隧道MAC地址。",
+    "requires": "无",
+    "state_key": "system.bpdu_tunnel.dmac",
+    "no_cmd": "no bpdu-tunnel dmac",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "bpdu-tunnel {stp|gvrp|uldp|lacp|dot1x}",
+    "params": {
+      "stp/gvrp/uldp/lacp/dot1x": "指定需要透传的二层协议"
+    },
+    "desc": "开启端口上支持隧道功能。",
+    "requires": "无",
+    "state_key": "interface.bpdu_tunnel",
+    "no_cmd": "no bpdu-tunnel {stp|gvrp|uldp|lacp|dot1x}",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv",
+      "global"
+    ],
+    "syntax": "show transceiver [interface ethernet <interface-list>] [detail]",
+    "params": {
+      "<interface-list>": "以太网端口列表",
+      "detail": "显示详细诊断和阈值等信息"
+    },
+    "desc": "显示收发器的监测信息。",
+    "requires": "需要对应的物理端口插入了支持DDM的光模块",
+    "state_key": "show.transceiver",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "transceiver threshold {default | {temperature | voltage | bias | rx-power | tx-power} {high-alarm | low-alarm | high-warn | low-warn} {<value> | default}}",
+    "params": {
+      "temperature/voltage/bias/rx-power/tx-power": "监测参数项",
+      "high-alarm/low-alarm": "告警上下限",
+      "high-warn/low-warn": "警告上下限"
+    },
+    "desc": "配置收发器（transceiver）各监测参数的报警或警告阈值。",
+    "requires": "无",
+    "state_key": "interface.transceiver.threshold",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "transceiver-monitoring interval <minutes>",
+    "params": {
+      "<minutes>": "监控的时间间隔，单位分钟"
+    },
+    "desc": "配置收发器（transceiver）的软件监控的时间间隔。",
+    "requires": "无",
+    "state_key": "system.transceiver_monitoring.interval",
+    "no_cmd": "no transceiver-monitoring interval",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "transceiver-monitoring {enable | disable}",
+    "params": {
+      "enable": "开启监控",
+      "disable": "关闭监控"
+    },
+    "desc": "设定端口是否开启软件监控功能。开启后系统才会记录异常状态，关闭时清空异常信息。",
+    "requires": "无",
+    "state_key": "interface.transceiver_monitoring",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ethernet-oam mode {active | passive}",
+    "params": {
+      "active": "主动模式",
+      "passive": "被动模式"
+    },
+    "desc": "配置 EFM OAM 的工作模式，默认为 active主动模式。",
+    "requires": "无",
+    "state_key": "interface.ethernet_oam.mode",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ethernet-oam",
+    "params": {
+      "无": ""
+    },
+    "desc": "使能端口 EFM OAM 功能。",
+    "requires": "配置OAM参数前需要先启动该功能",
+    "state_key": "interface.ethernet_oam",
+    "no_cmd": "no ethernet-oam",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "vlan"
+    ],
+    "syntax": "supervlan",
+    "params": {
+      "无": ""
+    },
+    "desc": "创建 supervlan。",
+    "requires": "无",
+    "state_key": "vlan.supervlan",
+    "no_cmd": "no supervlan",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "vlan"
+    ],
+    "syntax": "subvlan WORD",
+    "params": {
+      "WORD": "子VLAN ID列表"
+    },
+    "desc": "指定 subvlan。",
+    "requires": "当前VLAN必须已被配置为supervlan",
+    "state_key": "vlan.subvlan",
+    "no_cmd": "no subvlan {WORD | all}",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ip-addr-range <ipv4-address> to <ipv4-address>",
+    "params": {
+      "<ipv4-addrss>": "IP地址范围起点和终点"
+    },
+    "desc": "指定接口的地址范围。",
+    "requires": "无",
+    "state_key": "interface.ip_addr_range",
+    "no_cmd": "no ip-addr-range",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "arp-proxy subvlan {WORD | all}",
+    "params": {
+      "WORD": "subvlan ID"
+    },
+    "desc": "开启 subvlan 的 arp-proxy 功能。",
+    "requires": "已经配置了对应的subvlan",
+    "state_key": "interface.arp_proxy",
+    "no_cmd": "no arp-proxy subvlan {WORD | all}",
+    "output_example": ""
+  }
+]
+
+=== 03_system.json ===
+[
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip vrf <vrf-name>",
+    "params": {
+      "<vrf-name>": "VRF实例名称"
+    },
+    "desc": "创建VRF实例",
+    "requires": "",
+    "state_key": "vrf.instance",
+    "no_cmd": "no ip vrf <vrf-name>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "vrf"
+    ],
+    "syntax": "rd <ASN:nn_or_IP-address:nn>",
+    "params": {
+      "<ASN:nn_or_IP-address:nn>": "Route Distinguisher标识"
+    },
+    "desc": "配置VRF实例的RD",
+    "requires": "需要进入VRF配置模式",
+    "state_key": "vrf.rd",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "vrf"
+    ],
+    "syntax": "route-target {import | export | both} <rt-value>",
+    "params": {
+      "import | export | both": "导入/导出方向",
+      "<rt-value>": "Route Target值"
+    },
+    "desc": "配置 VRF实例的RT",
+    "requires": "需要进入VRF配置模式",
+    "state_key": "vrf.rt",
+    "no_cmd": "no route-target {import | export | both} <rt-value>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ip vrf forwarding <vrf-name>",
+    "params": {
+      "<vrf-name>": "VRF实例名称"
+    },
+    "desc": "配置 VRF实例与接口关联",
+    "requires": "",
+    "state_key": "interface.vrf_forwarding",
+    "no_cmd": "no ip vrf forwarding <vrf-name>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ip address <ip-address> <mask>",
+    "params": {
+      "<ip-address>": "IP地址",
+      "<mask>": "子网掩码"
+    },
+    "desc": "配置直连接口的私网 IP地址",
+    "requires": "",
+    "state_key": "interface.ip_address",
+    "no_cmd": "no ip address <ip-address> <mask>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ipv6 address <ipv6-address/prefix-length> [eui-64]",
+    "params": {
+      "<ipv6-address/prefix-length>": "IPv6地址及前缀长度",
+      "eui-64": "可选，使用EUI-64格式生成接口ID"
+    },
+    "desc": "配置 IPv6地址，包括可聚合全球单播地址，本地站点地址，本地链路地址",
+    "requires": "",
+    "state_key": "interface.ipv6_address",
+    "no_cmd": "no ipv6 address <ipv6-address/prefix-length>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "tunnel"
+    ],
+    "syntax": "tunnel nexthop <ipv4-address>",
+    "params": {
+      "<ipv4-address>": "下一跳IPv4地址"
+    },
+    "desc": "配置隧道的下一跳 IPv4地址",
+    "requires": "需要进入隧道配置模式",
+    "state_key": "tunnel.nexthop",
+    "no_cmd": "no tunnel nexthop",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "tunnel"
+    ],
+    "syntax": "tunnel mode {gre | ipv6ip [6to4 | isatap]}",
+    "params": {
+      "[gre] | ipv6ip": "隧道模式",
+      "[ 6to4 | isatap]": "IPv6过渡技术"
+    },
+    "desc": "配置隧道模式",
+    "requires": "需要进入隧道配置模式",
+    "state_key": "tunnel.mode",
+    "no_cmd": "no tunnel mode",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ipv6 route <ipv6-address/prefix-length> {<interface-type interface-number> | tunnel <tnl-id>}",
+    "params": {
+      "<ipv6-address/prefix-length>": "IPv6目标网络及前缀",
+      "<interface-type interface-number> | tunnel <tnl-id>": "出接口或隧道ID"
+    },
+    "desc": "配置隧道路由",
+    "requires": "",
+    "state_key": "route.ipv6",
+    "no_cmd": "no ipv6 route <ipv6-address/prefix-length> {<interface-type interface-number> | tunnel <tnl-id>}",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip fib optimize",
+    "params": {},
+    "desc": "配置交换机使用优化 IP路由聚合算法",
+    "requires": "",
+    "state_key": "ip.fib.optimize",
+    "no_cmd": "no ip fib optimize",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "l3-station-move",
+    "params": {},
+    "desc": "启动或者关闭 l3 station move 功能",
+    "requires": "",
+    "state_key": "ip.l3_station_move",
+    "no_cmd": "no l3-station-move",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "hardware tunnel-capacity <size>",
+    "params": {
+      "<size>": "容量大小数值"
+    },
+    "desc": "设置硬件隧道和 MPLS容量",
+    "requires": "修改后必须作配置保留并重启交换机才能生效",
+    "state_key": "hardware.tunnel_capacity",
+    "no_cmd": "no hardware tunnel-capacity",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "anti-arpscan enable",
+    "params": {},
+    "desc": "打开防 ARP 扫描功能",
+    "requires": "",
+    "state_key": "arp.anti_arpscan.enable",
+    "no_cmd": "no anti-arpscan enable",
+    "output_example": "SwitchB(config)#anti-arpscan enable"
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "anti-arpscan trust port",
+    "params": {},
+    "desc": "配置端口为防 ARP 扫描的信任端口",
+    "requires": "需在接口模式下配置，且全局已开启 anti-arpscan enable",
+    "state_key": "interface.anti_arpscan.trust",
+    "no_cmd": "no anti-arpscan trust port",
+    "output_example": "SwitchB(Config-If-Ethernet1/0/1)#anti-arpscan trust port"
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "debug anti-arpscan",
+    "params": {},
+    "desc": "打开防 ARP 扫描调试开关，查看调试信息",
+    "requires": "全局需开启防 ARP 扫描",
+    "state_key": "debug.anti_arpscan",
+    "no_cmd": "no debug anti-arpscan",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "dhcp-pool"
+    ],
+    "syntax": "hardware-address <hardware-address> [{Ethernet | IEEE802|<type-number>}]",
+    "params": {
+      "<hardware-address>": "MAC地址等硬件地址",
+      "{Ethernet | IEEE802|<type-number>}": "网络类型或类型数值，可选"
+    },
+    "desc": "在手工分配地址时，指定/删除用户的硬件地址",
+    "requires": "需要进入DHCP地址池配置模式",
+    "state_key": "dhcp.pool.hardware_address",
+    "no_cmd": "no hardware-address",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "dhcp-pool"
+    ],
+    "syntax": "host <address>",
+    "params": {
+      "<address>": "主机 IP 地址"
+    },
+    "desc": "在手工绑定地址时，配置/删除分配给指定客户机的用户的 IP地址",
+    "requires": "需要进入DHCP地址池配置模式",
+    "state_key": "dhcp.pool.host",
+    "no_cmd": "no host",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "dhcp-pool"
+    ],
+    "syntax": "host <address> <mask>",
+    "params": {
+      "<address>": "主机 IP 地址",
+      "<mask>": "子网掩码"
+    },
+    "desc": "在手工绑定地址时，配置/删除分配给指定客户机的用户的 IP地址",
+    "requires": "需要进入DHCP地址池配置模式",
+    "state_key": "dhcp.pool.host",
+    "no_cmd": "no host",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "dhcp-pool"
+    ],
+    "syntax": "host <address> <prefix-length>",
+    "params": {
+      "<address>": "主机 IP 地址",
+      "<prefix-length>": "掩码长度"
+    },
+    "desc": "在手工绑定地址时，配置/删除分配给指定客户机的用户的 IP地址",
+    "requires": "需要进入DHCP地址池配置模式",
+    "state_key": "dhcp.pool.host",
+    "no_cmd": "no host",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "dhcp-pool"
+    ],
+    "syntax": "client-identifier <unique-identifier>",
+    "params": {
+      "<unique-identifier>": "客户唯一标识字符串"
+    },
+    "desc": "在手工绑定地址时，指定/删除用户的唯一标识",
+    "requires": "需要进入DHCP地址池配置模式",
+    "state_key": "dhcp.pool.client_identifier",
+    "no_cmd": "no client-identifier",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip dhcp conflict logging",
+    "params": {},
+    "desc": "打开/关闭 DHCP 服务器检测地址冲突的日志功能",
+    "requires": "",
+    "state_key": "dhcp.conflict.logging",
+    "no_cmd": "no ip dhcp conflict logging",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "clear ip dhcp conflict {<address> | all}",
+    "params": {
+      "<address | all>": "特定的冲突IP地址或所有(all)"
+    },
+    "desc": "删除单条地址冲突的记录或全部地址的冲突记录",
+    "requires": "",
+    "state_key": "dhcp.conflict.clear",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip user helper-address A.B.C.D [port <udpport>] source <ipAddr> [secondary]",
+    "params": {
+      "A.B.C.D": "helper server目的IP地址",
+      "<udpport>": "UDP端口，可选",
+      "<ipAddr>": "源IP地址",
+      "secondary": "辅助地址标记"
+    },
+    "desc": "配置或删除 helper address地址",
+    "requires": "",
+    "state_key": "ip.user_helper_address",
+    "no_cmd": "no ip user helper-address [secondary]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip dhcp snooping binding arp",
+    "params": {},
+    "desc": "开启或关闭 DHCP snooping绑定 ARP功能",
+    "requires": "",
+    "state_key": "dhcp.snooping.binding_arp",
+    "no_cmd": "no ip dhcp snooping binding arp",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ip dhcp snooping trust",
+    "params": {},
+    "desc": "设置或删除端口的 DHCP snooping信任属性",
+    "requires": "",
+    "state_key": "interface.dhcp_snooping_trust",
+    "no_cmd": "no ip dhcp snooping trust",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ip dhcp snooping binding dot1x",
+    "params": {},
+    "desc": "开启或关闭 DHCP snooping绑定 dot1x 功能",
+    "requires": "",
+    "state_key": "interface.dhcp_snooping_binding_dot1x",
+    "no_cmd": "no ip dhcp snooping binding dot1x",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "dhcp-pool"
+    ],
+    "syntax": "option 60 ascii LINE",
+    "params": {
+      "LINE": "ASCII格式的字符串内容"
+    },
+    "desc": "在 ip dhcp pool 模式下以ascii 格式配置option 60字符串",
+    "requires": "需要进入DHCP地址池配置模式",
+    "state_key": "dhcp.pool.option60.ascii",
+    "no_cmd": "no option 60",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "dhcp-pool"
+    ],
+    "syntax": "option 43 ascii LINE",
+    "params": {
+      "LINE": "ASCII格式的字符串内容"
+    },
+    "desc": "在 ip dhcp pool 模式下以ascii 格式配置option 43字符串",
+    "requires": "需要进入DHCP地址池配置模式",
+    "state_key": "dhcp.pool.option43.ascii",
+    "no_cmd": "no option 43",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "dhcp-pool"
+    ],
+    "syntax": "option 60 hex WORD",
+    "params": {
+      "WORD": "十六进制格式的字符串内容"
+    },
+    "desc": "在 ip dhcp pool 模式下以 hex 格式配置option 60字符串",
+    "requires": "需要进入DHCP地址池配置模式",
+    "state_key": "dhcp.pool.option60.hex",
+    "no_cmd": "no option 60",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "dhcp-pool"
+    ],
+    "syntax": "option 43 hex WORD",
+    "params": {
+      "WORD": "十六进制格式的字符串内容"
+    },
+    "desc": "在 ip dhcp pool 模式下以 hex 格式配置option 43字符串",
+    "requires": "需要进入DHCP地址池配置模式",
+    "state_key": "dhcp.pool.option43.hex",
+    "no_cmd": "no option 43",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "dhcp-pool"
+    ],
+    "syntax": "option 60 ip A.B.C.D",
+    "params": {
+      "A.B.C.D": "IP地址"
+    },
+    "desc": "在 ip dhcp pool 模式下以 IP格式配置option 60 字符串",
+    "requires": "需要进入DHCP地址池配置模式",
+    "state_key": "dhcp.pool.option60.ip",
+    "no_cmd": "no option 60",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "dhcp-pool"
+    ],
+    "syntax": "option 43 ip A.B.C.D",
+    "params": {
+      "A.B.C.D": "IP地址"
+    },
+    "desc": "在 ip dhcp pool 模式下以 IP格式配置option 43 字符串",
+    "requires": "需要进入DHCP地址池配置模式",
+    "state_key": "dhcp.pool.option43.ip",
+    "no_cmd": "no option 43",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "dhcp-pool"
+    ],
+    "syntax": "no option 60",
+    "params": {},
+    "desc": "在地址池模式下删除配置的 option 60",
+    "requires": "需要进入DHCP地址池配置模式",
+    "state_key": "dhcp.pool.option60",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "dhcp-pool"
+    ],
+    "syntax": "no option 43",
+    "params": {},
+    "desc": "在地址池模式下删除配置的 option 43",
+    "requires": "需要进入DHCP地址池配置模式",
+    "state_key": "dhcp.pool.option43",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ipv6 enable",
+    "params": {},
+    "desc": "在交换机上全局启动IPv6功能",
+    "requires": "",
+    "state_key": "ipv6.enable",
+    "no_cmd": "no ipv6 enable",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "description <text>",
+    "params": {
+      "<text>": "接口描述信息（可包含空格）"
+    },
+    "desc": "配置当前三层/二层接口的描述信息",
+    "requires": "",
+    "state_key": "interface.description",
+    "no_cmd": "no description",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "bandwidth <bandwidth>",
+    "params": {
+      "<bandwidth>": "接口带宽（kbit/s，1-100000000）"
+    },
+    "desc": "配置接口的带宽值",
+    "requires": "",
+    "state_key": "interface.bandwidth",
+    "no_cmd": "no bandwidth",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "mtu <mtu-value>",
+    "params": {
+      "<mtu-value>": "接口 MTU 值（64-9216 字节）"
+    },
+    "desc": "配置接口的 MTU 值",
+    "requires": "",
+    "state_key": "interface.mtu",
+    "no_cmd": "no mtu",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "no ip address",
+    "params": {},
+    "desc": "删除当前接口的全部 IPv4 地址",
+    "requires": "",
+    "state_key": "interface.ip_address",
+    "no_cmd": "",
+    "output_example": ""
+  }
+]
+
+=== 04_system.json ===
+[
+  {
+    "mode": [
+      "route-map"
+    ],
+    "syntax": "set aggregator as <as-number> <ip_addr>",
+    "params": {
+      "<as-number>": "AS号",
+      "<ip_addr>": "IP地址"
+    },
+    "desc": "为 BGP 聚合者分配一个 AS 号",
+    "requires": "",
+    "state_key": "route_map.set.aggregator",
+    "no_cmd": "no set aggregator as [<as-number> <ip_addr>]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "route-map"
+    ],
+    "syntax": "set as-path prepend <as-num>",
+    "params": {
+      "<as-num>": "AS号"
+    },
+    "desc": "在 BGP 路由信息的 as-path 系列前加入指定的 AS 号",
+    "requires": "",
+    "state_key": "route_map.set.as_path_prepend",
+    "no_cmd": "no set as-path prepend [<as-num>]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "route-map"
+    ],
+    "syntax": "set atomic-aggregate",
+    "params": {},
+    "desc": "设置BGP原子聚合属性",
+    "requires": "",
+    "state_key": "route_map.set.atomic_aggregate",
+    "no_cmd": "no set atomic-aggregate",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "route-map"
+    ],
+    "syntax": "set comm-list {<community-list-name> | <community-list-num>} delete",
+    "params": {
+      "<community-list-name | community-list-num>": "团体属性列表名称或编号"
+    },
+    "desc": "删除BGP团体属性值",
+    "requires": "",
+    "state_key": "route_map.set.comm_list",
+    "no_cmd": "no set comm-list {<community-list-name> | <community-list-num>} delete",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "route-map"
+    ],
+    "syntax": "set community [AA:NN] [internet] [local-AS] [no-advertise] [no-export] [none] [additive]",
+    "params": {
+      "[AA:NN]": "团体属性值",
+      "[internet]": "Internet属性",
+      "[local-AS]": "本地AS属性",
+      "[no-advertise]": "不通告属性",
+      "[no-export]": "不导出属性"
+    },
+    "desc": "设置BGP团体属性值",
+    "requires": "",
+    "state_key": "route_map.set.community",
+    "no_cmd": "no set community [AA:NN] [internet] [local-AS] [no-advertise] [no-export] [none] [additive]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "route-map"
+    ],
+    "syntax": "set extcommunity {rt | soo} <AA:NN>",
+    "params": {
+      "<rt | soo>": "扩展团体属性类型",
+      "<AA:NN>": "扩展团体属性值"
+    },
+    "desc": "设置BGP扩展团体属性",
+    "requires": "",
+    "state_key": "route_map.set.extcommunity",
+    "no_cmd": "no set extcommunity {rt | soo} [<AA:NN>]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "route-map"
+    ],
+    "syntax": "set ip next-hop <ip_addr>",
+    "params": {
+      "<ip_addr>": "下一跳IP地址"
+    },
+    "desc": "设置下一跳IP地址",
+    "requires": "",
+    "state_key": "route_map.set.ip_next_hop",
+    "no_cmd": "no set ip next-hop [<ip_addr>]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "route-map"
+    ],
+    "syntax": "set local-preference <pre_val>",
+    "params": {
+      "<pre_val>": "优先级数值"
+    },
+    "desc": "设置本地优先级",
+    "requires": "",
+    "state_key": "route_map.set.local_preference",
+    "no_cmd": "no set local-preference [<pre_val>]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "route-map"
+    ],
+    "syntax": "set metric {<+metric_val> | <-metric_val> | <metric_val>}",
+    "params": {
+      "< +/- metric_val | metric_val>": "度量值或增减量"
+    },
+    "desc": "设置路由度量值",
+    "requires": "",
+    "state_key": "route_map.set.metric",
+    "no_cmd": "no set metric [{<+metric_val> | <-metric_val> | <metric_val>}]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "route-map"
+    ],
+    "syntax": "set metric-type {type-1 | type-2}",
+    "params": {
+      "<type-1 | type-2>": "度量类型1或2"
+    },
+    "desc": "设置 OSPF 度量类型",
+    "requires": "",
+    "state_key": "route_map.set.metric_type",
+    "no_cmd": "no set metric-type [{type-1 | type-2}]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "route-map"
+    ],
+    "syntax": "set origin {egp | igp | incomplete}",
+    "params": {
+      "<egp | igp | incomplete >": "路由源类型"
+    },
+    "desc": "设置BGP路由源",
+    "requires": "",
+    "state_key": "route_map.set.origin",
+    "no_cmd": "no set origin [{egp | igp | incomplete}]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "route-map"
+    ],
+    "syntax": "set originator-id <ip_addr>",
+    "params": {
+      "<ip_addr>": "起源者IP地址"
+    },
+    "desc": "设置路由起源者 ID",
+    "requires": "",
+    "state_key": "route_map.set.originator_id",
+    "no_cmd": "no set originator-id [<ip_addr>]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "route-map"
+    ],
+    "syntax": "set tag <tag_val>",
+    "params": {
+      "<tag_val>": "OSPF tag值"
+    },
+    "desc": "设置 OSPF 路由 tag 值",
+    "requires": "",
+    "state_key": "route_map.set.tag",
+    "no_cmd": "no set tag [<tag_val>]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "route-map"
+    ],
+    "syntax": "set vpnv4 next-hop <ip_addr>",
+    "params": {
+      "<ip_addr>": "VPNv4下一跳IP地址"
+    },
+    "desc": "设置 BGP VPNv4 下一跳地址",
+    "requires": "",
+    "state_key": "route_map.set.vpnv4_next_hop",
+    "no_cmd": "no set vpnv4 next-hop [<ip_addr>]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "route-map"
+    ],
+    "syntax": "set weight <weight_val>",
+    "params": {
+      "<weight_val>": "权重数值"
+    },
+    "desc": "设置BGP路由权重",
+    "requires": "",
+    "state_key": "route_map.set.weight",
+    "no_cmd": "no set weight [<weight_val>]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip prefix-list <list_name> description <description>",
+    "params": {
+      "<list_name>": "前缀列表名称",
+      "<description>": "描述内容"
+    },
+    "desc": "对前缀列表进行描述",
+    "requires": "",
+    "state_key": "ip.prefix_list.description",
+    "no_cmd": "no ip prefix-list <list_name> description",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip prefix-list <list_name> [seq <sequence_number>] {deny | permit} {any | <ip_addr/mask_length> [ge <min_prefix_len>] [le <max_prefix_len>]}",
+    "params": {
+      "<list_name>": "前缀列表名称",
+      "<deny | permit>": "拒绝或允许",
+      "<any | ip_addr/mask_length>": "任意或IP及掩码",
+      "[ge min_prefix_len]": "最小掩码长度",
+      "[le max_prefix_len]": "最大掩码长度"
+    },
+    "desc": "配置前缀列表",
+    "requires": "",
+    "state_key": "ip.prefix_list.rule",
+    "no_cmd": "no ip prefix-list <list_name> [seq <sequence_number>] [{deny | permit} {any | <ip_addr/mask_length> [ge <min_prefix_len>] [le <max_prefix_len>]}]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv",
+      "global"
+    ],
+    "syntax": "show ip rip aggregate",
+    "params": {},
+    "desc": "显示聚合路由信息",
+    "requires": "",
+    "state_key": "show.ip.rip.aggregate",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router-rip"
+    ],
+    "syntax": "redistribute ospf [<process-id>] [metric <value>] [route-map <word>]",
+    "params": {
+      "<process-id>": "OSPF进程号",
+      "<value>": "度量值",
+      "<word>": "路由策略图名称"
+    },
+    "desc": "启动或者关闭RIP引入其他OSPF进程路由功能",
+    "requires": "",
+    "state_key": "router.rip.redistribute.ospf",
+    "no_cmd": "no redistribute ospf [<process-id>]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv",
+      "global"
+    ],
+    "syntax": "show ip rip redistribute",
+    "params": {},
+    "desc": "显示RIP进程引入其它外部路由的配置信息",
+    "requires": "",
+    "state_key": "show.ip.rip.redistribute",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "debug rip redistribute message send",
+    "params": {},
+    "desc": "打开或关闭 RIP引入其他OSPF进程路由的命令下发调试开关",
+    "requires": "",
+    "state_key": "debug.rip.redistribute.message",
+    "no_cmd": "no debug rip redistribute message send",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "debug rip redistribute route receive",
+    "params": {},
+    "desc": "打开或关闭 RIP 进程收到 nsm 发来的路由信息的调试开关",
+    "requires": "",
+    "state_key": "debug.rip.redistribute.route",
+    "no_cmd": "no debug rip redistribute route receive",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router-rip"
+    ],
+    "syntax": "address-family ipv4 vrf <vrf-name>",
+    "params": {
+      "<vrf-name>": "VRF实例名称"
+    },
+    "desc": "配置在 PE路由器上的VRF 配置RIP地址族",
+    "requires": "",
+    "state_key": "router.rip.address_family",
+    "no_cmd": "no address-family ipv4 vrf <vrf-name>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router-rip"
+    ],
+    "syntax": "exit-address-family",
+    "params": {},
+    "desc": "退出地址族模式",
+    "requires": "",
+    "state_key": "router.address_family.exit",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ip ospf hello-interval <time>",
+    "params": {
+      "<time>": "发送时间间隔"
+    },
+    "desc": "配置接口周期发送 HELLO 数据包的时间间隔",
+    "requires": "",
+    "state_key": "interface.ospf.hello_interval",
+    "no_cmd": "no ip ospf hello-interval",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ip ospf dead-interval <time>",
+    "params": {
+      "<time >": "失效时间间隔"
+    },
+    "desc": "配置认定相邻三层交换机失效的时间间隔",
+    "requires": "",
+    "state_key": "interface.ospf.dead_interval",
+    "no_cmd": "no ip ospf dead-interval",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ip ospf transit-delay <time>",
+    "params": {
+      "<time>": "时延值"
+    },
+    "desc": "设置在接口上传送链路状态广播的时延值",
+    "requires": "",
+    "state_key": "interface.ospf.transit_delay",
+    "no_cmd": "no ip ospf transit-delay",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ip ospf retransmit <time>",
+    "params": {
+      "<time>": "重传间隔时间"
+    },
+    "desc": "配置接口与邻接三层交换机之间传送链路状态通告时的重传间隔",
+    "requires": "",
+    "state_key": "interface.ospf.retransmit",
+    "no_cmd": "no ip ospf retransmit",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router-ospf"
+    ],
+    "syntax": "redistribute { bgp | connected | static | rip | kernel} [ metric-type { 1 | 2 } ] [ tag <tag> ] [ metric <cost_value> ] [ route-map <WORD>]",
+    "params": {
+      "{ bgp | connected | static | rip | kernel}": "源路由协议",
+      "<cost_value>": "度量值",
+      "<WORD>": "路由策略图"
+    },
+    "desc": "引入其他协议发现路由和静态路由作为外部路由信息",
+    "requires": "",
+    "state_key": "router.ospf.redistribute",
+    "no_cmd": "no redistribute { bgp | connected | static | rip | kernel }",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router-ospf"
+    ],
+    "syntax": "timers spf <interval>",
+    "params": {
+      "<interval>": "SPF定时器时间"
+    },
+    "desc": "配置 OSPF 的 SPF 定时器",
+    "requires": "",
+    "state_key": "router.ospf.timers.spf",
+    "no_cmd": "no timers spf",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router-ospf"
+    ],
+    "syntax": "overflow database {<max-LSA> [hard | soft] | external <max-LSA> <recover time>}",
+    "params": {
+      "<max-LSA>": "最大LSA数量",
+      "<recover time>": "恢复时间"
+    },
+    "desc": "配置当前 OSPF 进程数据库中 LSA 的限制",
+    "requires": "",
+    "state_key": "router.ospf.overflow_database",
+    "no_cmd": "no overflow database [external <max-LSA > < recover time >]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router-ospf"
+    ],
+    "syntax": "area <id> {authentication [message-digest] | default-cost <cost> | filter-list {access | prefix} <WORD> {in | out} | nssa [default-information-originate | no-redistribution | no-summary | translator-role] | range <range> | stub [no-summary] | virtual-link <neighbor>}",
+    "params": {
+      "<id>": "区域ID",
+      "<cost>": "默认代价值",
+      "<WORD>": "过滤列表名",
+      "<range>": "聚合地址范围",
+      "<neighbor>": "虚链路邻居IP"
+    },
+    "desc": "配置OSPF区域下的参数（STUB域，NSSA 域和虚链路）",
+    "requires": "",
+    "state_key": "router.ospf.area",
+    "no_cmd": "no area <id> {authentication | default-cost | filter-list {access | prefix} <WORD> {in | out} | nssa [default-information-originate | no-redistribution | no-summary | translator-role] | range <range> | stub [no-summary] | virtual-link <neighbor>}",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ip ospf priority <priority>",
+    "params": {
+      "<priority>": "优先级"
+    },
+    "desc": "配置接口在选举“指定三层交换机”时的优先级",
+    "requires": "",
+    "state_key": "interface.ospf.priority",
+    "no_cmd": "no ip ospf priority",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router-ospf"
+    ],
+    "syntax": "log-adjacency-changes detail",
+    "params": {},
+    "desc": "设置是否记录 ospf 邻居变化的日志信息",
+    "requires": "",
+    "state_key": "router.ospf.log_adjacency_changes",
+    "no_cmd": "no log-adjacency-changes detail",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router-bgp"
+    ],
+    "syntax": "timers bgp <keepalive> <holdtime>",
+    "params": {
+      "<keepalive>": "Keepalive定时器",
+      "<holdtime>": "Holdtime定时器"
+    },
+    "desc": "设置所有邻居的 BGP 定时器",
+    "requires": "",
+    "state_key": "router.bgp.timers",
+    "no_cmd": "no timers bgp",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router-bgp"
+    ],
+    "syntax": "neighbor {<ip-address> | <TAG>} timers <keepalive> <holdtime>",
+    "params": {
+      "<ip-address> | <TAG>": "邻居IP或标签",
+      "<keepalive>": "Keepalive定时器",
+      "<holdtime>": "Holdtime定时器"
+    },
+    "desc": "设置某个特定的邻居的 keepalve 和 holdtime 定时器时间",
+    "requires": "",
+    "state_key": "router.bgp.neighbor.timers",
+    "no_cmd": "no neighbor {<ip-address> | <TAG>} timers",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router-bgp"
+    ],
+    "syntax": "neighbor {<ip-address> | <TAG>} advertisement-interval <seconds>",
+    "params": {
+      "<ip-address> | <TAG>": "邻居IP或标签",
+      "<seconds>": "时间间隔"
+    },
+    "desc": "设置发送BGP路由更新信息之间的最小间隔",
+    "requires": "",
+    "state_key": "router.bgp.neighbor.advertisement_interval",
+    "no_cmd": "no neighbor {<ip-address> | <TAG>} advertisement-interval",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router-bgp"
+    ],
+    "syntax": "bgp default local-preference <value>",
+    "params": {
+      "<value>": "本地优先级数值"
+    },
+    "desc": "改变默认的本地优先级",
+    "requires": "",
+    "state_key": "router.bgp.default.local_preference",
+    "no_cmd": "no bgp default local-preference",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip route {<ip-prefix> <mask> | <ip-prefix>} null0 [<distance>]",
+    "params": {
+      "<ip-prefix>": "目标网络前缀",
+      "<mask>|<prefix-length>": "子网掩码或前缀长度",
+      "<distance>": "管理距离"
+    },
+    "desc": "配置静态黑洞路由",
+    "requires": "",
+    "state_key": "ip.route.blackhole",
+    "no_cmd": "no ip route {<ip-prefix> <mask> | <ip-prefix>} null0",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "maximum-paths <1-32>",
+    "params": {
+      "<1-32>": "最大路径数"
+    },
+    "desc": "配置等价路由的最大数目",
+    "requires": "",
+    "state_key": "router.ecmp.maximum_paths",
+    "no_cmd": "no maximum-paths",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "load-balance {dst-src-mac | dst-src-ip | dst-src-mac-ip }",
+    "params": {
+      "{dst-src-mac | dst-src-ip | dst-src-mac-ip}": "负载均衡模式"
+    },
+    "desc": "设置交换机的 load-balance，同时作用于 port-group与 ECMP功能",
+    "requires": "",
+    "state_key": "system.load_balance",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "route-map <map_name> {deny | permit} <sequence_num>",
+    "params": {
+      "<map_name>": "route-map 名称",
+      "<sequence_num>": "节点序列号"
+    },
+    "desc": "配置 route-map 及其节点",
+    "requires": "",
+    "state_key": "route_map.create",
+    "no_cmd": "no route-map <map_name>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "router rip",
+    "params": {},
+    "desc": "打开 RIP 协议",
+    "requires": "",
+    "state_key": "router.rip",
+    "no_cmd": "no router rip",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "router bgp <as-number>",
+    "params": {
+      "<as-number>": "自治系统号"
+    },
+    "desc": "启动 BGP 路由进程",
+    "requires": "",
+    "state_key": "router.bgp",
+    "no_cmd": "no router bgp <as-number>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router-rip"
+    ],
+    "syntax": "network <A.B.C.D/M>",
+    "params": {
+      "<A.B.C.D/M>": "运行 RIP 的网段（CIDR）"
+    },
+    "desc": "设定运行 RIP 协议的网段",
+    "requires": "",
+    "state_key": "router.rip.network",
+    "no_cmd": "no network <A.B.C.D/M>",
+    "output_example": ""
+  }
+]
+
+=== 05_system.json ===
+[
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ip pim dense-mode",
+    "params": {},
+    "desc": "启动本接口 PIM-DM 协议",
+    "requires": "",
+    "state_key": "interface.pim_dm.enable",
+    "no_cmd": "no ip pim dense-mode",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip pim multicast-routing",
+    "params": {},
+    "desc": "全局启动 PIM 组播路由协议",
+    "requires": "",
+    "state_key": "global.pim.multicast_routing",
+    "no_cmd": "no ip pim multicast-routing",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ip pim hello-interval <interval>",
+    "params": {
+      "<interval>": "时间间隔值"
+    },
+    "desc": "配置接口 PIM-SM hello 报文间隔时间",
+    "requires": "",
+    "state_key": "interface.pim_sm.hello_interval",
+    "no_cmd": "no ip pim hello-interval",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ip pim hello-holdtime <value>",
+    "params": {
+      "<value>": "holdtime时间值"
+    },
+    "desc": "配置接口 PIM-SM hello报文中的holdtime 域的值",
+    "requires": "",
+    "state_key": "interface.pim_sm.hello_holdtime",
+    "no_cmd": "no ip pim hello-holdtime",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ip pim neighbor-filter {<access-list-number> }",
+    "params": {
+      "<access-list-number>": "访问控制列表号"
+    },
+    "desc": "配置邻居访问列表进行过滤",
+    "requires": "",
+    "state_key": "interface.pim_sm.neighbor_filter",
+    "no_cmd": "no ip pim neighbor-filter {<access-list-number> }",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ip pim bsr-border",
+    "params": {},
+    "desc": "配置接口为 PIM-DM 边缘接口",
+    "requires": "",
+    "state_key": "interface.pim_sm.bsr_border",
+    "no_cmd": "no ip pim bsr-border",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip pim rp-address <A.B.C.D> [<A.B.C.D/M>]",
+    "params": {
+      "<A.B.C.D>": "RP的IP地址",
+      "<A.B.C.D/M>": "组播地址范围及掩码"
+    },
+    "desc": "为全局或某个组播地址范围的组播组配置静态 RP",
+    "requires": "",
+    "state_key": "global.pim_sm.rp_address",
+    "no_cmd": "no ip pim rp-address <A.B.C.D> {<all> | <A.B.C.D/M>}",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip multicast unresolved-cache aging-time <value>",
+    "params": {
+      "<value>": "缓存老化时间值"
+    },
+    "desc": "配置内核组播路由缓存时间",
+    "requires": "",
+    "state_key": "global.multicast.unresolved_cache_aging_time",
+    "no_cmd": "no ip multicast unresolved-cache aging-time",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ip pim sparse-mode",
+    "params": {},
+    "desc": "启动本接口 PIM-SM 协议",
+    "requires": "",
+    "state_key": "interface.pim_sm.enable",
+    "no_cmd": "no ip pim sparse-mode",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router-msdp"
+    ],
+    "syntax": "peer <peer-address>",
+    "params": {
+      "<peer-address>": "MSDP对等体IP地址"
+    },
+    "desc": "创建 MSDP Peer",
+    "requires": "",
+    "state_key": "msdp.peer",
+    "no_cmd": "no peer <peer-address>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router-msdp"
+    ],
+    "syntax": "connect-source <interface-type> <interface-number>",
+    "params": {
+      "<interface-type>": "接口类型",
+      "<interface-number>": "接口编号"
+    },
+    "desc": "配置 MSDP Peer的Connect-Source 接口",
+    "requires": "",
+    "state_key": "msdp.peer.connect_source",
+    "no_cmd": "no connect-source",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router-msdp"
+    ],
+    "syntax": "description <text>",
+    "params": {
+      "<text>": "描述字符串"
+    },
+    "desc": "配置 MSDP对等体的描述信息",
+    "requires": "",
+    "state_key": "msdp.peer.description",
+    "no_cmd": "no description",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router-msdp"
+    ],
+    "syntax": "remote-as <as-num>",
+    "params": {
+      "<as-num>": "自治系统号"
+    },
+    "desc": "配置 MSDP Peer的AS号",
+    "requires": "",
+    "state_key": "msdp.peer.remote_as",
+    "no_cmd": "no remote-as <as-num>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router-msdp"
+    ],
+    "syntax": "mesh-group <name>",
+    "params": {
+      "<name>": "全连接组名称"
+    },
+    "desc": "配置 MSDP Peer 加入指定全连接组",
+    "requires": "",
+    "state_key": "msdp.peer.mesh_group",
+    "no_cmd": "no mesh-group <name>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router-msdp"
+    ],
+    "syntax": "redistribute [list {<acl-list-number> | <acl-name>}]",
+    "params": {
+      "<acl-list-number |acl-name>": "ACL编号或名称"
+    },
+    "desc": "配置 SA报文创建过滤策略",
+    "requires": "",
+    "state_key": "msdp.redistribute",
+    "no_cmd": "no redistribute",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router-msdp"
+    ],
+    "syntax": "sa-filter {in | out}",
+    "params": {},
+    "desc": "配置 SA报文接收和转发过滤规则",
+    "requires": "",
+    "state_key": "msdp.sa_filter",
+    "no_cmd": "no sa-filter {in | out}",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router-msdp"
+    ],
+    "syntax": "sa-filter {in | out} list {<acl-number> | <acl-name>}",
+    "params": {},
+    "desc": "配置 SA报文接收和转发过滤规则",
+    "requires": "",
+    "state_key": "msdp.sa_filter",
+    "no_cmd": "no sa-filter {in | out} list {<acl-number> | <acl-name>}",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router-msdp"
+    ],
+    "syntax": "sa-filter {in | out} rp-list {<rp-acl-number> | <rp-acl-name>}",
+    "params": {},
+    "desc": "配置 SA报文接收和转发过滤规则",
+    "requires": "",
+    "state_key": "msdp.sa_filter",
+    "no_cmd": "no sa-filter {in | out} rp-list {<rp-acl-number> | <rp-acl-name>}",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router-msdp"
+    ],
+    "syntax": "sa-request",
+    "params": {},
+    "desc": "配置发送 SA请求报文",
+    "requires": "",
+    "state_key": "msdp.peer.sa_request",
+    "no_cmd": "no sa-request",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router-msdp"
+    ],
+    "syntax": "sa-request-filter [list {<access-list-number> | <access-list-name>}]",
+    "params": {
+      "<access-list-number | access-list-name>": "访问控制列表编号或名称"
+    },
+    "desc": "配置 SA-Request报文过滤策略",
+    "requires": "",
+    "state_key": "msdp.sa_request_filter",
+    "no_cmd": "no sa-request-filter [list {<access-list-number> | <access-list-name>}]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip multicast ssm {default | range <access-list-number>}",
+    "params": {
+      "<access-list-number >": "访问控制列表编号"
+    },
+    "desc": "配置 pim ssm 组播组地址范围",
+    "requires": "",
+    "state_key": "global.pim_ssm.range",
+    "no_cmd": "no ip multicast ssm",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "access-list <5000-5099> {deny|permit} ip {{<source> <source-wildcard>}|{host-source <source-host-ip>}|any-source} {{<destination> <destination-wildcard>}|{host-destination <destination-host-ip>}|any-destination}",
+    "params": {
+      "<5000-5099>": "ACL编号",
+      "{deny|permit}": "拒绝或允许"
+    },
+    "desc": "配置源受控使用的规则",
+    "requires": "",
+    "state_key": "global.access_list.source_control",
+    "no_cmd": "no access-list <5000-5099> {deny|permit} ip {{<source> <source-wildcard>}|{host-source <source-host-ip>}|any-source} {{<destination> <destination-wildcard>}|{host-destination <destination-host-ip>}|any-destination}",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ip multicast source-control access-group <5000-5099>",
+    "params": {
+      "<5000-5099>": "ACL编号"
+    },
+    "desc": "把源受控使用的规则配置到端口上",
+    "requires": "",
+    "state_key": "interface.multicast.source_control",
+    "no_cmd": "no ip multicast source-control access-group <5000-5099>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ip dvmrp enable",
+    "params": {},
+    "desc": "在接口上启动 DVMRP 协议",
+    "requires": "",
+    "state_key": "interface.dvmrp.enable",
+    "no_cmd": "no ip dvmrp enable",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "vlan"
+    ],
+    "syntax": "multicast-vlan",
+    "params": {},
+    "desc": "配置一个 VLAN 启动组播 VLAN 功能",
+    "requires": "",
+    "state_key": "vlan.multicast_vlan",
+    "no_cmd": "no multicast-vlan",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "vlan"
+    ],
+    "syntax": "multicast-vlan association <vlan-list>",
+    "params": {
+      "<vlan-list>": "VLAN列表"
+    },
+    "desc": "将一个组播 VLAN 与多个 VLAN 关联",
+    "requires": "",
+    "state_key": "vlan.multicast_vlan.association",
+    "no_cmd": "no multicast-vlan association <vlan-list>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "vlan"
+    ],
+    "syntax": "multicast-vlan association interface (ethernet | port-channel|) IFNAME",
+    "params": {
+      "IFNAME": "接口名称"
+    },
+    "desc": "将特定端口关联到组播 VLAN 上",
+    "requires": "",
+    "state_key": "vlan.multicast_vlan.association.interface",
+    "no_cmd": "no multicast-vlan association interface (ethernet | port-channel|) IFNAME",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "vlan"
+    ],
+    "syntax": "multicast-vlan mode {dynamic| compatible}",
+    "params": {
+      "{dynamic| compatible}": "组播vlan模式"
+    },
+    "desc": "配置组播vlan的两种模式",
+    "requires": "",
+    "state_key": "vlan.multicast_vlan.mode",
+    "no_cmd": "no multicast-vlan mode {dynamic| compatible}",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip igmp snooping vlan <vlan-id>",
+    "params": {
+      "<vlan-id>": "VLAN ID"
+    },
+    "desc": "启动组播 VLAN 的 IGMP Snooping 功能",
+    "requires": "",
+    "state_key": "global.igmp_snooping.vlan",
+    "no_cmd": "no ip igmp snooping vlan <vlan-id>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip igmp snooping",
+    "params": {},
+    "desc": "启动 IGMP Snooping功能",
+    "requires": "",
+    "state_key": "global.igmp_snooping",
+    "no_cmd": "no ip igmp snooping",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ipv6 mld snooping vlan <vlan-id>",
+    "params": {
+      "<vlan-id>": "VLAN ID"
+    },
+    "desc": "启动组播 VLAN的 MLD Snooping功能",
+    "requires": "",
+    "state_key": "global.mld_snooping.vlan",
+    "no_cmd": "no ipv6 mld snooping vlan <vlan-id>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ipv6 mld snooping",
+    "params": {},
+    "desc": "启动 MLD Snooping 功能",
+    "requires": "",
+    "state_key": "global.mld_snooping",
+    "no_cmd": "no ipv6 mld snooping",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "router msdp",
+    "params": {},
+    "desc": "启动 MSDP 功能",
+    "requires": "",
+    "state_key": "router.msdp",
+    "no_cmd": "no router msdp",
+    "output_example": ""
+  }
+]
+
+=== core_01_base.json ===
+[
+  {
+    "mode": [
+      "user",
+      "priv"
+    ],
+    "syntax": "enable [<1-15>]",
+    "params": {
+      "<1-15>": "用户权限级别"
+    },
+    "desc": "进入特权用户模式",
+    "requires": "",
+    "state_key": "system.enable",
+    "no_cmd": "disable",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "config [terminal]",
+    "params": {},
+    "desc": "进入全局配置模式",
+    "requires": "",
+    "state_key": "system.config",
+    "no_cmd": "exit",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "hostname <name>",
+    "params": {
+      "<name>": "交换机名称"
+    },
+    "desc": "配置交换机名称",
+    "requires": "",
+    "state_key": "system.hostname",
+    "no_cmd": "no hostname",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "enable password [0 | 7] <password>",
+    "params": {
+      "[0 | 7]": "明文或密文",
+      "<password>": "密码"
+    },
+    "desc": "配置特权用户口令",
+    "requires": "",
+    "state_key": "system.enable_password",
+    "no_cmd": "no enable password",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "show running-config",
+    "params": {},
+    "desc": "显示当前运行状态下生效的交换机参数配置",
+    "requires": "",
+    "state_key": "show.running_config",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "show startup-config",
+    "params": {},
+    "desc": "显示当前运行状态下写在Flash Memory中的交换机参数配置",
+    "requires": "",
+    "state_key": "show.startup_config",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "copy <source-url> <destination-url> [ascii | binary]",
+    "params": {
+      "<source-url>": "源文件路径",
+      "<destination-url>": "目标文件路径",
+      "[ascii | binary]": "传输模式"
+    },
+    "desc": "文件复制或上下载操作",
+    "requires": "",
+    "state_key": "system.copy",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "ping <ip-address>",
+    "params": {
+      "<ip-address>": "目标IP地址"
+    },
+    "desc": "网络连通性测试",
+    "requires": "",
+    "state_key": "system.ping",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "reload",
+    "params": {},
+    "desc": "热启动交换机",
+    "requires": "",
+    "state_key": "system.reload",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "interface ethernet <interface-list>",
+    "params": {
+      "<interface-list>": "以太网端口列表"
+    },
+    "desc": "进入业务端口配置模式（物理接口）",
+    "requires": "",
+    "state_key": "interface.ethernet",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "interface vlan <vlan-id>",
+    "params": {
+      "<vlan-id>": "VLAN ID"
+    },
+    "desc": "创建一个 VLAN 接口并进入配置模式（SVI 接口）",
+    "requires": "",
+    "state_key": "interface.vlan",
+    "no_cmd": "no interface vlan <vlan-id>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "interface port-channel <port-channel-number>",
+    "params": {
+      "<port-channel-number>": "聚合口编号"
+    },
+    "desc": "进入 port-channel 聚合口配置模式",
+    "requires": "",
+    "state_key": "interface.port_channel",
+    "no_cmd": "no interface port-channel <port-channel-number>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "interface loopback <loopback-id>",
+    "params": {
+      "<loopback-id>": "Loopback 接口编号（0-1023）"
+    },
+    "desc": "创建或进入 Loopback 环回接口配置模式（三层逻辑接口）",
+    "requires": "",
+    "state_key": "interface.loopback",
+    "no_cmd": "no interface loopback <loopback-id>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show running-config current-mode",
+    "params": {},
+    "desc": "显示当前模式下的配置",
+    "requires": "",
+    "state_key": "show.running_config.current_mode",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "authentication line {console | vty | web} login {local | radius | tacacs | none}",
+    "params": {
+      "{console | vty | web}": "登录方式：Console / Telnet+SSH / Web",
+      "{local | radius | tacacs | none}": "认证方法列表"
+    },
+    "desc": "配置远程登录认证方法列表",
+    "requires": "",
+    "state_key": "system.authentication_line",
+    "no_cmd": "no authentication line {console | vty | web} login",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "username <username> [privilege <privilege>] [password [0 | 7] <password>]",
+    "params": {
+      "<username>": "用户名",
+      "<privilege>": "权限级别（1-15）",
+      "<password>": "口令"
+    },
+    "desc": "配置本地用户名和口令",
+    "requires": "",
+    "state_key": "system.username",
+    "no_cmd": "no username <username>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "telnet-server enable",
+    "params": {},
+    "desc": "打开交换机的 Telnet 服务器功能",
+    "requires": "",
+    "state_key": "system.telnet_server",
+    "no_cmd": "no telnet-server enable",
+    "output_example": ""
+  }
+]
+
+=== core_02_l2.json ===
+[
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "vlan WORD",
+    "params": {
+      "WORD": "VLAN ID列表或范围（如 2 或 2-5;8）"
+    },
+    "desc": "创建/删除 VLAN 或进入 VLAN 模式",
+    "requires": "",
+    "state_key": "vlan.create",
+    "no_cmd": "no vlan WORD",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "vlan"
+    ],
+    "syntax": "name <vlan-name>",
+    "params": {
+      "<vlan-name>": "VLAN名称字符串"
+    },
+    "desc": "设置 VLAN名称",
+    "requires": "",
+    "state_key": "vlan.name",
+    "no_cmd": "no name",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "switchport mode {trunk | access | hybrid}",
+    "params": {
+      "{trunk | access | hybrid}": "端口二层工作模式"
+    },
+    "desc": "设置当前端口为 Trunk，Access 端口或Hybrid端口",
+    "requires": "",
+    "state_key": "interface.switchport_mode",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "switchport access vlan <vlan-id>",
+    "params": {
+      "<vlan-id>": "VLAN ID"
+    },
+    "desc": "将当前端口加入到指定 Access VLAN",
+    "requires": "当前端口需为 Access 模式",
+    "state_key": "interface.access_vlan",
+    "no_cmd": "no switchport access vlan",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "switchport trunk allowed vlan {WORD | all | add WORD | except WORD | remove WORD}",
+    "params": {
+      "WORD": "VLAN ID列表"
+    },
+    "desc": "设置 Trunk 端口允许通过的 VLAN",
+    "requires": "当前端口需为 Trunk 模式",
+    "state_key": "interface.trunk_allowed_vlan",
+    "no_cmd": "no switchport trunk allowed vlan",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "switchport trunk native vlan <vlan-id>",
+    "params": {
+      "<vlan-id>": "PVID (Native VLAN ID)"
+    },
+    "desc": "设置Trunk 端口的 PVID",
+    "requires": "当前端口需为 Trunk 模式",
+    "state_key": "interface.trunk_native_vlan",
+    "no_cmd": "no switchport trunk native vlan",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "switchport hybrid allowed vlan {WORD | all | add WORD | except WORD | remove WORD} {tag | untag}",
+    "params": {
+      "WORD": "VLAN ID列表",
+      "{tag | untag}": "带标签或去标签"
+    },
+    "desc": "设置Hybrid端口允许以tag 或 untag方式通过的VLAN",
+    "requires": "当前端口需为 Hybrid 模式",
+    "state_key": "interface.hybrid_allowed_vlan",
+    "no_cmd": "no switchport hybrid allowed vlan",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "switchport hybrid native vlan <vlan-id>",
+    "params": {
+      "<vlan-id>": "PVID"
+    },
+    "desc": "设置端口的PVID",
+    "requires": "当前端口需为 Hybrid 模式",
+    "state_key": "interface.hybrid_native_vlan",
+    "no_cmd": "no switchport hybrid native vlan",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "port-group <port-group-number>",
+    "params": {
+      "<port-group-number>": "聚合组编号"
+    },
+    "desc": "创建一个port group",
+    "requires": "",
+    "state_key": "system.port_group.create",
+    "no_cmd": "no port-group <port-group-number>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "port-group <port-group-number> mode {active | passive | on}",
+    "params": {
+      "<port-group-number>": "聚合组编号",
+      "{active | passive | on}": "LACP主动、被动模式或静态ON模式"
+    },
+    "desc": "把端口加入port group，并设置聚合模式",
+    "requires": "",
+    "state_key": "interface.port_group_member",
+    "no_cmd": "no port-group",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "lacp timeout {short | long}",
+    "params": {
+      "{short | long}": "超时时间模式"
+    },
+    "desc": "设置当前端口 LACP 协议中的端口 Timeout模式",
+    "requires": "",
+    "state_key": "interface.lacp_timeout",
+    "no_cmd": "no lacp timeout",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "lacp port-priority <port-priority>",
+    "params": {
+      "<port-priority>": "端口优先级数值"
+    },
+    "desc": "设置当前端口LACP协议中的端口优先级",
+    "requires": "",
+    "state_key": "interface.lacp_port_priority",
+    "no_cmd": "no lacp port-priority",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "lacp system-priority <system-priority>",
+    "params": {
+      "<system-priority>": "系统优先级数值"
+    },
+    "desc": "设置 LACP 协议的系统优先级",
+    "requires": "",
+    "state_key": "system.lacp_system_priority",
+    "no_cmd": "no lacp system-priority",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global",
+      "if"
+    ],
+    "syntax": "spanning-tree",
+    "params": {},
+    "desc": "启动 MSTP协议",
+    "requires": "",
+    "state_key": "spanning_tree.enable",
+    "no_cmd": "no spanning-tree",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "spanning-tree mode {mstp | stp | rstp}",
+    "params": {
+      "{mstp | stp | rstp}": "生成树模式"
+    },
+    "desc": "设置 MSTP的运行模式",
+    "requires": "",
+    "state_key": "spanning_tree.mode",
+    "no_cmd": "no spanning-tree mode",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "spanning-tree mst configuration",
+    "params": {},
+    "desc": "进入 MSTP 域配置模式",
+    "requires": "",
+    "state_key": "spanning_tree.mst_configuration",
+    "no_cmd": "no spanning-tree mst configuration",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "spanning-tree mst <instance-id> priority <bridge-priority>",
+    "params": {
+      "<instance-id>": "MST实例ID",
+      "<bridge-priority>": "网桥优先级"
+    },
+    "desc": "设置交换机在指定实例的网桥优先级",
+    "requires": "",
+    "state_key": "spanning_tree.mst.priority",
+    "no_cmd": "no spanning-tree mst <instance-id> priority",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "spanning-tree portfast [bpdufilter | bpduguard] [recovery <30-3600>]",
+    "params": {
+      "[bpdufilter | bpduguard]": "BPDU过滤或保护",
+      "<30-3600>": "恢复时间"
+    },
+    "desc": "设置端口为边缘端口",
+    "requires": "",
+    "state_key": "interface.spanning_tree.portfast",
+    "no_cmd": "no spanning-tree portfast",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "loopback",
+    "params": {},
+    "desc": "打开或关闭指定端口的环回测试功能",
+    "requires": "端口配置模式（以太网端口 / 聚合口）",
+    "state_key": "interface.port_loopback",
+    "no_cmd": "no loopback",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "loopback-detection interval-time <loopback> <no-loopback>",
+    "params": {
+      "<loopback>": "环路检测时间间隔",
+      "<no-loopback>": "无环回确认次数/时间"
+    },
+    "desc": "设置环路检测的时间间隔",
+    "requires": "",
+    "state_key": "loopback_detection.interval",
+    "no_cmd": "no loopback-detection interval-time",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "loopback-detection control-recovery timeout <0-3600>",
+    "params": {
+      "<0-3600>": "受控端口自动恢复时间（秒），0 表示不自动恢复"
+    },
+    "desc": "配置环路检测受控方式是否自动恢复或恢复时间间隔",
+    "requires": "",
+    "state_key": "loopback_detection.control_recovery",
+    "no_cmd": "no loopback-detection control-recovery timeout",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "loopback-detection specified-vlan <vlan-list>",
+    "params": {
+      "<vlan-list>": "需要检测环路的 VLAN 列表，如 1-3 或 10;20"
+    },
+    "desc": "启动或关闭端口的环路检测功能",
+    "requires": "端口配置模式（以太网端口 / 聚合口）",
+    "state_key": "interface.loopback_detection.specified_vlan",
+    "no_cmd": "no loopback-detection specified-vlan",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "loopback-detection control {shutdown | block | learning}",
+    "params": {
+      "{shutdown | block | learning}": "环路受控方式：关闭端口 / 阻塞 / 仅学习"
+    },
+    "desc": "打开或关闭端口的环路检测受控功能",
+    "requires": "端口配置模式（以太网端口 / 聚合口）",
+    "state_key": "interface.loopback_detection.control",
+    "no_cmd": "no loopback-detection control",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show loopback-detection [interface <interface-list>]",
+    "params": {
+      "<interface-list>": "以太网端口列表"
+    },
+    "desc": "显示所有或指定端口的环路检测状态和检测结果",
+    "requires": "",
+    "state_key": "show.loopback_detection",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show loopback-detection interface ethernet <interface-list>",
+    "params": {
+      "<interface-list>": "以太网端口列表"
+    },
+    "desc": "显示指定以太网端口的环路检测状态和检测结果",
+    "requires": "",
+    "state_key": "show.loopback_detection",
+    "no_cmd": "",
+    "output_example": ""
+  }
+]
+
+=== core_03_l3.json ===
+[
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip route {<ip-prefix> <mask> | <ip-prefix>/<prefix-length>} {<gateway-address> | <gateway-interface>} [<distance>]",
+    "params": {
+      "<ip-prefix>": "目标网络前缀",
+      "<mask> | <prefix-length>": "子网掩码或前缀长度",
+      "<gateway-address> | <gateway-interface>": "网关IP地址或网关接口",
+      "<distance>": "管理距离"
+    },
+    "desc": "配置静态路由",
+    "requires": "",
+    "state_key": "ip.route.static",
+    "no_cmd": "no ip route {<ip-prefix> <mask> | <ip-prefix>/<prefix-length>} [<gateway-address> | <gateway-interface>] [<distance>]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "router ospf [<id>] [VRF Name]",
+    "params": {
+      "<id>": "OSPF进程号",
+      "[VRF Name]": "VRF名称"
+    },
+    "desc": "启动 OSPF协议进程",
+    "requires": "",
+    "state_key": "router.ospf",
+    "no_cmd": "no router ospf [<id>]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router-ospf"
+    ],
+    "syntax": "network {<network> <mask> | <network>/<prefix>} area <area_id>",
+    "params": {
+      "<network>": "网络地址",
+      "<mask> | <prefix>": "掩码或前缀",
+      "<area_id>": "区域ID"
+    },
+    "desc": "配置某个网段属于某个区域",
+    "requires": "",
+    "state_key": "router.ospf.network",
+    "no_cmd": "no network {<network> <mask> | <network>/<prefix>} area <area_id>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip dhcp pool <name>",
+    "params": {
+      "<name>": "DHCP地址池名称"
+    },
+    "desc": "配置 DHCP 地址池",
+    "requires": "",
+    "state_key": "dhcp.pool",
+    "no_cmd": "no ip dhcp pool <name>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "dhcp-pool"
+    ],
+    "syntax": "network-address <network-number> <mask>",
+    "params": {
+      "<network-number>": "网络地址",
+      "<mask>": "子网掩码"
+    },
+    "desc": "配置地址池可分配的地址范围",
+    "requires": "",
+    "state_key": "dhcp.pool.network_address",
+    "no_cmd": "no network-address",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "dhcp-pool"
+    ],
+    "syntax": "network-address <network-number> <prefix-length>",
+    "params": {
+      "<network-number>": "网络地址",
+      "<prefix-length>": "掩码长度（1-32）"
+    },
+    "desc": "配置地址池可分配的地址范围",
+    "requires": "",
+    "state_key": "dhcp.pool.network_address",
+    "no_cmd": "no network-address",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "dhcp-pool"
+    ],
+    "syntax": "network-address <network-number>",
+    "params": {
+      "<network-number>": "网络地址"
+    },
+    "desc": "配置地址池可分配的地址范围",
+    "requires": "",
+    "state_key": "dhcp.pool.network_address",
+    "no_cmd": "no network-address",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "dhcp-pool"
+    ],
+    "syntax": "default-router <address1> [<address2>] [<address3>] [<address4>] [<address5>] [<address6>] [<address7>] [<address8>]",
+    "params": {
+      "address1...address8": "缺省网关IP地址",
+      "<address2> ... <address8>": "可选备用网关地址（最多 8 个）"
+    },
+    "desc": "为 DHCP客户机配置缺省网关",
+    "requires": "",
+    "state_key": "dhcp.pool.default_router",
+    "no_cmd": "no default-router",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show ip route",
+    "params": {},
+    "desc": "显示IPv4路由表",
+    "requires": "",
+    "state_key": "show.ip.route",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show ip ospf neighbor",
+    "params": {},
+    "desc": "显示OSPF邻居状态信息",
+    "requires": "",
+    "state_key": "show.ip.ospf.neighbor",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show ip interface {vlan <vlan-id> | ethernet <interface-list> | port-channel <port-channel-number> | loopback <loopback-id>}",
+    "params": {
+      "<vlan-id>": "VLAN ID",
+      "<interface-list>": "以太网端口列表",
+      "<port-channel-number>": "聚合口编号",
+      "<loopback-id>": "Loopback 接口编号"
+    },
+    "desc": "显示指定三层接口的IP配置及状态信息",
+    "requires": "",
+    "state_key": "show.ip.interface",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show ip interface",
+    "params": {},
+    "desc": "显示所有三层接口的IP配置及状态信息",
+    "requires": "",
+    "state_key": "show.ip.interface",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show ip interface <interface-name>",
+    "params": {
+      "<interface-name>": "接口名称，如 Vlan1 / Loopback1 / Ethernet1/0/1"
+    },
+    "desc": "显示指定接口的IP配置及状态信息",
+    "requires": "",
+    "state_key": "show.ip.interface",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show interface",
+    "params": {},
+    "desc": "显示所有接口的物理状态、描述、MTU、带宽及三层地址信息",
+    "requires": "",
+    "state_key": "show.interface",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show interface loopback <loopback-id>",
+    "params": {
+      "<loopback-id>": "Loopback 接口编号"
+    },
+    "desc": "显示指定 Loopback 接口的详细状态信息",
+    "requires": "",
+    "state_key": "show.interface",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show interface vlan <vlan-id>",
+    "params": {
+      "<vlan-id>": "VLAN ID"
+    },
+    "desc": "显示指定 VLAN 接口的详细状态信息",
+    "requires": "",
+    "state_key": "show.interface",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show interface ethernet <interface-list>",
+    "params": {
+      "<interface-list>": "以太网端口列表"
+    },
+    "desc": "显示指定以太网端口的详细状态信息",
+    "requires": "",
+    "state_key": "show.interface",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show interface port-channel <port-channel-number>",
+    "params": {
+      "<port-channel-number>": "聚合口编号"
+    },
+    "desc": "显示指定聚合口的详细状态信息",
+    "requires": "",
+    "state_key": "show.interface",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show ipv6 interface",
+    "params": {},
+    "desc": "显示所有三层接口的 IPv6 使能状态与地址信息",
+    "requires": "",
+    "state_key": "show.ipv6.interface",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show ipv6 interface loopback <loopback-id>",
+    "params": {
+      "<loopback-id>": "Loopback 接口编号"
+    },
+    "desc": "显示指定 Loopback 接口的 IPv6 状态与地址信息",
+    "requires": "",
+    "state_key": "show.ipv6.interface",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show ipv6 interface vlan <vlan-id>",
+    "params": {
+      "<vlan-id>": "VLAN ID"
+    },
+    "desc": "显示指定 VLAN 接口的 IPv6 状态与地址信息",
+    "requires": "",
+    "state_key": "show.ipv6.interface",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show ipv6 interface ethernet <interface-list>",
+    "params": {
+      "<interface-list>": "以太网端口列表"
+    },
+    "desc": "显示指定以太网端口的 IPv6 状态与地址信息",
+    "requires": "",
+    "state_key": "show.ipv6.interface",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show ipv6 interface port-channel <port-channel-number>",
+    "params": {
+      "<port-channel-number>": "聚合口编号"
+    },
+    "desc": "显示指定聚合口的 IPv6 状态与地址信息",
+    "requires": "",
+    "state_key": "show.ipv6.interface",
+    "no_cmd": "",
+    "output_example": ""
+  }
+]
+
+=== core_04_security.json ===
+[
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "switchport port-security",
+    "params": {},
+    "desc": "配置端口的port-security功能",
+    "requires": "",
+    "state_key": "interface.port_security.enable",
+    "no_cmd": "no switchport port-security",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "switchport port-security mac-address <mac-address> [vlan <vlan-id>]",
+    "params": {
+      "<mac-address>": "静态安全MAC地址",
+      "<vlan-id>": "VLAN ID"
+    },
+    "desc": "配置端口的静态安全 MAC",
+    "requires": "需要先开启 switchport port-security",
+    "state_key": "interface.port_security.mac_address",
+    "no_cmd": "no switchport port-security mac-address <mac-address>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "switchport port-security maximum <value> [vlan <vlan-list>]",
+    "params": {
+      "<value>": "最大MAC地址数量",
+      "<vlan-list>": "VLAN列表"
+    },
+    "desc": "配置端口允许的最大安全 MAC地址数",
+    "requires": "需要先开启 switchport port-security",
+    "state_key": "interface.port_security.maximum",
+    "no_cmd": "no switchport port-security maximum <value> [vlan <vlan-list>]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "switchport port-security violation {protect | recovery | restrict | shutdown}",
+    "params": {
+      "{protect | recovery | restrict | shutdown}": "违规处理动作模式"
+    },
+    "desc": "配置MAC地址数量违规或非安全MAC访问时引发的安全动作",
+    "requires": "需要先开启 switchport port-security",
+    "state_key": "interface.port_security.violation",
+    "no_cmd": "no switchport port-security violation",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "switchport port-security aging {static | time <value> | type {absolute | inactivity}}",
+    "params": {
+      "static": "静态老化",
+      "time <value>": "老化时间数值",
+      "type": "老化类型"
+    },
+    "desc": "使能端口的 port-security老化表项的功能，指定老化时间以及类型等",
+    "requires": "需要先开启 switchport port-security",
+    "state_key": "interface.port_security.aging",
+    "no_cmd": "no switchport port-security aging {static | time | type}",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "clear port-security {all | configured | dynamic | sticky} [[address <mac-addr> | interface <interface-id>] [vlan <vlan-id> ]]",
+    "params": {
+      "{all | configured | dynamic | sticky}": "需要清除的MAC表项类型"
+    },
+    "desc": "清除端口的安全 MAC表项",
+    "requires": "",
+    "state_key": "system.port_security.clear",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv",
+      "global"
+    ],
+    "syntax": "show port-security [interface <interface-id>] [address | vlan]",
+    "params": {
+      "<interface-id>": "端口编号"
+    },
+    "desc": "显示 port-security 配置信息",
+    "requires": "",
+    "state_key": "show.port_security",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "access-list <num> {deny | permit} {{<sIpAddr> <sMask>} | any-source | {host-source <sIpAddr>}}",
+    "params": {
+      "<num>": "标准IP ACL编号",
+      "{deny | permit}": "拒绝或允许"
+    },
+    "desc": "创建或追加一条数字标准 IPv4访问列表规则(rule)",
+    "requires": "",
+    "state_key": "acl.ipv4.standard.numbered",
+    "no_cmd": "no access-list <num>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip access-list standard <name>",
+    "params": {
+      "<name>": "命名标准ACL名称"
+    },
+    "desc": "创建一条命名标准 IPv4访问列表并进入配置模式",
+    "requires": "",
+    "state_key": "acl.ipv4.standard.named",
+    "no_cmd": "no ip access-list standard <name>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "acl-std"
+    ],
+    "syntax": "{deny | permit} {{<sIpAddr> <sMask>} | any-source | {host-source <sIpAddr>}}",
+    "params": {},
+    "desc": "创建一条命名标准 IPv4 访问规则（rule）",
+    "requires": "需进入命名标准IP访问列表配置模式",
+    "state_key": "acl.ipv4.standard.named.rule",
+    "no_cmd": "no {deny | permit} {{<sIpAddr> <sMask>} | any-source | {host-source <sIpAddr>}}",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "ip access-list extended <name>",
+    "params": {
+      "<name>": "命名扩展ACL名称"
+    },
+    "desc": "创建一条命名扩展 IPv4 访问列表并进入配置模式",
+    "requires": "",
+    "state_key": "acl.ipv4.extended.named",
+    "no_cmd": "no ip access-list extended <name>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "firewall enable",
+    "params": {},
+    "desc": "全局打开包过滤功能",
+    "requires": "",
+    "state_key": "firewall.enable",
+    "no_cmd": "firewall disable",
+    "output_example": "Switch#show firewall\nFirewall Status: Enable."
+  },
+  {
+    "mode": [
+      "if"
+    ],
+    "syntax": "ip access-group <acl-name> {in|out} [traffic-statistic]",
+    "params": {
+      "<acl-name>": "绑定的IPv4 ACL名称或编号",
+      "{in|out}": "入口或出口方向"
+    },
+    "desc": "在端口的入口或出口方向上应用一条 IPv4 access-list",
+    "requires": "需全局开启 firewall enable",
+    "state_key": "interface.ip_access_group",
+    "no_cmd": "no ip access-group <acl-name> {in|out}",
+    "output_example": "Switch(Config-If-Ethernet1/0/10)#ip access-group 110 in"
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "clear access-group (in | out) statistic interface { <interface-name> | ethernet <interface-name> }",
+    "params": {
+      "(in | out)": "数据流方向",
+      "<interface-name>": "接口名称"
+    },
+    "desc": "在指定端口清除出口或入口方向包过滤统计信息",
+    "requires": "",
+    "state_key": "acl.statistic.clear",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "time-range <time_range_name>",
+    "params": {
+      "<time_range_name>": "时间范围名称"
+    },
+    "desc": "创建一个时间范围名称",
+    "requires": "",
+    "state_key": "time_range.create",
+    "no_cmd": "no time-range <time_range_name>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "time-range"
+    ],
+    "syntax": "absolute-periodic {Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday} <start_time> to {Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday} <end_time>",
+    "params": {
+      "<start_time>": "开始时间",
+      "<end_time>": "结束时间"
+    },
+    "desc": "配置一周内的各种不同要求的时间范围，每周循环",
+    "requires": "需进入 time-range 配置模式",
+    "state_key": "time_range.absolute_periodic",
+    "no_cmd": "no absolute-periodic",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "time-range"
+    ],
+    "syntax": "periodic {{Monday+Tuesday+Wednesday+Thursday+Friday+Saturday+ Sunday} | daily | weekdays | weekend} <start_time> to <end_time>",
+    "params": {
+      "<start_time>": "开始时间",
+      "<end_time>": "结束时间"
+    },
+    "desc": "配置周期性时段",
+    "requires": "需进入 time-range 配置模式",
+    "state_key": "time_range.periodic",
+    "no_cmd": "no periodic",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "time-range"
+    ],
+    "syntax": "absolute start <start_time> <start_date> [end <end_time> <end_date>]",
+    "params": {
+      "<start_time>": "开始时间",
+      "<start_date>": "开始日期",
+      "<end_time>": "结束时间",
+      "<end_date>": "结束日期"
+    },
+    "desc": "创建一个绝对时间范围",
+    "requires": "",
+    "state_key": "time_range.absolute",
+    "no_cmd": "no absolute start <start_time> <start_date> [end <end_time> <end_date>]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "access-list <num> {deny | permit} {icmp | igmp | tcp | udp | eigrp | gre | igrp | ipinip | ip | ospf | <protocol-num>} {{<sIpAddr> <sMask>} | any-source | {host-source <sIpAddr>}} {{<dIpAddr> <dMask>} | any-destination | {host-destination <dIpAddr>}} [s-port {<sPort> | range <sPortMin> <sPortMax>}] [d-port {<dPort> | range <dPortMin> <dPortMax>}] [precedence <prec>] [tos <tos>] [time-range <time-range-name>]",
+    "params": {
+      "<num>": "扩展IP ACL编号",
+      "protocol": "协议类型",
+      "options": "端口范围、DSCP、时间范围等可选参数"
+    },
+    "desc": "创建或追加一条数字扩展 IPv4访问列表规则(rule)",
+    "requires": "",
+    "state_key": "acl.ipv4.extended.numbered",
+    "no_cmd": "no access-list <num>",
+    "output_example": ""
+  }
+]
+
+=== startup-config.json ===
+{
+  "system": {
+    "hostname": "SW",
+    "enable_password": null,
+    "enable_level": 15,
+    "load_balance": "dst-src-mac-ip",
+    "vty_lines": {},
+    "time_ranges": {},
+    "vrfs": {},
+    "tunnels": {}
+  },
+  "vlans": {
+    "1": {
+      "name": "default"
+    },
+    "21": {
+      "name": "VLAN0021"
+    },
+    "22": {
+      "name": "VLAN0022"
+    },
+    "222": {
+      "name": "VLAN0222"
+    },
+    "24": {
+      "name": "VLAN0024"
+    },
+    "25": {
+      "name": "VLAN0025"
+    },
+    "30": {
+      "name": "CW-30"
+    },
+    "31": {
+      "name": "CW-31"
+    },
+    "40": {
+      "name": "XiaoShou"
+    },
+    "50": {
+      "name": "ChanPin"
+    },
+    "60": {
+      "name": "XinXi"
+    },
+    "100": {
+      "name": "AP-Manage"
+    }
+  },
+  "interfaces": {
+    "Ethernet1/0/1": {
+      "name": "Ethernet1/0/1",
+      "shutdown": false,
+      "description": "",
+      "bandwidth": null,
+      "mtu": 1500,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "ipv6_enable": false,
+      "autostate": true,
+      "vrf": null,
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "loopback_detection": {
+        "enabled": false,
+        "vlans": [],
+        "control": null,
+        "status": "Normal"
+      },
+      "switchport_mode": "access",
+      "access_vlan": 1,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "port_group": {
+        "group_id": "1",
+        "mode": "on"
+      },
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Ethernet1/0/2": {
+      "name": "Ethernet1/0/2",
+      "shutdown": false,
+      "description": "",
+      "bandwidth": null,
+      "mtu": 1500,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "ipv6_enable": false,
+      "autostate": true,
+      "vrf": null,
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "loopback_detection": {
+        "enabled": false,
+        "vlans": [],
+        "control": null,
+        "status": "Normal"
+      },
+      "switchport_mode": "access",
+      "access_vlan": 1,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "port_group": {
+        "group_id": "1",
+        "mode": "on"
+      },
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Ethernet1/0/3": {
+      "name": "Ethernet1/0/3",
+      "shutdown": false,
+      "description": "",
+      "bandwidth": null,
+      "mtu": 1500,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "ipv6_enable": false,
+      "autostate": true,
+      "vrf": null,
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "loopback_detection": {
+        "enabled": false,
+        "vlans": [],
+        "control": null,
+        "status": "Normal"
+      },
+      "switchport_mode": "access",
+      "access_vlan": 25,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Ethernet1/0/4": {
+      "name": "Ethernet1/0/4",
+      "shutdown": false,
+      "description": "",
+      "bandwidth": null,
+      "mtu": 1500,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "ipv6_enable": false,
+      "autostate": true,
+      "vrf": null,
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "loopback_detection": {
+        "enabled": false,
+        "vlans": [],
+        "control": null,
+        "status": "Normal"
+      },
+      "switchport_mode": "access",
+      "access_vlan": 30,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Ethernet1/0/5": {
+      "name": "Ethernet1/0/5",
+      "shutdown": false,
+      "description": "",
+      "bandwidth": null,
+      "mtu": 1500,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "ipv6_enable": false,
+      "autostate": true,
+      "vrf": null,
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "loopback_detection": {
+        "enabled": false,
+        "vlans": [],
+        "control": null,
+        "status": "Normal"
+      },
+      "switchport_mode": "trunk",
+      "access_vlan": 1,
+      "trunk_allowed_vlans": "60;100",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false,
+      "trunk_allowed_vlan_list": [
+        60,
+        100
+      ]
+    },
+    "Ethernet1/0/6": {
+      "name": "Ethernet1/0/6",
+      "shutdown": false,
+      "description": "",
+      "bandwidth": null,
+      "mtu": 1500,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "ipv6_enable": false,
+      "autostate": true,
+      "vrf": null,
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "loopback_detection": {
+        "enabled": false,
+        "vlans": [],
+        "control": null,
+        "status": "Normal"
+      },
+      "switchport_mode": "trunk",
+      "access_vlan": 1,
+      "trunk_allowed_vlans": "60;100",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false,
+      "trunk_allowed_vlan_list": [
+        60,
+        100
+      ]
+    },
+    "Vlan21": {
+      "name": "Vlan21",
+      "shutdown": false,
+      "description": "",
+      "bandwidth": null,
+      "mtu": 1500,
+      "ip_address": "20.1.0.2/255.255.255.252",
+      "ipv6_addresses": [],
+      "ipv6_enable": false,
+      "autostate": true,
+      "vrf": null,
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      }
+    },
+    "Vlan22": {
+      "name": "Vlan22",
+      "shutdown": false,
+      "description": "",
+      "bandwidth": null,
+      "mtu": 1500,
+      "ip_address": "20.1.1.2/255.255.255.252",
+      "ipv6_addresses": [],
+      "ipv6_enable": false,
+      "autostate": true,
+      "vrf": null,
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      }
+    },
+    "Vlan222": {
+      "name": "Vlan222",
+      "shutdown": false,
+      "description": "",
+      "bandwidth": null,
+      "mtu": 1500,
+      "ip_address": "222.22.1.2/255.255.255.248",
+      "ipv6_addresses": [],
+      "ipv6_enable": false,
+      "autostate": true,
+      "vrf": null,
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      }
+    },
+    "Vlan24": {
+      "name": "Vlan24",
+      "shutdown": false,
+      "description": "",
+      "bandwidth": null,
+      "mtu": 1500,
+      "ip_address": "223.23.1.2/255.255.255.248",
+      "ipv6_addresses": [],
+      "ipv6_enable": false,
+      "autostate": true,
+      "vrf": null,
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      }
+    },
+    "Vlan25": {
+      "name": "Vlan25",
+      "shutdown": false,
+      "description": "",
+      "bandwidth": null,
+      "mtu": 1500,
+      "ip_address": "20.1.0.9/255.255.255.252",
+      "ipv6_addresses": [
+        "2001:da8:20:1:0::1/96"
+      ],
+      "ipv6_enable": false,
+      "autostate": true,
+      "vrf": null,
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      }
+    },
+    "Vlan30": {
+      "name": "Vlan30",
+      "shutdown": false,
+      "description": "",
+      "bandwidth": null,
+      "mtu": 1500,
+      "ip_address": "20.1.0.5/255.255.255.252",
+      "ipv6_addresses": [],
+      "ipv6_enable": false,
+      "autostate": true,
+      "vrf": null,
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      }
+    },
+    "Vlan31": {
+      "name": "Vlan31",
+      "shutdown": false,
+      "description": "",
+      "bandwidth": null,
+      "mtu": 1500,
+      "ip_address": "20.1.3.1/255.255.255.128",
+      "ipv6_addresses": [],
+      "ipv6_enable": false,
+      "autostate": true,
+      "vrf": null,
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      }
+    },
+    "Vlan40": {
+      "name": "Vlan40",
+      "shutdown": false,
+      "description": "",
+      "bandwidth": null,
+      "mtu": 1500,
+      "ip_address": "192.168.40.1/255.255.255.0",
+      "ipv6_addresses": [
+        "2001:da8:192:168:40::1/96"
+      ],
+      "ipv6_enable": false,
+      "autostate": true,
+      "vrf": null,
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      }
+    },
+    "Vlan50": {
+      "name": "Vlan50",
+      "shutdown": false,
+      "description": "",
+      "bandwidth": null,
+      "mtu": 1500,
+      "ip_address": "192.168.50.1/255.255.255.0",
+      "ipv6_addresses": [
+        "2001:da8:192:168:50::1/96"
+      ],
+      "ipv6_enable": false,
+      "autostate": true,
+      "vrf": null,
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      }
+    },
+    "Vlan60": {
+      "name": "Vlan60",
+      "shutdown": false,
+      "description": "",
+      "bandwidth": null,
+      "mtu": 1500,
+      "ip_address": "192.168.60.1/255.255.255.0",
+      "ipv6_addresses": [
+        "2001:da8:192:168:60::1/96"
+      ],
+      "ipv6_enable": false,
+      "autostate": true,
+      "vrf": null,
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      }
+    },
+    "Loopback1": {
+      "name": "Loopback1",
+      "shutdown": false,
+      "description": "",
+      "bandwidth": null,
+      "mtu": 3924,
+      "ip_address": "20.0.0.253/255.255.255.255",
+      "ipv6_addresses": [],
+      "ipv6_enable": false,
+      "autostate": true,
+      "vrf": null,
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      }
+    },
+    "Port-Channel1": {
+      "name": "Port-Channel1",
+      "shutdown": false,
+      "description": "",
+      "bandwidth": null,
+      "mtu": 1500,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "ipv6_enable": false,
+      "autostate": true,
+      "vrf": null,
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "loopback_detection": {
+        "enabled": false,
+        "vlans": [],
+        "control": null,
+        "status": "Normal"
+      },
+      "switchport_mode": "trunk",
+      "access_vlan": 1,
+      "trunk_allowed_vlans": "21-22;222",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false,
+      "trunk_allowed_vlan_list": [
+        21,
+        22,
+        222
+      ]
+    },
+    "Ethernet1/0/24": {
+      "name": "Ethernet1/0/24",
+      "shutdown": false,
+      "description": "",
+      "bandwidth": null,
+      "mtu": 1500,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "ipv6_enable": false,
+      "autostate": true,
+      "vrf": null,
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "loopback_detection": {
+        "enabled": false,
+        "vlans": [],
+        "control": null,
+        "status": "Normal"
+      },
+      "switchport_mode": "access",
+      "access_vlan": 24,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Ethernet1/0/10": {
+      "name": "Ethernet1/0/10",
+      "shutdown": false,
+      "description": "",
+      "bandwidth": null,
+      "mtu": 1500,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "ipv6_enable": false,
+      "autostate": true,
+      "vrf": null,
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "loopback_detection": {
+        "enabled": false,
+        "vlans": [],
+        "control": null,
+        "status": "Normal"
+      },
+      "switchport_mode": "access",
+      "access_vlan": 31,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Ethernet1/0/11": {
+      "name": "Ethernet1/0/11",
+      "shutdown": false,
+      "description": "",
+      "bandwidth": null,
+      "mtu": 1500,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "ipv6_enable": false,
+      "autostate": true,
+      "vrf": null,
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "loopback_detection": {
+        "enabled": false,
+        "vlans": [],
+        "control": null,
+        "status": "Normal"
+      },
+      "switchport_mode": "access",
+      "access_vlan": 31,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Ethernet1/0/12": {
+      "name": "Ethernet1/0/12",
+      "shutdown": false,
+      "description": "",
+      "bandwidth": null,
+      "mtu": 1500,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "ipv6_enable": false,
+      "autostate": true,
+      "vrf": null,
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "loopback_detection": {
+        "enabled": false,
+        "vlans": [],
+        "control": null,
+        "status": "Normal"
+      },
+      "switchport_mode": "access",
+      "access_vlan": 31,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Ethernet1/0/8": {
+      "name": "Ethernet1/0/8",
+      "shutdown": false,
+      "description": "",
+      "bandwidth": null,
+      "mtu": 1500,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "ipv6_enable": false,
+      "autostate": true,
+      "vrf": null,
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "loopback_detection": {
+        "enabled": false,
+        "vlans": [],
+        "control": null,
+        "status": "Normal"
+      },
+      "switchport_mode": "access",
+      "access_vlan": 40,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Ethernet1/0/9": {
+      "name": "Ethernet1/0/9",
+      "shutdown": false,
+      "description": "",
+      "bandwidth": null,
+      "mtu": 1500,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "ipv6_enable": false,
+      "autostate": true,
+      "vrf": null,
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "loopback_detection": {
+        "enabled": false,
+        "vlans": [],
+        "control": null,
+        "status": "Normal"
+      },
+      "switchport_mode": "access",
+      "access_vlan": 40,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Ethernet1/0/13": {
+      "name": "Ethernet1/0/13",
+      "shutdown": false,
+      "description": "",
+      "bandwidth": null,
+      "mtu": 1500,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "ipv6_enable": false,
+      "autostate": true,
+      "vrf": null,
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "loopback_detection": {
+        "enabled": false,
+        "vlans": [],
+        "control": null,
+        "status": "Normal"
+      },
+      "switchport_mode": "access",
+      "access_vlan": 50,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Ethernet1/0/14": {
+      "name": "Ethernet1/0/14",
+      "shutdown": false,
+      "description": "",
+      "bandwidth": null,
+      "mtu": 1500,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "ipv6_enable": false,
+      "autostate": true,
+      "vrf": null,
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "loopback_detection": {
+        "enabled": false,
+        "vlans": [],
+        "control": null,
+        "status": "Normal"
+      },
+      "switchport_mode": "access",
+      "access_vlan": 50,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Ethernet1/0/15": {
+      "name": "Ethernet1/0/15",
+      "shutdown": false,
+      "description": "",
+      "bandwidth": null,
+      "mtu": 1500,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "ipv6_enable": false,
+      "autostate": true,
+      "vrf": null,
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "loopback_detection": {
+        "enabled": false,
+        "vlans": [],
+        "control": null,
+        "status": "Normal"
+      },
+      "switchport_mode": "access",
+      "access_vlan": 60,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Ethernet1/0/16": {
+      "name": "Ethernet1/0/16",
+      "shutdown": false,
+      "description": "",
+      "bandwidth": null,
+      "mtu": 1500,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "ipv6_enable": false,
+      "autostate": true,
+      "vrf": null,
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "loopback_detection": {
+        "enabled": false,
+        "vlans": [],
+        "control": null,
+        "status": "Normal"
+      },
+      "switchport_mode": "access",
+      "access_vlan": 60,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    },
+    "Ethernet1/0/20": {
+      "name": "Ethernet1/0/20",
+      "shutdown": false,
+      "description": "",
+      "bandwidth": null,
+      "mtu": 1500,
+      "ip_address": null,
+      "ipv6_addresses": [],
+      "ipv6_enable": false,
+      "autostate": true,
+      "vrf": null,
+      "ip_access_group": {
+        "in": null,
+        "out": null
+      },
+      "loopback_detection": {
+        "enabled": false,
+        "vlans": [],
+        "control": null,
+        "status": "Normal"
+      },
+      "switchport_mode": "access",
+      "access_vlan": 100,
+      "trunk_allowed_vlans": "1-4094",
+      "trunk_native_vlan": 1,
+      "hybrid_allowed_vlans": [],
+      "hybrid_native_vlan": 1,
+      "port_group": null,
+      "port_security": {
+        "enabled": false,
+        "maximum": 1,
+        "violation": "shutdown",
+        "mac_addresses": [],
+        "aging": {}
+      },
+      "dhcp_snooping_trust": false,
+      "anti_arpscan_trust": false
+    }
+  },
+  "port_groups": {
+    "1": {
+      "id": "1",
+      "mode": "on",
+      "protocol": "Static",
+      "members": [
+        "Ethernet1/0/1",
+        "Ethernet1/0/2"
+      ]
+    }
+  },
+  "spanning_tree": {
+    "enabled": false,
+    "mode": "mstp",
+    "mst_priorities": {}
+  },
+  "loopback_detection": {
+    "interval_time": null,
+    "no_loopback_time": null,
+    "control_recovery": null
+  },
+  "static_routes": [],
+  "ipv6_routes": [],
+  "ospf": {
+    "processes": {}
+  },
+  "bgp": {
+    "timers": null,
+    "default_local_preference": 100,
+    "neighbors": {}
+  },
+  "dhcp_pools": {},
+  "dhcp_snooping": {
+    "binding_arp": false,
+    "conflict_logging": false
+  },
+  "acls": {
+    "standard_numbered": {},
+    "extended_numbered": {},
+    "standard_named": {},
+    "extended_named": {},
+    "source_control": {}
+  },
+  "prefix_lists": {},
+  "route_maps": {},
+  "firewall_enabled": false,
+  "anti_arpscan_enabled": false,
+  "multicast": {
+    "igmp_snooping": false,
+    "igmp_snooping_vlans": [],
+    "mld_snooping": false,
+    "mld_snooping_vlans": [],
+    "static_rp": [],
+    "ssm_range": null,
+    "msdp_peers": {}
+  },
+  "dhcp_bindings": [],
+  "mac_address_table": []
+}

@@ -39,6 +39,10 @@ class CS6200CommandHandlers:
         "interface.port_channel",
         "interface.tunnel",
         "router.ospf",
+        "router.rip",
+        "router.bgp",
+        "router.msdp",
+        "route_map.create",
         "dhcp.pool",
         "system.line_vty",
         "acl.ipv4.standard.named",
@@ -47,32 +51,66 @@ class CS6200CommandHandlers:
         "vrf.instance",
     }
 
-    def _render_show_ip_interface(self, args: Dict[str, Any], is_no: bool) -> str:
-        if "<vlan-id>" in args:
-            if_name = f"Vlan{args['<vlan-id>']}"
-        elif "<interface-list>" in args:
-            if_name = self.engine.normalize_interface_name("ethernet", args["<interface-list>"])
-        elif "<port-channel-number>" in args:
-            if_name = f"Port-Channel{args['<port-channel-number>']}"
-        elif "<loopback-id>" in args:
-            if_name = f"Loopback{args['<loopback-id>']}"
-        else:
-            return "% Incomplete command."
+    @staticmethod
+    def _normalize_generic_interface_name(raw: str) -> Optional[str]:
+        """把真机 `show ip interface <interface-name>` 的接口名规范化为状态树键名"""
+        text = raw.strip()
+        patterns = [
+            (r"^(?:ethernet|eth|e)\s*(\d+/\d+/\d+)$", "Ethernet"),
+            (r"^(?:vlan)\s*(\d+)$", "Vlan"),
+            (r"^(?:loopback|lo)\s*(\d+)$", "Loopback"),
+            (r"^(?:port-channel|po)\s*(\d+)$", "Port-Channel"),
+        ]
+        for pattern, prefix in patterns:
+            match = re.match(pattern, text, re.IGNORECASE)
+            if match:
+                return f"{prefix}{match.group(1)}"
+        if re.match(r"^\d+/\d+/\d+$", text):
+            return f"Ethernet{text}"
+        return None
 
-        iinfo = self.engine.state.get("interfaces", {}).get(if_name)
-        if not iinfo:
-            return f"% Interface {if_name} does not exist."
-
+    @staticmethod
+    def _render_one_ip_interface(if_name: str, iinfo: Dict[str, Any]) -> str:
         status = "down" if iinfo.get("shutdown") else "up"
         ip_addr = iinfo.get("ip_address") or "unassigned"
         vrf = iinfo.get("vrf") or "default"
-
         lines = [f"{if_name} is {status}, line protocol is {status}"]
         if iinfo.get("description"):
             lines.append(f"  Description: {iinfo['description']}")
         lines.append(f"  Internet address is {ip_addr}")
         lines.append(f"  VPN Routing/Forwarding \"{vrf}\"")
         return "\n".join(lines)
+
+    def _render_show_ip_interface(self, args: Dict[str, Any], is_no: bool) -> str:
+        names: List[str] = []
+        if "<interface-name>" in args:
+            name = self._normalize_generic_interface_name(str(args["<interface-name>"]))
+            if name is None:
+                return "% Invalid interface name."
+            names = [name]
+        elif "<vlan-id>" in args:
+            names = [f"Vlan{args['<vlan-id>']}"]
+        elif "<interface-list>" in args:
+            try:
+                names = self.engine._expand_ethernet_list(str(args["<interface-list>"]))
+            except Exception:
+                names = [self.engine.normalize_interface_name("ethernet", str(args["<interface-list>"]))]
+        elif "<port-channel-number>" in args:
+            names = [f"Port-Channel{args['<port-channel-number>']}"]
+        elif "<loopback-id>" in args:
+            names = [f"Loopback{args['<loopback-id>']}"]
+        else:
+            # 未指定接口：显示所有接口的 IPv4 运行状态
+            names = sorted(self.engine.state.get("interfaces", {}).keys())
+
+        blocks: List[str] = []
+        for if_name in names:
+            iinfo = self.engine.state.get("interfaces", {}).get(if_name)
+            if not iinfo:
+                blocks.append(f"% Interface {if_name} does not exist.")
+                continue
+            blocks.append(self._render_one_ip_interface(if_name, iinfo))
+        return "\n\n".join(blocks)
 
     def __init__(self, engine: CS6200CLIEngine) -> None:
         self.engine = engine
@@ -138,21 +176,34 @@ class CS6200CommandHandlers:
         if state_key == "vlan.create":
             return self._handle_vlan_create(args, is_no)
 
+        # 2.1) route-map 节点内的 set 语句：记录到当前 route-map 的最新节点
+        if state_key.startswith("route_map.set."):
+            map_name = self.engine.current_frame.context_name
+            rmap = self.engine.state.get("route_maps", {}).get(map_name)
+            entries = rmap.get("entries", []) if isinstance(rmap, dict) else []
+            if entries:
+                raw = " ".join(args.get("_raw_words", []))
+                positive = raw[3:] if raw.lower().startswith("no ") else raw
+                if is_no:
+                    entries[-1]["sets"] = [s for s in entries[-1].get("sets", []) if s != positive]
+                else:
+                    entries[-1].setdefault("sets", []).append(positive)
+            return ""
+
         # 3) 路由表映射表
         dispatch_map = {
             # 系统基础
             "system.hostname": self._handle_hostname,
             "system.enable_password": self._handle_enable_password,
             "system.load_balance": self._handle_load_balance,
-            "system.ip_routing": self._handle_ip_routing,
-            "system.ipv6_unicast_routing": self._handle_ipv6_unicast_routing,
+            "system.authentication_line": self._handle_authentication_line,
+            "system.username": self._handle_username,
+            "system.telnet_server": self._handle_telnet_server,
             "ipv6.enable": self._handle_ipv6_enable,
             "firewall.enable": self._handle_firewall_enable,
             "arp.anti_arpscan.enable": self._handle_anti_arpscan,
             # VLAN 与二层接口
             "vlan.name": self._handle_vlan_name,
-            "vlan.description": self._handle_vlan_description,
-            "vlan.shutdown": self._handle_vlan_shutdown,
             "interface.shutdown": self._handle_interface_shutdown,
             "interface.description": self._handle_if_description,
             "interface.bandwidth": self._handle_if_bandwidth,
@@ -213,15 +264,14 @@ class CS6200CommandHandlers:
             # Show 命令全集
             "show.running_config": self._render_running_config,
             "show.startup_config": self._render_startup_config,
+            "show.running_config.current_mode": self._render_show_current_mode,
             "show.vlan": self._render_show_vlan,
             "show.spanning_tree": self._render_show_spanning_tree,
             "show.port_group": self._render_show_port_group,
             "show.ip.route": self._render_show_ip_route,
-            "show.ip.interface.brief": self._render_show_ip_int_brief,
             "show.interface": self._render_show_interface,
             "show.ipv6.interface": self._render_show_ipv6_interface,
             "show.loopback_detection": self._render_show_loopback_detection,
-            "show.this": self._render_show_this,
             "show.port_security": self._render_show_port_security,
             "show.ip.ospf.neighbor": self._render_show_ospf_neighbor,
             "show.mac_address_table": self._render_show_mac_table,
@@ -267,7 +317,7 @@ class CS6200CommandHandlers:
             vid = args.get("<vlan-id>", "1")
             if vid.isdigit():
                 self.engine.state["vlans"].setdefault(
-                    int(vid), {"name": f"VLAN{int(vid):04d}", "description": "", "shutdown": False}
+                    int(vid), {"name": f"VLAN{int(vid):04d}"}
                 )
         elif state_key == "dhcp.pool":
             pool_name = args.get("<name>", "default")
@@ -285,6 +335,15 @@ class CS6200CommandHandlers:
                 "networks": [],
                 "neighbors": [],
             })
+        elif state_key == "route_map.create":
+            map_name = str(args.get("<map_name>", "RM"))
+            action = str(args.get("{deny | permit}") or "permit").lower()
+            seq = str(args.get("<sequence_num>", "10"))
+            rmap = self.engine.state.setdefault("route_maps", {}).setdefault(
+                map_name, {"entries": []}
+            )
+            if not any(str(e.get("seq")) == seq and e.get("action") == action for e in rmap["entries"]):
+                rmap["entries"].append({"action": action, "seq": seq, "sets": []})
 
     # ========================================================================
     # 3. VLAN 与端口二层模式联动
@@ -354,7 +413,7 @@ class CS6200CommandHandlers:
         if len(vlan_ids) == 1:
             vid = vlan_ids[0]
             self.engine.state["vlans"].setdefault(
-                vid, {"name": f"VLAN{vid:04d}", "description": "", "shutdown": False}
+                vid, {"name": f"VLAN{vid:04d}"}
             )
             args["<vlan-id>"] = str(vid)
             return None
@@ -362,7 +421,7 @@ class CS6200CommandHandlers:
         # 批量 VLAN 创建 (如 vlan 10-20 或 vlan 10,20,30)：创建全部后停留全局配置模式
         for vid in vlan_ids:
             self.engine.state["vlans"].setdefault(
-                vid, {"name": f"VLAN{vid:04d}", "description": "", "shutdown": False}
+                vid, {"name": f"VLAN{vid:04d}"}
             )
         return ""
 
@@ -371,21 +430,9 @@ class CS6200CommandHandlers:
         if ctx.isdigit():
             vid = int(ctx)
             vinfo = self.engine.state["vlans"].setdefault(
-                vid, {"name": f"VLAN{vid:04d}", "description": "", "shutdown": False}
+                vid, {"name": f"VLAN{vid:04d}"}
             )
             vinfo["name"] = f"VLAN{vid:04d}" if is_no else args.get("<vlan-name>", f"VLAN{vid:04d}")
-        return ""
-
-    def _handle_vlan_description(self, args: Dict[str, Any], is_no: bool) -> str:
-        ctx = self.engine.current_frame.context_name
-        if ctx.isdigit() and int(ctx) in self.engine.state["vlans"]:
-            self.engine.state["vlans"][int(ctx)]["description"] = "" if is_no else args.get("<text>", "")
-        return ""
-
-    def _handle_vlan_shutdown(self, args: Dict[str, Any], is_no: bool) -> str:
-        ctx = self.engine.current_frame.context_name
-        if ctx.isdigit() and int(ctx) in self.engine.state["vlans"]:
-            self.engine.state["vlans"][int(ctx)]["shutdown"] = not is_no
         return ""
 
     def _get_current_interface(self) -> Optional[Dict[str, Any]]:
@@ -963,9 +1010,14 @@ class CS6200CommandHandlers:
         if is_no:
             pool["network"] = None
             return ""
-        net_num = args.get("<network-number>", "")
-        mask = args.get("[mask | prefix-length]", "255.255.255.0")
-        pool["network"] = f"{net_num} {mask}".strip()
+        net_num = str(args.get("<network-number>", ""))
+        mask = str(args.get("<mask>") or args.get("<prefix-length>") or "").strip()
+        if not mask:
+            pool["network"] = net_num
+        elif mask.isdigit():
+            pool["network"] = f"{net_num}/{mask}"
+        else:
+            pool["network"] = f"{net_num} {mask}"
         return ""
 
     def _handle_dhcp_default_router(self, args: Dict[str, Any], is_no: bool) -> str:
@@ -976,8 +1028,11 @@ class CS6200CommandHandlers:
         if is_no:
             pool["default_router"] = None
             return ""
-        raw_words = args.get("_raw_words", [])
-        gateways = raw_words[1:] if len(raw_words) > 1 else [args.get("address1...address8", "")]
+        gateways = [
+            str(args.get(f"<address{i}>", "")).strip()
+            for i in range(1, 9)
+            if args.get(f"<address{i}>")
+        ]
         pool["default_router"] = " ".join(gateways)
         return ""
 
@@ -1225,12 +1280,32 @@ class CS6200CommandHandlers:
         self.engine.state["anti_arpscan_enabled"] = not is_no
         return ""
 
-    def _handle_ip_routing(self, args: Dict[str, Any], is_no: bool) -> str:
-        self.engine.state["system"]["ip_routing"] = not is_no
+    def _handle_authentication_line(self, args: Dict[str, Any], is_no: bool) -> str:
+        line_type = str(args.get("{console | vty | web}") or "vty").lower()
+        lines_state = self.engine.state["system"].setdefault("authentication_lines", {})
+        if is_no:
+            lines_state.pop(line_type, None)
+            return ""
+        method = str(args.get("{local | radius | tacacs | none}") or "local").lower()
+        lines_state[line_type] = method
         return ""
 
-    def _handle_ipv6_unicast_routing(self, args: Dict[str, Any], is_no: bool) -> str:
-        self.engine.state["system"]["ipv6_unicast_routing"] = not is_no
+    def _handle_username(self, args: Dict[str, Any], is_no: bool) -> str:
+        usernames = self.engine.state["system"].setdefault("usernames", {})
+        name = str(args.get("<username>") or "")
+        if not name:
+            return "% Invalid username."
+        if is_no:
+            usernames.pop(name, None)
+            return ""
+        usernames[name] = {
+            "privilege": int(args.get("<privilege>", 15) or 15),
+            "password": args.get("<password>") or "",
+        }
+        return ""
+
+    def _handle_telnet_server(self, args: Dict[str, Any], is_no: bool) -> str:
+        self.engine.state["system"]["telnet_server"] = not is_no
         return ""
 
     def _handle_ipv6_enable(self, args: Dict[str, Any], is_no: bool) -> str:
@@ -1242,7 +1317,7 @@ class CS6200CommandHandlers:
     # ========================================================================
 
     def _interface_config_lines(self, if_name: str, iinfo: Dict[str, Any]) -> List[str]:
-        """渲染单个接口的配置块（不含结尾 '!'），供 running-config 与 show this 复用"""
+        """渲染单个接口的配置块（不含结尾 '!'），供 running-config 与 show running-config current-mode 复用"""
         lines: List[str] = [f"interface {if_name}"]
         if iinfo.get("description"):
             lines.append(f" description {iinfo['description']}")
@@ -1347,14 +1422,24 @@ class CS6200CommandHandlers:
         if st.get("anti_arpscan_enabled"):
             lines.append("anti-arpscan enable")
 
-        # 全局三层路由 / IPv6 使能
+        # 全局 IPv6 使能（CS6200 无 ip routing / ipv6 unicast-routing 命令）
         sys_state = st.get("system", {})
-        if sys_state.get("ip_routing"):
-            lines.append("ip routing")
-        if sys_state.get("ipv6_unicast_routing") or sys_state.get("ipv6_unicast-routing"):
-            lines.append("ipv6 unicast-routing")
         if sys_state.get("ipv6_enabled"):
             lines.append("ipv6 enable")
+
+        # 远程登录用户/服务/认证方式
+        if sys_state.get("telnet_server"):
+            lines.append("telnet-server enable")
+        for name, uinfo in sorted((sys_state.get("usernames") or {}).items()):
+            line = f"username {name} privilege {uinfo.get('privilege', 15)}"
+            if uinfo.get("password"):
+                line += f" password 0 {uinfo['password']}"
+            lines.append(line)
+        auth_lines = sys_state.get("authentication_lines", {}) or {}
+        for line_type in ("console", "vty", "web"):
+            method = auth_lines.get(line_type)
+            if method:
+                lines.append(f"authentication line {line_type} login {method}")
 
         # 生成树全局配置
         stp = st.get("spanning_tree", {})
@@ -1407,6 +1492,14 @@ class CS6200CommandHandlers:
                 lines.append(f" {r}")
             lines.append("!")
 
+        # route-map 配置段
+        for map_name, rmap in sorted(st.get("route_maps", {}).items()):
+            for entry in rmap.get("entries", []):
+                lines.append(f"route-map {map_name} {entry.get('action', 'permit')} {entry.get('seq', '10')}")
+                for set_cmd in entry.get("sets", []):
+                    lines.append(f" {set_cmd}")
+                lines.append("!")
+
         # 接口配置段
         for if_name, iinfo in st.get("interfaces", {}).items():
             lines.extend(self._interface_config_lines(if_name, iinfo))
@@ -1446,7 +1539,7 @@ class CS6200CommandHandlers:
                     if allowed is None or vid_int in allowed:
                         members.append(f"{if_name}(T)")
 
-            status = "suspend" if vinfo.get("shutdown") else "active"
+            status = "active"
             port_str = ", ".join(members) if members else "-"
             rows.append(f"{vid_int:<6} {vinfo.get('name', ''):<20} {status:<10} {port_str}")
         return "\n".join(rows)
@@ -1524,15 +1617,6 @@ class CS6200CommandHandlers:
                 lines.append(f"{'O':<6} {f'{rid}/32':<22} {'[110/2]':<12} {nb['address']:<18} {nb['interface']}")
 
         return "\n".join(lines)
-
-    def _render_show_ip_int_brief(self, args: Dict[str, Any], is_no: bool) -> str:
-        header = f"{'Interface':<22} {'IP-Address':<18} {'Status':<10} {'Protocol'}"
-        rows = [header, "-" * 64]
-        for if_name, iinfo in self.engine.state.get("interfaces", {}).items():
-            ip_str = iinfo["ip_address"].split("/")[0] if iinfo.get("ip_address") else "unassigned"
-            status = "down" if iinfo.get("shutdown") else "up"
-            rows.append(f"{if_name:<22} {ip_str:<18} {status:<10} {status}")
-        return "\n".join(rows)
 
     def _resolve_show_interface_names(self, args: Dict[str, Any]) -> List[str]:
         """从 show interface / show ipv6 interface 参数中解析目标接口名列表"""
@@ -1676,8 +1760,8 @@ class CS6200CommandHandlers:
         lines.extend(rows)
         return "\n".join(lines)
 
-    def _render_show_this(self, args: Dict[str, Any], is_no: bool) -> str:
-        """显示当前视图的配置；Config-If-Port-Range 视图会输出全部目标端口配置"""
+    def _render_show_current_mode(self, args: Dict[str, Any], is_no: bool) -> str:
+        """`show running-config current-mode`：显示当前视图的配置"""
         frame = self.engine.current_frame
         mode = self.engine.current_mode
         st = self.engine.state
@@ -1693,11 +1777,28 @@ class CS6200CommandHandlers:
             vid = frame.context_name
             if vid.isdigit() and int(vid) in st.get("vlans", {}):
                 blocks.append("\n".join(self._vlan_config_lines(int(vid), st["vlans"][int(vid)])))
-        elif mode == "router":
+        elif mode == "router-ospf":
             pid = frame.context_name.split("-", 1)[-1]
             pdata = st.get("ospf", {}).get("processes", {}).get(pid)
             if pdata is not None:
                 blocks.append("\n".join(self._ospf_config_lines(pid, pdata)))
+        elif mode == "router-rip":
+            blocks.append("router rip")
+        elif mode == "router-bgp":
+            asn = frame.context_name.split("-", 1)[-1]
+            blocks.append(f"router bgp {asn}")
+        elif mode == "router-msdp":
+            blocks.append("router msdp")
+        elif mode == "route-map":
+            map_name = frame.context_name
+            rmap = st.get("route_maps", {}).get(map_name)
+            if rmap:
+                for entry in rmap.get("entries", []):
+                    entry_lines = [
+                        f"route-map {map_name} {entry.get('action', 'permit')} {entry.get('seq', '10')}"
+                    ]
+                    entry_lines.extend(f" {cmd}" for cmd in entry.get("sets", []))
+                    blocks.append("\n".join(entry_lines))
         elif mode == "dhcp-pool":
             pool_name = frame.context_name
             pinfo = st.get("dhcp_pools", {}).get(pool_name)
@@ -1707,7 +1808,7 @@ class CS6200CommandHandlers:
             return self._render_running_config(args, is_no)
 
         if not blocks:
-            return "% No configuration in current view."
+            return "% No configuration in current mode."
         return "\n!\n".join(blocks) + "\n!"
 
     def _render_show_port_security(self, args: Dict[str, Any], is_no: bool) -> str:

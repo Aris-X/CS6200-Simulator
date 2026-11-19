@@ -1,217 +1,206 @@
-{
-    "chapter": "第 1 章 基本管理操作",
-    "total_commands_extracted": 15,
-    "notes": "受限于上下文长度，提取了该章节中【基本系统操作、Telnet、SNMP、文件系统、集群管理、设备环境】各模块中最具代表性的核心命令。由于手册原文未提供具体报错提示与show命令输出示例，相关字段标注为“手册未提供”。缩写依据“支持不完全匹配”原则补全。",
-    "commands": [
-        {
-            "mode": "一般用户配置模式/特权用户配置模式",
-            "syntax": "enable [<1-15>]",
-            "min_abbr": "en [<1-15>]",
-            "params": "<1-15>: 用户权限级别，范围1-15",
-            "desc": "从一般用户配置模式进入特权用户配置模式或修改当前用户权限级别。",
-            "requires": "需要预先配置特权用户口令（若有）",
-            "state_mutation": "当前控制台会话状态提升至特权级别",
-            "no_cmd": "disable",
-            "no_mutation": "退出特权用户模式，将会话级别降至一般用户",
-            "errors": "无（手册未提供）",
-            "output_template": {}
-        },
-        {
-            "mode": "特权用户配置模式",
-            "syntax": "config [terminal]",
-            "min_abbr": "conf [t]",
-            "params": "terminal: 终端模式参数（可选）",
-            "desc": "从特权用户配置模式进入到全局配置模式。",
-            "requires": "当前必须处于特权用户模式",
-            "state_mutation": "会话模式树切换至全局配置视图",
-            "no_cmd": "exit",
-            "no_mutation": "退回特权用户配置模式",
-            "errors": "无（手册未提供）",
-            "output_template": {}
-        },
-        {
-            "mode": "各种配置模式",
-            "syntax": "show privilege",
-            "min_abbr": "sh priv",
-            "params": "无",
-            "desc": "显示当前用户权限。",
-            "requires": "无",
-            "state_mutation": "无（只读状态）",
-            "no_cmd": "无",
-            "no_mutation": "无",
-            "errors": "无",
-            "output_template": {
-                "example": "手册未提供具体输出示例",
-                "fields": "手册未提供字段说明"
-            }
-        },
-        {
-            "mode": "特权用户配置模式",
-            "syntax": "clock set <HH:MM:SS> [YYYY.MM.DD]",
-            "min_abbr": "clo se <HH:MM:SS> [YYYY.MM.DD]",
-            "params": "<HH:MM:SS>: 时间\n[YYYY.MM.DD]: 日期",
-            "desc": "设置系统日期和时钟。",
-            "requires": "无",
-            "state_mutation": "修改系统底层硬件时钟与运行时间树",
-            "no_cmd": "无",
-            "no_mutation": "无",
-            "errors": "参数范围、类型、格式错误时会提示报错（手册未提供精确报错文本）",
-            "output_template": {}
-        },
-        {
-            "mode": "特权用户配置模式",
-            "syntax": "show version",
-            "min_abbr": "sh ver",
-            "params": "无",
-            "desc": "显示交换机版本信息。",
-            "requires": "无",
-            "state_mutation": "无",
-            "no_cmd": "无",
-            "no_mutation": "无",
-            "errors": "无",
-            "output_template": {
-                "example": "手册未提供具体输出示例",
-                "fields": "手册未提供字段说明"
-            }
-        },
-        {
-            "mode": "特权用户配置模式",
-            "syntax": "write",
-            "min_abbr": "wr",
-            "params": "无",
-            "desc": "将当前运行时配置参数(running-config)保存到 Flash Memory。",
-            "requires": "无",
-            "state_mutation": "覆盖或生成 startup-config 文件于 Flash 设备中",
-            "no_cmd": "无",
-            "no_mutation": "无",
-            "errors": "无",
-            "output_template": {}
-        },
-        {
-            "mode": "全局配置模式",
-            "syntax": "telnet-server enable",
-            "min_abbr": "tel e",
-            "params": "无",
-            "desc": "打开交换机的 Telnet 服务器功能。",
-            "requires": "无",
-            "state_mutation": "在系统服务树中启动 Telnet 监听进程",
-            "no_cmd": "no telnet-server enable",
-            "no_mutation": "关闭 Telnet 服务器功能",
-            "errors": "无（手册未提供）",
-            "output_template": {}
-        },
-        {
-            "mode": "全局配置模式",
-            "syntax": "username <username> [privilege <privilege>] [password [0 | 7] <password>]",
-            "min_abbr": "user <username> [priv <privilege>] [pass [0 | 7] <password>]",
-            "params": "<username>: 本地用户名\n<privilege>: 权限级别(Telnet用户必须设为15)\n<password>: 密码字符串，0为明文，7为密文",
-            "desc": "配置Telnet登录到交换机的本地用户名和口令。",
-            "requires": "无",
-            "state_mutation": "在本地用户数据库表中新增或修改对应的用户条目",
-            "no_cmd": "no username <username>",
-            "no_mutation": "删除本地授权Telnet用户",
-            "errors": "无",
-            "output_template": {}
-        },
-        {
-            "mode": "特权模式",
-            "syntax": "show users",
-            "min_abbr": "sh use",
-            "params": "无",
-            "desc": "显示通过 telnet 和 ssh 登陆的用户信息，包括线路号，登陆的用户名及用户的IP。",
-            "requires": "无",
-            "state_mutation": "无",
-            "no_cmd": "无",
-            "no_mutation": "无",
-            "errors": "无",
-            "output_template": {
-                "example": "手册未提供具体输出示例",
-                "fields": "包含线路号，登陆的用户名及用户的IP"
-            }
-        },
-        {
-            "mode": "全局配置模式",
-            "syntax": "snmp-server enable",
-            "min_abbr": "snmp e",
-            "params": "无",
-            "desc": "打开交换机作为 SNMP 代理服务器功能。",
-            "requires": "无",
-            "state_mutation": "启动SNMP Agent监听进程（UDP）",
-            "no_cmd": "no snmp-server enable",
-            "no_mutation": "关闭 SNMP 代理服务器功能",
-            "errors": "无",
-            "output_template": {}
-        },
-        {
-            "mode": "全局配置模式",
-            "syntax": "snmp-server community {ro | rw} {0 | 7} <string> [access {<num-std>|<name>}] [ipv6-access {<ipv6-num-std>|<ipv6-name>}] [read <read-view-name>] [write <write-view-name>]",
-            "min_abbr": "snmp com {ro | rw} {0 | 7} <string> [acc {<num-std>|<name>}]",
-            "params": "ro/rw: 只读/读写权限\n0/7: 明文/密文存储\n<string>: 团体名",
-            "desc": "设置交换机的 SNMP 团体字符串。",
-            "requires": "需开启 snmp-server enable",
-            "state_mutation": "在系统SNMP访问控制表中追加或更新团体字映射",
-            "no_cmd": "no snmp-server community <string> [access {<num-std>|<name>}] [ipv6-access {<ipv6-num-std>|<ipv6-name>}]",
-            "no_mutation": "删除配置的团体字符串",
-            "errors": "无",
-            "output_template": {}
-        },
-        {
-            "mode": "全局配置模式",
-            "syntax": "cluster run [key <WORD>] [vid <VID>]",
-            "min_abbr": "clu r [key <WORD>] [vid <VID>]",
-            "params": "<WORD>: 集群验证密钥\n<VID>: 集群 VLAN ID",
-            "desc": "启动或停止交换机本设备的集群功能。",
-            "requires": "无",
-            "state_mutation": "启动集群网管协议相关进程",
-            "no_cmd": "no cluster run",
-            "no_mutation": "停止交换机本设备的集群功能",
-            "errors": "无",
-            "output_template": {}
-        },
-        {
-            "mode": "特权配置模式",
-            "syntax": "cd usb:",
-            "min_abbr": "cd usb:",
-            "params": "usb:: 目标盘符",
-            "desc": "进行USB存储设备的挂载，并进入 USB盘符。",
-            "requires": "设备必须插入有效的USB存储设备，且未报过流警报",
-            "state_mutation": "切换底层系统工作路径，挂载USB文件系统",
-            "no_cmd": "无",
-            "no_mutation": "无",
-            "errors": "无",
-            "output_template": {}
-        },
-        {
-            "mode": "特权模式",
-            "syntax": "show [member <member-id>] slot <slot-id>",
-            "min_abbr": "sh [mem <member-id>] sl <slot-id>",
-            "params": "<member-id>: 堆叠/集群成员号\n<slot-id>: 槽位号",
-            "desc": "显示各板卡基本信息。",
-            "requires": "无",
-            "state_mutation": "无",
-            "no_cmd": "无",
-            "no_mutation": "无",
-            "errors": "无",
-            "output_template": {
-                "example": "手册未提供具体输出示例",
-                "fields": "包含各板卡基本信息"
-            }
-        },
-        {
-            "mode": "特权模式",
-            "syntax": "show fan",
-            "min_abbr": "sh fan",
-            "params": "无",
-            "desc": "显示风扇是否在位，工作状态是否正常以及风扇的速率。",
-            "requires": "无",
-            "state_mutation": "无",
-            "no_cmd": "无",
-            "no_mutation": "无",
-            "errors": "无",
-            "output_template": {
-                "example": "手册未提供具体输出示例",
-                "fields": "风扇在位状态、工作状态、风扇速率"
-            }
-        }
-    ]
-}
+[
+  {
+    "mode": [
+      "user",
+      "priv"
+    ],
+    "syntax": "enable [<1-15>]",
+    "params": {
+      "<1-15>": "用户权限级别，范围1-15"
+    },
+    "desc": "从一般用户配置模式进入特权用户配置模式或修改当前用户权限级别。",
+    "requires": "需要预先配置特权用户口令（若有）",
+    "state_key": "system.enable",
+    "no_cmd": "disable",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "config [terminal]",
+    "params": {
+      "terminal": "终端模式参数（可选）"
+    },
+    "desc": "从特权用户配置模式进入到全局配置模式。",
+    "requires": "当前必须处于特权用户模式",
+    "state_key": "system.config",
+    "no_cmd": "exit",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "show privilege",
+    "params": {
+      "无": ""
+    },
+    "desc": "显示当前用户权限。",
+    "requires": "无",
+    "state_key": "show.privilege",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "clock set <HH:MM:SS> [YYYY.MM.DD]",
+    "params": {
+      "<HH": "MM:SS>: 时间",
+      "[YYYY.MM.DD]": "日期"
+    },
+    "desc": "设置系统日期和时钟。",
+    "requires": "无",
+    "state_key": "system.clock",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "show version",
+    "params": {
+      "无": ""
+    },
+    "desc": "显示交换机版本信息。",
+    "requires": "无",
+    "state_key": "show.version",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "write",
+    "params": {
+      "无": ""
+    },
+    "desc": "将当前运行时配置参数(running-config)保存到 Flash Memory。",
+    "requires": "无",
+    "state_key": "builtin.write",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "telnet-server enable",
+    "params": {
+      "无": ""
+    },
+    "desc": "打开交换机的 Telnet 服务器功能。",
+    "requires": "无",
+    "state_key": "system.telnet_server",
+    "no_cmd": "no telnet-server enable",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "username <username> [privilege <privilege>] [password [0 | 7] <password>]",
+    "params": {
+      "<username>": "本地用户名",
+      "<privilege>": "权限级别(Telnet用户必须设为15)",
+      "<password>": "密码字符串，0为明文，7为密文"
+    },
+    "desc": "配置Telnet登录到交换机的本地用户名和口令。",
+    "requires": "无",
+    "state_key": "system.username",
+    "no_cmd": "no username <username>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "show users",
+    "params": {
+      "无": ""
+    },
+    "desc": "显示通过 telnet 和 ssh 登陆的用户信息，包括线路号，登陆的用户名及用户的IP。",
+    "requires": "无",
+    "state_key": "show.users",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "snmp-server enable",
+    "params": {
+      "无": ""
+    },
+    "desc": "打开交换机作为 SNMP 代理服务器功能。",
+    "requires": "无",
+    "state_key": "snmp.enable",
+    "no_cmd": "no snmp-server enable",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "snmp-server community {ro | rw} {0 | 7} <string> [access {<num-std>|<name>}] [ipv6-access {<ipv6-num-std>|<ipv6-name>}] [read <read-view-name>] [write <write-view-name>]",
+    "params": {
+      "ro/rw": "只读/读写权限",
+      "0/7": "明文/密文存储",
+      "<string>": "团体名"
+    },
+    "desc": "设置交换机的 SNMP 团体字符串。",
+    "requires": "需开启 snmp-server enable",
+    "state_key": "snmp.community",
+    "no_cmd": "no snmp-server community <string> [access {<num-std>|<name>}] [ipv6-access {<ipv6-num-std>|<ipv6-name>}]",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "cluster run [key <WORD>] [vid <VID>]",
+    "params": {
+      "<WORD>": "集群验证密钥",
+      "<VID>": "集群 VLAN ID"
+    },
+    "desc": "启动或停止交换机本设备的集群功能。",
+    "requires": "无",
+    "state_key": "cluster.run",
+    "no_cmd": "no cluster run",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "cd usb:",
+    "params": {
+      "usb": ": 目标盘符"
+    },
+    "desc": "进行USB存储设备的挂载，并进入 USB盘符。",
+    "requires": "设备必须插入有效的USB存储设备，且未报过流警报",
+    "state_key": "system.cd",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "priv"
+    ],
+    "syntax": "show [member <member-id>] slot <slot-id>",
+    "params": {
+      "<member-id>": "堆叠/集群成员号",
+      "<slot-id>": "槽位号"
+    },
+    "desc": "显示各板卡基本信息。",
+    "requires": "无",
+    "state_key": "show.slot",
+    "no_cmd": "",
+    "output_example": ""
+  }
+]

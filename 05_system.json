@@ -3,24 +3,24 @@
     "mode": [
       "if"
     ],
-    "syntax": "no ip pim dense-mode",
+    "syntax": "ip pim dense-mode",
     "params": {},
-    "desc": "在接口上关闭 PIM-DM协议",
+    "desc": "启动本接口 PIM-DM 协议",
     "requires": "",
-    "state_key": "interface.pim_dm.disable",
-    "no_cmd": "",
+    "state_key": "interface.pim_dm.enable",
+    "no_cmd": "no ip pim dense-mode",
     "output_example": ""
   },
   {
     "mode": [
       "global"
     ],
-    "syntax": "no ip pim multicast-routing",
+    "syntax": "ip pim multicast-routing",
     "params": {},
-    "desc": "全局关闭 PIM-DM协议（或 PIM-SM/IGMP 等组播路由协议）",
+    "desc": "全局启动 PIM 组播路由协议",
     "requires": "",
-    "state_key": "global.pim.multicast_routing.disable",
-    "no_cmd": "",
+    "state_key": "global.pim.multicast_routing",
+    "no_cmd": "no ip pim multicast-routing",
     "output_example": ""
   },
   {
@@ -110,17 +110,17 @@
     "mode": [
       "if"
     ],
-    "syntax": "no ip pim sparse-mode",
+    "syntax": "ip pim sparse-mode",
     "params": {},
-    "desc": "在接口上关闭 PIM-SM协议",
+    "desc": "启动本接口 PIM-SM 协议",
     "requires": "",
-    "state_key": "interface.pim_sm.disable",
-    "no_cmd": "",
+    "state_key": "interface.pim_sm.enable",
+    "no_cmd": "no ip pim sparse-mode",
     "output_example": ""
   },
   {
     "mode": [
-      "router"
+      "router-msdp"
     ],
     "syntax": "peer <peer-address>",
     "params": {
@@ -134,7 +134,7 @@
   },
   {
     "mode": [
-      "router"
+      "router-msdp"
     ],
     "syntax": "connect-source <interface-type> <interface-number>",
     "params": {
@@ -149,7 +149,7 @@
   },
   {
     "mode": [
-      "router"
+      "router-msdp"
     ],
     "syntax": "description <text>",
     "params": {
@@ -163,7 +163,7 @@
   },
   {
     "mode": [
-      "router"
+      "router-msdp"
     ],
     "syntax": "remote-as <as-num>",
     "params": {
@@ -177,7 +177,7 @@
   },
   {
     "mode": [
-      "router"
+      "router-msdp"
     ],
     "syntax": "mesh-group <name>",
     "params": {
@@ -191,9 +191,9 @@
   },
   {
     "mode": [
-      "router"
+      "router-msdp"
     ],
-    "syntax": "redistribute [list <acl-list-number |acl-name>]",
+    "syntax": "redistribute [list {<acl-list-number> | <acl-name>}]",
     "params": {
       "<acl-list-number |acl-name>": "ACL编号或名称"
     },
@@ -205,23 +205,43 @@
   },
   {
     "mode": [
-      "router"
+      "router-msdp"
     ],
-    "syntax": "sa-filter (in|out) [list <acl-number | acl-name> | rp-list <rp-acl-number | rp-acl-name>]",
-    "params": {
-      "(in|out)": "入方向或出方向",
-      "<acl-number | acl-name>": "ACL编号或名称",
-      "<rp-acl-number | rp-acl-name>": "RP ACL编号或名称"
-    },
+    "syntax": "sa-filter {in | out}",
+    "params": {},
     "desc": "配置 SA报文接收和转发过滤规则",
     "requires": "",
     "state_key": "msdp.sa_filter",
-    "no_cmd": "no sa-filter (in|out) [[list <acl-number | acl-name> | rp-list <rp-acl-number | rp-acl-name>]",
+    "no_cmd": "no sa-filter {in | out}",
     "output_example": ""
   },
   {
     "mode": [
-      "router"
+      "router-msdp"
+    ],
+    "syntax": "sa-filter {in | out} list {<acl-number> | <acl-name>}",
+    "params": {},
+    "desc": "配置 SA报文接收和转发过滤规则",
+    "requires": "",
+    "state_key": "msdp.sa_filter",
+    "no_cmd": "no sa-filter {in | out} list {<acl-number> | <acl-name>}",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router-msdp"
+    ],
+    "syntax": "sa-filter {in | out} rp-list {<rp-acl-number> | <rp-acl-name>}",
+    "params": {},
+    "desc": "配置 SA报文接收和转发过滤规则",
+    "requires": "",
+    "state_key": "msdp.sa_filter",
+    "no_cmd": "no sa-filter {in | out} rp-list {<rp-acl-number> | <rp-acl-name>}",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router-msdp"
     ],
     "syntax": "sa-request",
     "params": {},
@@ -233,23 +253,23 @@
   },
   {
     "mode": [
-      "router"
+      "router-msdp"
     ],
-    "syntax": "sa-request-filter [list <access-list-number | access-list-name>]",
+    "syntax": "sa-request-filter [list {<access-list-number> | <access-list-name>}]",
     "params": {
       "<access-list-number | access-list-name>": "访问控制列表编号或名称"
     },
     "desc": "配置 SA-Request报文过滤策略",
     "requires": "",
     "state_key": "msdp.sa_request_filter",
-    "no_cmd": "no sa-request-filter [list <access-list-number | access-list-name>]",
+    "no_cmd": "no sa-request-filter [list {<access-list-number> | <access-list-name>}]",
     "output_example": ""
   },
   {
     "mode": [
       "global"
     ],
-    "syntax": "ip multicast ssm {default|range <access-list-number >}",
+    "syntax": "ip multicast ssm {default | range <access-list-number>}",
     "params": {
       "<access-list-number >": "访问控制列表编号"
     },
@@ -292,12 +312,12 @@
     "mode": [
       "if"
     ],
-    "syntax": "no ip dvmrp enable",
+    "syntax": "ip dvmrp enable",
     "params": {},
-    "desc": "关闭 DVMRP 等相关 IGMP 协议特性",
+    "desc": "在接口上启动 DVMRP 协议",
     "requires": "",
-    "state_key": "interface.dvmrp.disable",
-    "no_cmd": "",
+    "state_key": "interface.dvmrp.enable",
+    "no_cmd": "no ip dvmrp enable",
     "output_example": ""
   },
   {
@@ -404,6 +424,18 @@
     "requires": "",
     "state_key": "global.mld_snooping",
     "no_cmd": "no ipv6 mld snooping",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "router msdp",
+    "params": {},
+    "desc": "启动 MSDP 功能",
+    "requires": "",
+    "state_key": "router.msdp",
+    "no_cmd": "no router msdp",
     "output_example": ""
   }
 ]

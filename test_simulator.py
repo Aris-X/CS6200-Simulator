@@ -20,7 +20,7 @@ enterprise / skills-competition switch configuration workflow:
      - show ip route
      - show ip ospf neighbor
   9. Port loopback-detection (global interval / port VLAN list & control mode),
-     'show loopback-detection' and 'show this' in Config-If-Port-Range view.
+     'show loopback-detection' and 'show running-config current-mode' in Config-If-Port-Range view.
 """
 
 from __future__ import annotations
@@ -302,9 +302,9 @@ def run_acceptance_suite() -> None:
             assert " switchport trunk allowed vlan 10;20" in out, out
 
     # -------------------------------------------------------------------------
-    # STEP 9: Port Loopback-Detection & 'show this' in Port-Range View
+    # STEP 9: Port Loopback-Detection & 'show running-config current-mode'
     # -------------------------------------------------------------------------
-    section(9, "Port Loopback-Detection & 'show this' (Config-If-Port-Range)")
+    section(9, "Port Loopback-Detection & 'show running-config current-mode'")
     exec_cmd(engine, "config terminal")
     exec_cmd(engine, "loopback-detection interval-time 35 15")
     exec_cmd(engine, "loopback-detection control-recovery timeout 60")
@@ -314,8 +314,8 @@ def run_acceptance_suite() -> None:
     exec_cmd(engine, "loopback-detection specified-vlan 10;20")
     exec_cmd(engine, "loopback-detection control block")
 
-    # 'show this' must dump every target port of the Port-Range view
-    this_out = exec_cmd(engine, "show this")
+    # current-mode config must dump every target port of the Port-Range view
+    this_out = exec_cmd(engine, "show running-config current-mode")
     assert "interface Ethernet1/0/3" in this_out, this_out
     assert "interface Ethernet1/0/4" in this_out, this_out
     assert "loopback-detection specified-vlan 10;20" in this_out, this_out

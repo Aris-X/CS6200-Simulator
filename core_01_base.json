@@ -1,7 +1,8 @@
 [
   {
     "mode": [
-      "any"
+      "user",
+      "priv"
     ],
     "syntax": "enable [<1-15>]",
     "params": {
@@ -52,45 +53,6 @@
     "requires": "",
     "state_key": "system.enable_password",
     "no_cmd": "no enable password",
-    "output_example": ""
-  },
-  {
-    "mode": [
-      "global"
-    ],
-    "syntax": "ip routing",
-    "params": {},
-    "desc": "启用 IPv4 单播路由功能",
-    "requires": "",
-    "state_key": "system.ip_routing",
-    "no_cmd": "no ip routing",
-    "output_example": ""
-  },
-  {
-    "mode": [
-      "global"
-    ],
-    "syntax": "ipv6 unicast-routing",
-    "params": {},
-    "desc": "启用 IPv6 单播路由功能",
-    "requires": "",
-    "state_key": "system.ipv6_unicast_routing",
-    "no_cmd": "no ipv6 unicast-routing",
-    "output_example": ""
-  },
-  {
-    "mode": [
-      "global"
-    ],
-    "syntax": "line vty <first-line> [<last-line>]",
-    "params": {
-      "<first-line>": "起始线路号",
-      "<last-line>": "结束线路号"
-    },
-    "desc": "进入 VTY 线路配置模式",
-    "requires": "",
-    "state_key": "system.line_vty",
-    "no_cmd": "",
     "output_example": ""
   },
   {
@@ -219,12 +181,55 @@
     "mode": [
       "any"
     ],
-    "syntax": "show this",
+    "syntax": "show running-config current-mode",
     "params": {},
-    "desc": "显示当前配置视图下的配置信息（端口范围视图显示全部目标端口）",
+    "desc": "显示当前模式下的配置",
     "requires": "",
-    "state_key": "show.this",
+    "state_key": "show.running_config.current_mode",
     "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "authentication line {console | vty | web} login {local | radius | tacacs | none}",
+    "params": {
+      "{console | vty | web}": "登录方式：Console / Telnet+SSH / Web",
+      "{local | radius | tacacs | none}": "认证方法列表"
+    },
+    "desc": "配置远程登录认证方法列表",
+    "requires": "",
+    "state_key": "system.authentication_line",
+    "no_cmd": "no authentication line {console | vty | web} login",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "username <username> [privilege <privilege>] [password [0 | 7] <password>]",
+    "params": {
+      "<username>": "用户名",
+      "<privilege>": "权限级别（1-15）",
+      "<password>": "口令"
+    },
+    "desc": "配置本地用户名和口令",
+    "requires": "",
+    "state_key": "system.username",
+    "no_cmd": "no username <username>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "telnet-server enable",
+    "params": {},
+    "desc": "打开交换机的 Telnet 服务器功能",
+    "requires": "",
+    "state_key": "system.telnet_server",
+    "no_cmd": "no telnet-server enable",
     "output_example": ""
   }
 ]

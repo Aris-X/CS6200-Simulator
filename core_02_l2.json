@@ -5,7 +5,7 @@
     ],
     "syntax": "vlan WORD",
     "params": {
-      "WORD": "VLAN ID列表或范围（如 2 或 2-5, 8）"
+      "WORD": "VLAN ID列表或范围（如 2 或 2-5;8）"
     },
     "desc": "创建/删除 VLAN 或进入 VLAN 模式",
     "requires": "",

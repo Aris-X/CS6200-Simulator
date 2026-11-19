@@ -33,7 +33,7 @@
   },
   {
     "mode": [
-      "router"
+      "router-ospf"
     ],
     "syntax": "network {<network> <mask> | <network>/<prefix>} area <area_id>",
     "params": {
@@ -68,7 +68,7 @@
     "syntax": "network-address <network-number> <mask>",
     "params": {
       "<network-number>": "网络地址",
-      "<mask>": "掩码或前缀长度"
+      "<mask>": "子网掩码"
     },
     "desc": "配置地址池可分配的地址范围",
     "requires": "",
@@ -80,9 +80,39 @@
     "mode": [
       "dhcp-pool"
     ],
-    "syntax": "default-router <address1>",
+    "syntax": "network-address <network-number> <prefix-length>",
     "params": {
-      "address1...address8": "缺省网关IP地址"
+      "<network-number>": "网络地址",
+      "<prefix-length>": "掩码长度（1-32）"
+    },
+    "desc": "配置地址池可分配的地址范围",
+    "requires": "",
+    "state_key": "dhcp.pool.network_address",
+    "no_cmd": "no network-address",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "dhcp-pool"
+    ],
+    "syntax": "network-address <network-number>",
+    "params": {
+      "<network-number>": "网络地址"
+    },
+    "desc": "配置地址池可分配的地址范围",
+    "requires": "",
+    "state_key": "dhcp.pool.network_address",
+    "no_cmd": "no network-address",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "dhcp-pool"
+    ],
+    "syntax": "default-router <address1> [<address2>] [<address3>] [<address4>] [<address5>] [<address6>] [<address7>] [<address8>]",
+    "params": {
+      "address1...address8": "缺省网关IP地址",
+      "<address2> ... <address8>": "可选备用网关地址（最多 8 个）"
     },
     "desc": "为 DHCP客户机配置缺省网关",
     "requires": "",
@@ -118,18 +148,6 @@
     "mode": [
       "any"
     ],
-    "syntax": "show ip interface brief",
-    "params": {},
-    "desc": "显示IP接口简要信息",
-    "requires": "",
-    "state_key": "show.ip.interface.brief",
-    "no_cmd": "",
-    "output_example": ""
-  },
-  {
-    "mode": [
-      "any"
-    ],
     "syntax": "show ip interface {vlan <vlan-id> | ethernet <interface-list> | port-channel <port-channel-number> | loopback <loopback-id>}",
     "params": {
       "<vlan-id>": "VLAN ID",
@@ -138,6 +156,32 @@
       "<loopback-id>": "Loopback 接口编号"
     },
     "desc": "显示指定三层接口的IP配置及状态信息",
+    "requires": "",
+    "state_key": "show.ip.interface",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show ip interface",
+    "params": {},
+    "desc": "显示所有三层接口的IP配置及状态信息",
+    "requires": "",
+    "state_key": "show.ip.interface",
+    "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "any"
+    ],
+    "syntax": "show ip interface <interface-name>",
+    "params": {
+      "<interface-name>": "接口名称，如 Vlan1 / Loopback1 / Ethernet1/0/1"
+    },
+    "desc": "显示指定接口的IP配置及状态信息",
     "requires": "",
     "state_key": "show.ip.interface",
     "no_cmd": "",

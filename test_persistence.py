@@ -67,8 +67,6 @@ def configure_sample(engine: CS6200CLIEngine) -> None:
         "enable",
         "config terminal",
         "hostname SW-PERSIST",
-        "ip routing",
-        "ipv6 unicast-routing",
         "ipv6 enable",
         "vlan 10",
         "name OFFICE",
@@ -130,8 +128,6 @@ def run_persistence_suite() -> None:
 
         st = engine2.state
         assert st["system"]["hostname"] == "SW-PERSIST"
-        assert st["system"]["ip_routing"] is True
-        assert st["system"]["ipv6_unicast_routing"] is True
         assert st["system"]["ipv6_enabled"] is True
         assert 10 in st["vlans"], st["vlans"].keys()
         assert st["vlans"][10]["name"] == "OFFICE"
@@ -151,8 +147,6 @@ def run_persistence_suite() -> None:
         running = exec_line(engine2, "show running-config")
         for expected in (
             "hostname SW-PERSIST",
-            "ip routing",
-            "ipv6 unicast-routing",
             " ipv6 address 2001:da8:20:1:0::1/96",
             " no autostate",
             " switchport trunk allowed vlan 21-22;222",

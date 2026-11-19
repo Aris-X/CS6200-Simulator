@@ -1,7 +1,7 @@
 [
   {
     "mode": [
-      "global"
+      "route-map"
     ],
     "syntax": "set aggregator as <as-number> <ip_addr>",
     "params": {
@@ -16,7 +16,7 @@
   },
   {
     "mode": [
-      "global"
+      "route-map"
     ],
     "syntax": "set as-path prepend <as-num>",
     "params": {
@@ -30,7 +30,7 @@
   },
   {
     "mode": [
-      "global"
+      "route-map"
     ],
     "syntax": "set atomic-aggregate",
     "params": {},
@@ -42,21 +42,21 @@
   },
   {
     "mode": [
-      "global"
+      "route-map"
     ],
-    "syntax": "set comm-list <community-list-name | community-list-num > delete",
+    "syntax": "set comm-list {<community-list-name> | <community-list-num>} delete",
     "params": {
       "<community-list-name | community-list-num>": "团体属性列表名称或编号"
     },
     "desc": "删除BGP团体属性值",
     "requires": "",
     "state_key": "route_map.set.comm_list",
-    "no_cmd": "no set comm-list <community-list-name | community-list-num > delete",
+    "no_cmd": "no set comm-list {<community-list-name> | <community-list-num>} delete",
     "output_example": ""
   },
   {
     "mode": [
-      "global"
+      "route-map"
     ],
     "syntax": "set community [AA:NN] [internet] [local-AS] [no-advertise] [no-export] [none] [additive]",
     "params": {
@@ -74,9 +74,9 @@
   },
   {
     "mode": [
-      "global"
+      "route-map"
     ],
-    "syntax": "set extcommunity <rt | soo> <AA:NN>",
+    "syntax": "set extcommunity {rt | soo} <AA:NN>",
     "params": {
       "<rt | soo>": "扩展团体属性类型",
       "<AA:NN>": "扩展团体属性值"
@@ -84,12 +84,12 @@
     "desc": "设置BGP扩展团体属性",
     "requires": "",
     "state_key": "route_map.set.extcommunity",
-    "no_cmd": "no set extcommunity <rt | soo> [<AA:NN>]",
+    "no_cmd": "no set extcommunity {rt | soo} [<AA:NN>]",
     "output_example": ""
   },
   {
     "mode": [
-      "global"
+      "route-map"
     ],
     "syntax": "set ip next-hop <ip_addr>",
     "params": {
@@ -103,7 +103,7 @@
   },
   {
     "mode": [
-      "global"
+      "route-map"
     ],
     "syntax": "set local-preference <pre_val>",
     "params": {
@@ -117,49 +117,49 @@
   },
   {
     "mode": [
-      "global"
+      "route-map"
     ],
-    "syntax": "set metric < +/- metric_val | metric_val>",
+    "syntax": "set metric {<+metric_val> | <-metric_val> | <metric_val>}",
     "params": {
       "< +/- metric_val | metric_val>": "度量值或增减量"
     },
     "desc": "设置路由度量值",
     "requires": "",
     "state_key": "route_map.set.metric",
-    "no_cmd": "no set metric [+/- metric_val | metric_val]",
+    "no_cmd": "no set metric [{<+metric_val> | <-metric_val> | <metric_val>}]",
     "output_example": ""
   },
   {
     "mode": [
-      "global"
+      "route-map"
     ],
-    "syntax": "set metric-type <type-1 | type-2>",
+    "syntax": "set metric-type {type-1 | type-2}",
     "params": {
       "<type-1 | type-2>": "度量类型1或2"
     },
     "desc": "设置 OSPF 度量类型",
     "requires": "",
     "state_key": "route_map.set.metric_type",
-    "no_cmd": "no set metric-type [<type-1 | type-2>]",
+    "no_cmd": "no set metric-type [{type-1 | type-2}]",
     "output_example": ""
   },
   {
     "mode": [
-      "global"
+      "route-map"
     ],
-    "syntax": "set origin <egp | igp | incomplete >",
+    "syntax": "set origin {egp | igp | incomplete}",
     "params": {
       "<egp | igp | incomplete >": "路由源类型"
     },
     "desc": "设置BGP路由源",
     "requires": "",
     "state_key": "route_map.set.origin",
-    "no_cmd": "no set origin [<egp | igp | incomplete >]",
+    "no_cmd": "no set origin [{egp | igp | incomplete}]",
     "output_example": ""
   },
   {
     "mode": [
-      "global"
+      "route-map"
     ],
     "syntax": "set originator-id <ip_addr>",
     "params": {
@@ -173,7 +173,7 @@
   },
   {
     "mode": [
-      "global"
+      "route-map"
     ],
     "syntax": "set tag <tag_val>",
     "params": {
@@ -187,7 +187,7 @@
   },
   {
     "mode": [
-      "global"
+      "route-map"
     ],
     "syntax": "set vpnv4 next-hop <ip_addr>",
     "params": {
@@ -201,7 +201,7 @@
   },
   {
     "mode": [
-      "global"
+      "route-map"
     ],
     "syntax": "set weight <weight_val>",
     "params": {
@@ -232,7 +232,7 @@
     "mode": [
       "global"
     ],
-    "syntax": "ip prefix-list <list_name> [seq <sequence_number>] <deny | permit> < any | ip_addr/mask_length [ge min_prefix_len] [le max_prefix_len]>",
+    "syntax": "ip prefix-list <list_name> [seq <sequence_number>] {deny | permit} {any | <ip_addr/mask_length> [ge <min_prefix_len>] [le <max_prefix_len>]}",
     "params": {
       "<list_name>": "前缀列表名称",
       "<deny | permit>": "拒绝或允许",
@@ -243,7 +243,7 @@
     "desc": "配置前缀列表",
     "requires": "",
     "state_key": "ip.prefix_list.rule",
-    "no_cmd": "no ip prefix-list <list_name> [seq <sequence_number>] [<deny | permit> < any | ip_addr/mask_length [ge min_prefix_len] [le max_prefix_len]>]",
+    "no_cmd": "no ip prefix-list <list_name> [seq <sequence_number>] [{deny | permit} {any | <ip_addr/mask_length> [ge <min_prefix_len>] [le <max_prefix_len>]}]",
     "output_example": ""
   },
   {
@@ -261,9 +261,9 @@
   },
   {
     "mode": [
-      "router"
+      "router-rip"
     ],
-    "syntax": "redistribute ospf [<process-id>] [metric<value>] [route-map<word>]",
+    "syntax": "redistribute ospf [<process-id>] [metric <value>] [route-map <word>]",
     "params": {
       "<process-id>": "OSPF进程号",
       "<value>": "度量值",
@@ -314,7 +314,7 @@
   },
   {
     "mode": [
-      "router"
+      "router-rip"
     ],
     "syntax": "address-family ipv4 vrf <vrf-name>",
     "params": {
@@ -328,7 +328,7 @@
   },
   {
     "mode": [
-      "router"
+      "router-rip"
     ],
     "syntax": "exit-address-family",
     "params": {},
@@ -356,7 +356,7 @@
     "mode": [
       "if"
     ],
-    "syntax": "ip ospf dead-interval <time >",
+    "syntax": "ip ospf dead-interval <time>",
     "params": {
       "<time >": "失效时间间隔"
     },
@@ -396,9 +396,9 @@
   },
   {
     "mode": [
-      "router"
+      "router-ospf"
     ],
-    "syntax": "redistribute { bgp | connected | static | rip | kernel} [ metric-type { 1 | 2 } ] [ tag <tag> ] [ metric <cost_value> ] [ router-map <WORD>]",
+    "syntax": "redistribute { bgp | connected | static | rip | kernel} [ metric-type { 1 | 2 } ] [ tag <tag> ] [ metric <cost_value> ] [ route-map <WORD>]",
     "params": {
       "{ bgp | connected | static | rip | kernel}": "源路由协议",
       "<cost_value>": "度量值",
@@ -412,7 +412,7 @@
   },
   {
     "mode": [
-      "router"
+      "router-ospf"
     ],
     "syntax": "timers spf <interval>",
     "params": {
@@ -426,7 +426,7 @@
   },
   {
     "mode": [
-      "router"
+      "router-ospf"
     ],
     "syntax": "overflow database {<max-LSA> [hard | soft] | external <max-LSA> <recover time>}",
     "params": {
@@ -441,7 +441,7 @@
   },
   {
     "mode": [
-      "router"
+      "router-ospf"
     ],
     "syntax": "area <id> {authentication [message-digest] | default-cost <cost> | filter-list {access | prefix} <WORD> {in | out} | nssa [default-information-originate | no-redistribution | no-summary | translator-role] | range <range> | stub [no-summary] | virtual-link <neighbor>}",
     "params": {
@@ -473,7 +473,7 @@
   },
   {
     "mode": [
-      "router"
+      "router-ospf"
     ],
     "syntax": "log-adjacency-changes detail",
     "params": {},
@@ -485,7 +485,7 @@
   },
   {
     "mode": [
-      "router"
+      "router-bgp"
     ],
     "syntax": "timers bgp <keepalive> <holdtime>",
     "params": {
@@ -500,7 +500,7 @@
   },
   {
     "mode": [
-      "router"
+      "router-bgp"
     ],
     "syntax": "neighbor {<ip-address> | <TAG>} timers <keepalive> <holdtime>",
     "params": {
@@ -516,7 +516,7 @@
   },
   {
     "mode": [
-      "router"
+      "router-bgp"
     ],
     "syntax": "neighbor {<ip-address> | <TAG>} advertisement-interval <seconds>",
     "params": {
@@ -531,7 +531,7 @@
   },
   {
     "mode": [
-      "router"
+      "router-bgp"
     ],
     "syntax": "bgp default local-preference <value>",
     "params": {
@@ -547,7 +547,7 @@
     "mode": [
       "global"
     ],
-    "syntax": "ip route {<ip-prefix> <mask>| <ip-prefix>|<prefix-length>} null0 [<distance>]",
+    "syntax": "ip route {<ip-prefix> <mask> | <ip-prefix>} null0 [<distance>]",
     "params": {
       "<ip-prefix>": "目标网络前缀",
       "<mask>|<prefix-length>": "子网掩码或前缀长度",
@@ -556,7 +556,7 @@
     "desc": "配置静态黑洞路由",
     "requires": "",
     "state_key": "ip.route.blackhole",
-    "no_cmd": "no ip route {<ip-prefix> <mask>| <ip-prefix>|<prefix-length>} null0",
+    "no_cmd": "no ip route {<ip-prefix> <mask> | <ip-prefix>} null0",
     "output_example": ""
   },
   {
@@ -585,6 +585,61 @@
     "requires": "",
     "state_key": "system.load_balance",
     "no_cmd": "",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "route-map <map_name> {deny | permit} <sequence_num>",
+    "params": {
+      "<map_name>": "route-map 名称",
+      "<sequence_num>": "节点序列号"
+    },
+    "desc": "配置 route-map 及其节点",
+    "requires": "",
+    "state_key": "route_map.create",
+    "no_cmd": "no route-map <map_name>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "router rip",
+    "params": {},
+    "desc": "打开 RIP 协议",
+    "requires": "",
+    "state_key": "router.rip",
+    "no_cmd": "no router rip",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "global"
+    ],
+    "syntax": "router bgp <as-number>",
+    "params": {
+      "<as-number>": "自治系统号"
+    },
+    "desc": "启动 BGP 路由进程",
+    "requires": "",
+    "state_key": "router.bgp",
+    "no_cmd": "no router bgp <as-number>",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "router-rip"
+    ],
+    "syntax": "network <A.B.C.D/M>",
+    "params": {
+      "<A.B.C.D/M>": "运行 RIP 的网段（CIDR）"
+    },
+    "desc": "设定运行 RIP 协议的网段",
+    "requires": "",
+    "state_key": "router.rip.network",
+    "no_cmd": "no network <A.B.C.D/M>",
     "output_example": ""
   }
 ]

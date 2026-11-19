@@ -238,6 +238,11 @@ class CS6200CLIEngine:
         "time-range": "{hostname}(Config-Time-Range)#",
         "vrf": "{hostname}(Config-Vrf)#",
         "tunnel": "{hostname}(Config-If-Tunnel{ctx})#",
+        "route-map": "{hostname}(Config-Route-Map)#",
+        "router-ospf": "{hostname}(Config-Router)#",
+        "router-rip": "{hostname}(Config-Router)#",
+        "router-bgp": "{hostname}(Config-Router)#",
+        "router-msdp": "{hostname}(Config-Router)#",
     }
 
     # 需要重映射的 requires 关键词规则 (顺序敏感，优先匹配更具体的规则)
@@ -330,13 +335,13 @@ class CS6200CLIEngine:
                 "enable_password": None,
                 "enable_level": 1,
                 "load_balance": "dst-src-mac-ip",
-                "vty_lines": {},
+                "authentication_lines": {},
                 "time_ranges": {},
                 "vrfs": {},
                 "tunnels": {},
             },
             "vlans": {
-                1: {"name": "default", "description": "", "shutdown": False}
+                1: {"name": "default"}
             },
             "interfaces": {
                 # 预置部分典型业务端口便于直接测试
@@ -395,14 +400,34 @@ class CS6200CLIEngine:
             "startup_config": {},
         }
 
-    @staticmethod
-    def _default_interface_state(if_name: str) -> Dict[str, Any]:
-        return {
+    # 三层逻辑接口默认状态：不携带任何二层端口字段（switchport / port-security 等）
+    L3_INTERFACE_PREFIXES: Tuple[str, ...] = ("Vlan", "Loopback", "Tunnel")
+
+    @classmethod
+    def _is_l3_interface(cls, if_name: str) -> bool:
+        return if_name.startswith(cls.L3_INTERFACE_PREFIXES)
+
+    @classmethod
+    def _default_interface_state(cls, if_name: str) -> Dict[str, Any]:
+        # CS6200 真机 Loopback 缺省 MTU 为 3924，其余接口为 1500
+        default_mtu = 3924 if if_name.startswith("Loopback") else 1500
+        base: Dict[str, Any] = {
             "name": if_name,
             "shutdown": False,
             "description": "",
             "bandwidth": None,
-            "mtu": 1500,
+            "mtu": default_mtu,
+            "ip_address": None,
+            "ipv6_addresses": [],
+            "ipv6_enable": False,
+            "autostate": True,
+            "vrf": None,
+            "ip_access_group": {"in": None, "out": None},
+        }
+        if cls._is_l3_interface(if_name):
+            return base
+
+        base.update({
             "port_loopback": False,
             "loopback_detection": {
                 "enabled": False,
@@ -416,9 +441,6 @@ class CS6200CLIEngine:
             "trunk_native_vlan": 1,
             "hybrid_allowed_vlans": [],
             "hybrid_native_vlan": 1,
-            "ip_address": None,
-            "ipv6_addresses": [],
-            "vrf": None,
             "port_group": None,
             "port_security": {
                 "enabled": False,
@@ -427,15 +449,27 @@ class CS6200CLIEngine:
                 "mac_addresses": [],
                 "aging": {},
             },
-            "ip_access_group": {"in": None, "out": None},
             "dhcp_snooping_trust": False,
             "anti_arpscan_trust": False,
-        }
+        })
+        return base
 
     def _extract_persistable_state(self) -> Dict[str, Any]:
         """提取需要写入 startup_config 的核心配置节点"""
         exclude_keys = {"running_config", "startup_config"}
-        return {k: v for k, v in self.state.items() if k not in exclude_keys}
+        data = {k: copy.deepcopy(v) for k, v in self.state.items() if k not in exclude_keys}
+        interfaces = data.get("interfaces")
+        if isinstance(interfaces, dict):
+            for if_name, iinfo in interfaces.items():
+                if not isinstance(iinfo, dict):
+                    continue
+                iinfo.pop("port_loopback", None)
+                if self._is_l3_interface(if_name):
+                    allowed = self._default_interface_state(if_name)
+                    for key in list(iinfo):
+                        if key not in allowed:
+                            iinfo.pop(key)
+        return data
 
     def export_state(self, indent: int = 2) -> str:
         """同步 running_config 并导出完整状态树的 JSON 字符串快照"""
@@ -472,11 +506,13 @@ class CS6200CLIEngine:
                 if not str(raw_key).isdigit():
                     continue
                 vid = int(raw_key)
-                default_vlan = {"name": f"VLAN{vid:04d}", "description": "", "shutdown": False}
-                normalized_vlans[vid] = self._merge_state_defaults(
-                    default_vlan, vinfo if isinstance(vinfo, dict) else {}
-                )
-            state["vlans"] = normalized_vlans or {1: {"name": "default", "description": "", "shutdown": False}}
+                default_vlan = {"name": f"VLAN{vid:04d}"}
+                saved_vlan = vinfo if isinstance(vinfo, dict) else {}
+                # CS6200 的 vlan <id> 视图仅支持 name，不存在 description/shutdown
+                normalized_vlans[vid] = {
+                    "name": saved_vlan.get("name") or default_vlan["name"]
+                }
+            state["vlans"] = normalized_vlans or {1: {"name": "default"}}
 
         # MST 实例优先级使用整数键
         stp = state.get("spanning_tree")
@@ -489,10 +525,17 @@ class CS6200CLIEngine:
         interfaces = state.get("interfaces")
         if isinstance(interfaces, dict):
             for if_name, iinfo in list(interfaces.items()):
-                state["interfaces"][if_name] = self._merge_state_defaults(
-                    self._default_interface_state(if_name),
-                    iinfo if isinstance(iinfo, dict) else {},
-                )
+                default_if = self._default_interface_state(if_name)
+                saved_if = dict(iinfo) if isinstance(iinfo, dict) else {}
+                # 丢弃旧模型残留字段：三层逻辑接口不应携带二层端口属性；
+                # port_loopback 属于运行时诊断状态，不参与持久化。
+                saved_if.pop("port_loopback", None)
+                if self._is_l3_interface(if_name):
+                    saved_if = {k: v for k, v in saved_if.items() if k in default_if}
+                    # 早期版本把 Loopback 缺省 MTU 保存为 1500，迁移为真机默认 3924
+                    if if_name.startswith("Loopback") and saved_if.get("mtu") in (None, 1500):
+                        saved_if["mtu"] = 3924
+                state["interfaces"][if_name] = self._merge_state_defaults(default_if, saved_if)
 
     def save_startup_config(self, path: Optional[str] = None) -> bool:
         """把 startup_config 写入磁盘（模拟 write 保存到 Flash），成功返回 True"""
@@ -599,8 +642,9 @@ class CS6200CLIEngine:
             if remapped:
                 target_modes = [remapped]
             elif any(syntax.startswith(kw) for kw in self.GLOBAL_SHOW_KEYWORDS):
-                # show / ping / debug 等查询命令在所有模式均可用
-                target_modes = list(self.PROMPT_TEMPLATES.keys())
+                # show / ping / debug 等查询命令在特权模式及所有配置模式可用，
+                # 但一般用户模式 (Switch>) 下不可执行。
+                target_modes = [m for m in self.PROMPT_TEMPLATES.keys() if m != "user"]
             elif syntax.startswith("enable"):
                 target_modes = ["user", "priv"]
 
@@ -638,8 +682,8 @@ class CS6200CLIEngine:
         for m in rule.modes:
             if m not in self.rules_by_mode:
                 self.rules_by_mode[m] = []
-            # 避免重复添加完全相同的语法
-            if not any(r.syntax == rule.syntax and r.state_key == rule.state_key for r in self.rules_by_mode[m]):
+            # 同一视图内相同语法只保留最先加载的定义（核心规则优先于手册摘录）
+            if not any(r.syntax == rule.syntax for r in self.rules_by_mode[m]):
                 self.rules_by_mode[m].append(rule)
 
     def _register_builtin_commands(self) -> None:
@@ -760,14 +804,16 @@ class CS6200CLIEngine:
         template = self.PROMPT_TEMPLATES.get(frame.mode, "{hostname}(config)#")
         return template.format(hostname=hostname, ctx=frame.context_name)
 
-    def _is_loopback_view(self) -> bool:
-        """当前是否处于 Loopback 环回接口配置视图"""
-        return self.current_mode == "if" and self.current_frame.context_name.startswith("Loopback")
+    def _is_l3_view(self) -> bool:
+        """当前是否处于三层逻辑接口配置视图（Vlan / Loopback / Tunnel）"""
+        return self.current_mode == "if" and self.current_frame.context_name.startswith(
+            ("Vlan", "Loopback", "Tunnel")
+        )
 
     def _current_view_rules(self) -> List[CommandRule]:
-        """返回当前视图的合法规则；Loopback 视图中过滤掉二层端口命令"""
+        """返回当前视图的合法规则；三层逻辑接口视图中过滤掉二层端口命令"""
         rules = self.rules_by_mode.get(self.current_mode, [])
-        if self._is_loopback_view():
+        if self._is_l3_view():
             rules = [r for r in rules if r.state_key not in self.L2_PORT_STATE_KEYS]
         return rules
 
@@ -1070,10 +1116,22 @@ class CS6200CLIEngine:
                 return False
             low, high = int(range_match.group(1)), int(range_match.group(2))
             return low <= int(word) <= high
+        if "interface-name" in p:
+            # 接受 Vlan1 / Loopback1 / Ethernet1/0/1 / Port-Channel1 等真机接口名，
+            # 不接受 brief 之类非接口名，避免把非法命令吞成合法参数。
+            return bool(re.match(
+                r"^(?:vlan|loopback|lo|ethernet|eth|e|port-channel)\s*\d",
+                word,
+                re.IGNORECASE,
+            )) or bool(re.match(r"^\d+/\d+/\d+$", word))
         if "loopback-id" in p:
             return word.isdigit() and 0 <= int(word) <= 1023
         if "ipv6" in p:
             return ":" in word
+        if p in ("<mask>", "<smask>") or p.endswith("mask>"):
+            return bool(re.match(r"^\d{1,3}(\.\d{1,3}){3}$", word))
+        if "prefix-length" in p:
+            return word.isdigit() and 0 <= int(word) <= 128
         if "ip" in p or "a.b.c.d" in p or "gateway" in p or "network" in p:
             # 支持 IPv4 或 IPv4/Prefix
             return bool(re.match(r"^\d{1,3}(\.\d{1,3}){3}(/\d{1,2})?$", word))
@@ -1468,7 +1526,7 @@ class CS6200CLIEngine:
                 return ""
             if raw_vid.isdigit():
                 vid_int = int(raw_vid)
-                self.state["vlans"].setdefault(vid_int, {"name": f"VLAN{vid_int:04d}", "description": "", "shutdown": False})
+                self.state["vlans"].setdefault(vid_int, {"name": f"VLAN{vid_int:04d}"})
                 self.push_view("vlan", context_name=str(vid_int))
             return ""
 
@@ -1478,7 +1536,41 @@ class CS6200CLIEngine:
                 self.state["ospf"]["processes"].pop(pid, None)
                 return ""
             self.state["ospf"]["processes"].setdefault(pid, {"networks": []})
-            self.push_view("router", context_name=f"ospf-{pid}")
+            self.push_view("router-ospf", context_name=f"ospf-{pid}")
+            return ""
+
+        if state_key == "router.rip":
+            if is_no:
+                self.return_to_global()
+                return ""
+            self.push_view("router-rip", context_name="rip")
+            return ""
+
+        if state_key == "router.bgp":
+            asn = args.get("<as-number>", "1")
+            if is_no:
+                self.return_to_global()
+                return ""
+            self.state.setdefault("bgp", {}).setdefault("neighbors", {})
+            self.push_view("router-bgp", context_name=f"bgp-{asn}")
+            return ""
+
+        if state_key == "router.msdp":
+            if is_no:
+                self.return_to_global()
+                return ""
+            self.push_view("router-msdp", context_name="msdp")
+            return ""
+
+        if state_key == "route_map.create":
+            map_name = args.get("<map_name>", "RM")
+            if is_no:
+                self.state.setdefault("route_maps", {}).pop(map_name, None)
+                return ""
+            self.state.setdefault("route_maps", {}).setdefault(
+                map_name, {"entries": []}
+            )
+            self.push_view("route-map", context_name=map_name)
             return ""
 
         if state_key == "dhcp.pool":
@@ -1570,9 +1662,6 @@ class CS6200CLIEngine:
         if state_key == "show.running_config":
             return self._render_running_config()
 
-        if state_key == "show.ip.interface.brief":
-            return self._render_ip_int_brief()
-
         if rule and rule.output_example:
             return rule.output_example
 
@@ -1591,10 +1680,6 @@ class CS6200CLIEngine:
         if self.state["firewall_enabled"]:
             lines.append("firewall enable")
         sys_state = self.state.get("system", {})
-        if sys_state.get("ip_routing"):
-            lines.append("ip routing")
-        if sys_state.get("ipv6_unicast_routing") or sys_state.get("ipv6_unicast-routing"):
-            lines.append("ipv6 unicast-routing")
         if sys_state.get("ipv6_enabled"):
             lines.append("ipv6 enable")
         for vid, vinfo in sorted(self.state["vlans"].items()):
@@ -1633,43 +1718,3 @@ class CS6200CLIEngine:
         lines.append("end")
         return "\n".join(lines)
 
-    def _render_ip_int_brief(self) -> str:
-        header = f"{'Interface':<22} {'IP-Address':<18} {'Status':<10} {'Protocol':<10}"
-        rows = [header, "-" * len(header)]
-        for if_name, iinfo in self.state["interfaces"].items():
-            ip_str = iinfo["ip_address"].split("/")[0] if iinfo.get("ip_address") else "unassigned"
-            status = "down" if iinfo.get("shutdown") else "up"
-            rows.append(f"{if_name:<22} {ip_str:<18} {status:<10} {status:<10}")
-        return "\n".join(rows)
-
-
-# ============================================================================
-# 4. 交互式命令行自测入口
-# ============================================================================
-
-if __name__ == "__main__":
-    RULE_FILES = [
-        "core_01_base.json",
-        "core_02_l2.json",
-        "core_03_l3.json",
-        "core_04_security.json",
-        "03_system.json",
-        "04_system.json",
-        "05_system.json",
-    ]
-
-    engine = CS6200CLIEngine(rule_files=RULE_FILES)
-    print(f"[INFO] Loaded {len(engine.all_rules)} CLI rules across {len(engine.rules_by_mode)} views.")
-    print("[INFO] Type 'exit' in user mode to quit, or enter '?' for contextual help.\n")
-
-    while True:
-        try:
-            cmd = input(f"{engine.get_prompt()} ")
-            if cmd.strip().lower() in ("quit", "exit") and engine.current_mode == "user":
-                break
-            output = engine.execute_command(cmd)
-            if output:
-                print(output)
-        except (KeyboardInterrupt, EOFError):
-            print("\nExiting CS6200 CLI Engine.")
-            break

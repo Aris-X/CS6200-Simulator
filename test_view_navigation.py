@@ -82,9 +82,7 @@ def run_view_navigation_suite() -> None:
     exec_line(engine, "enable")
     exec_line(engine, "config terminal")
 
-    # Native global IPv4/IPv6 routing enablement
-    exec_line(engine, "ip routing")
-    exec_line(engine, "ipv6 unicast-routing")
+    # Native global IPv6 enablement (CS6200 has no ip routing command)
     exec_line(engine, "ipv6 enable")
 
     exec_line(engine, "interface loopback 1")
@@ -153,14 +151,12 @@ def run_view_navigation_suite() -> None:
     assert engine.state["interfaces"]["Ethernet1/0/2"]["shutdown"] is True
     exec_line(engine, "no shutdown")
 
-    # VLAN-mode local command
+    # VLAN-mode local command（CS6200 的 vlan 视图仅支持 name，无 shutdown）
     exec_line(engine, "vlan 20")
     assert_prompt(engine, "Switch(Config-Vlan20)#")
-    exec_line(engine, "shutdown")
+    exec_line(engine, "name SALES")
     assert_prompt(engine, "Switch(Config-Vlan20)#")
-    assert engine.state["vlans"][20]["shutdown"] is True
-    exec_line(engine, "no shutdown")
-    assert_prompt(engine, "Switch(Config-Vlan20)#")
+    assert engine.state["vlans"][20]["name"] == "SALES"
 
     # ------------------------------------------------------------------
     # 4. Abbreviated jump & 'no interface' from a sub-view
@@ -192,8 +188,6 @@ def run_view_navigation_suite() -> None:
     # `show running-config` must render IPv4/IPv6 routing and dual-stack config
     running = exec_line(engine, "show running-config")
     for expected in (
-        "ip routing",
-        "ipv6 unicast-routing",
         "ipv6 enable",
         " ipv6 address 2001:da8:20:1:0::1/96",
         " no autostate",
@@ -201,15 +195,12 @@ def run_view_navigation_suite() -> None:
         assert expected in running, (expected, running)
 
     # Final state assertions
-    assert engine.state["system"]["ip_routing"] is True
-    assert engine.state["system"]["ipv6_unicast_routing"] is True
     assert engine.state["system"]["ipv6_enabled"] is True
     assert engine.state["interfaces"]["Vlan10"]["ipv6_enable"] is True
     assert engine.state["interfaces"]["Vlan10"]["autostate"] is False
     assert engine.state["interfaces"]["Loopback1"]["ip_address"] == "10.255.255.1/255.255.255.255"
     assert engine.state["interfaces"]["Vlan10"]["ip_address"] == "192.168.10.1/255.255.255.0"
-    assert engine.state["vlans"][20]["name"] == "OFFICE"
-    assert engine.state["vlans"][20]["shutdown"] is False
+    assert engine.state["vlans"][20]["name"] == "SALES"
     assert any(n["network"] == "192.168.20.0" for n in engine.state["ospf"]["processes"]["1"]["networks"])
     assert engine.state["dhcp_pools"]["P1"]["network"] == "192.168.20.0 255.255.255.0"
 

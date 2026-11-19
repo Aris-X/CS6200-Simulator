@@ -1,32 +1,6 @@
 [
   {
     "mode": [
-      "vlan"
-    ],
-    "syntax": "description <text>",
-    "params": {
-      "<text>": "VLAN接口的描述信息"
-    },
-    "desc": "配置 VLAN 接口的描述信息",
-    "requires": "",
-    "state_key": "vlan.description",
-    "no_cmd": "no description",
-    "output_example": ""
-  },
-  {
-    "mode": [
-      "vlan"
-    ],
-    "syntax": "shutdown",
-    "params": {},
-    "desc": "打开或关闭 VLAN接口",
-    "requires": "",
-    "state_key": "vlan.shutdown",
-    "no_cmd": "no shutdown",
-    "output_example": ""
-  },
-  {
-    "mode": [
       "global"
     ],
     "syntax": "ip vrf <vrf-name>",
@@ -41,7 +15,7 @@
   },
   {
     "mode": [
-      "any"
+      "vrf"
     ],
     "syntax": "rd <ASN:nn_or_IP-address:nn>",
     "params": {
@@ -55,7 +29,7 @@
   },
   {
     "mode": [
-      "any"
+      "vrf"
     ],
     "syntax": "route-target {import | export | both} <rt-value>",
     "params": {
@@ -72,14 +46,14 @@
     "mode": [
       "if"
     ],
-    "syntax": "ip vrf forwarding < vrf-name >",
+    "syntax": "ip vrf forwarding <vrf-name>",
     "params": {
-      "< vrf-name >": "VRF实例名称"
+      "<vrf-name>": "VRF实例名称"
     },
     "desc": "配置 VRF实例与接口关联",
     "requires": "",
     "state_key": "interface.vrf_forwarding",
-    "no_cmd": "no ip vrf forwarding < vrf-name >",
+    "no_cmd": "no ip vrf forwarding <vrf-name>",
     "output_example": ""
   },
   {
@@ -114,7 +88,7 @@
   },
   {
     "mode": [
-      "any"
+      "tunnel"
     ],
     "syntax": "tunnel nexthop <ipv4-address>",
     "params": {
@@ -128,9 +102,9 @@
   },
   {
     "mode": [
-      "any"
+      "tunnel"
     ],
-    "syntax": "tunnel mode [[gre] | ipv6ip [ 6to4 | isatap]]",
+    "syntax": "tunnel mode {gre | ipv6ip [6to4 | isatap]}",
     "params": {
       "[gre] | ipv6ip": "隧道模式",
       "[ 6to4 | isatap]": "IPv6过渡技术"
@@ -232,7 +206,7 @@
   },
   {
     "mode": [
-      "any"
+      "dhcp-pool"
     ],
     "syntax": "hardware-address <hardware-address> [{Ethernet | IEEE802|<type-number>}]",
     "params": {
@@ -247,12 +221,11 @@
   },
   {
     "mode": [
-      "any"
+      "dhcp-pool"
     ],
-    "syntax": "host <address> [<mask> | <prefix-length> ]",
+    "syntax": "host <address>",
     "params": {
-      "<address>": "IP地址",
-      "<mask> | <prefix-length>": "子网掩码或前缀长度"
+      "<address>": "主机 IP 地址"
     },
     "desc": "在手工绑定地址时，配置/删除分配给指定客户机的用户的 IP地址",
     "requires": "需要进入DHCP地址池配置模式",
@@ -262,7 +235,37 @@
   },
   {
     "mode": [
-      "any"
+      "dhcp-pool"
+    ],
+    "syntax": "host <address> <mask>",
+    "params": {
+      "<address>": "主机 IP 地址",
+      "<mask>": "子网掩码"
+    },
+    "desc": "在手工绑定地址时，配置/删除分配给指定客户机的用户的 IP地址",
+    "requires": "需要进入DHCP地址池配置模式",
+    "state_key": "dhcp.pool.host",
+    "no_cmd": "no host",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "dhcp-pool"
+    ],
+    "syntax": "host <address> <prefix-length>",
+    "params": {
+      "<address>": "主机 IP 地址",
+      "<prefix-length>": "掩码长度"
+    },
+    "desc": "在手工绑定地址时，配置/删除分配给指定客户机的用户的 IP地址",
+    "requires": "需要进入DHCP地址池配置模式",
+    "state_key": "dhcp.pool.host",
+    "no_cmd": "no host",
+    "output_example": ""
+  },
+  {
+    "mode": [
+      "dhcp-pool"
     ],
     "syntax": "client-identifier <unique-identifier>",
     "params": {
@@ -290,7 +293,7 @@
     "mode": [
       "priv"
     ],
-    "syntax": "clear ip dhcp conflict <address | all>",
+    "syntax": "clear ip dhcp conflict {<address> | all}",
     "params": {
       "<address | all>": "特定的冲突IP地址或所有(all)"
     },
@@ -304,7 +307,7 @@
     "mode": [
       "global"
     ],
-    "syntax": "ip user helper-address A.B.C.D [port <udpport>] source <ipAddr> (secondary|)",
+    "syntax": "ip user helper-address A.B.C.D [port <udpport>] source <ipAddr> [secondary]",
     "params": {
       "A.B.C.D": "helper server目的IP地址",
       "<udpport>": "UDP端口，可选",
@@ -314,7 +317,7 @@
     "desc": "配置或删除 helper address地址",
     "requires": "",
     "state_key": "ip.user_helper_address",
-    "no_cmd": "no ip user helper-address (secondary|)",
+    "no_cmd": "no ip user helper-address [secondary]",
     "output_example": ""
   },
   {
@@ -338,7 +341,7 @@
     "desc": "设置或删除端口的 DHCP snooping信任属性",
     "requires": "",
     "state_key": "interface.dhcp_snooping_trust",
-    "no_cmd": "no Ip dhcp snooping trust",
+    "no_cmd": "no ip dhcp snooping trust",
     "output_example": ""
   },
   {
@@ -355,7 +358,7 @@
   },
   {
     "mode": [
-      "any"
+      "dhcp-pool"
     ],
     "syntax": "option 60 ascii LINE",
     "params": {
@@ -369,7 +372,7 @@
   },
   {
     "mode": [
-      "any"
+      "dhcp-pool"
     ],
     "syntax": "option 43 ascii LINE",
     "params": {
@@ -383,7 +386,7 @@
   },
   {
     "mode": [
-      "any"
+      "dhcp-pool"
     ],
     "syntax": "option 60 hex WORD",
     "params": {
@@ -397,7 +400,7 @@
   },
   {
     "mode": [
-      "any"
+      "dhcp-pool"
     ],
     "syntax": "option 43 hex WORD",
     "params": {
@@ -411,7 +414,7 @@
   },
   {
     "mode": [
-      "any"
+      "dhcp-pool"
     ],
     "syntax": "option 60 ip A.B.C.D",
     "params": {
@@ -425,7 +428,7 @@
   },
   {
     "mode": [
-      "any"
+      "dhcp-pool"
     ],
     "syntax": "option 43 ip A.B.C.D",
     "params": {
@@ -439,7 +442,7 @@
   },
   {
     "mode": [
-      "any"
+      "dhcp-pool"
     ],
     "syntax": "no option 60",
     "params": {},
@@ -451,7 +454,7 @@
   },
   {
     "mode": [
-      "any"
+      "dhcp-pool"
     ],
     "syntax": "no option 43",
     "params": {},
@@ -462,17 +465,21 @@
     "output_example": ""
   },
   {
-  "mode": ["global"],
-  "syntax": "ipv6 enable",
-  "params": {},
-  "desc": "在交换机上全局启动IPv6功能",
-  "requires": "",
-  "state_key": "ipv6.enable",
-  "no_cmd": "no ipv6 enable",
-  "output_example": ""
+    "mode": [
+      "global"
+    ],
+    "syntax": "ipv6 enable",
+    "params": {},
+    "desc": "在交换机上全局启动IPv6功能",
+    "requires": "",
+    "state_key": "ipv6.enable",
+    "no_cmd": "no ipv6 enable",
+    "output_example": ""
   },
   {
-    "mode": ["if"],
+    "mode": [
+      "if"
+    ],
     "syntax": "description <text>",
     "params": {
       "<text>": "接口描述信息（可包含空格）"
@@ -484,7 +491,9 @@
     "output_example": ""
   },
   {
-    "mode": ["if"],
+    "mode": [
+      "if"
+    ],
     "syntax": "bandwidth <bandwidth>",
     "params": {
       "<bandwidth>": "接口带宽（kbit/s，1-100000000）"
@@ -496,7 +505,9 @@
     "output_example": ""
   },
   {
-    "mode": ["if"],
+    "mode": [
+      "if"
+    ],
     "syntax": "mtu <mtu-value>",
     "params": {
       "<mtu-value>": "接口 MTU 值（64-9216 字节）"
@@ -508,7 +519,9 @@
     "output_example": ""
   },
   {
-    "mode": ["if"],
+    "mode": [
+      "if"
+    ],
     "syntax": "no ip address",
     "params": {},
     "desc": "删除当前接口的全部 IPv4 地址",

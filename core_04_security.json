@@ -68,7 +68,7 @@
     "desc": "使能端口的 port-security老化表项的功能，指定老化时间以及类型等",
     "requires": "需要先开启 switchport port-security",
     "state_key": "interface.port_security.aging",
-    "no_cmd": "no switchport port-security violation aging {static | time | type}",
+    "no_cmd": "no switchport port-security aging {static | time | type}",
     "output_example": ""
   },
   {
@@ -131,14 +131,14 @@
   },
   {
     "mode": [
-      "any"
+      "acl-std"
     ],
-    "syntax": "[no] {deny | permit} {{<sIpAddr> <sMask >} | any-source | {host-source <sIpAddr>}}",
+    "syntax": "{deny | permit} {{<sIpAddr> <sMask>} | any-source | {host-source <sIpAddr>}}",
     "params": {},
     "desc": "创建一条命名标准 IPv4 访问规则（rule）",
     "requires": "需进入命名标准IP访问列表配置模式",
     "state_key": "acl.ipv4.standard.named.rule",
-    "no_cmd": "no {deny | permit} ...",
+    "no_cmd": "no {deny | permit} {{<sIpAddr> <sMask>} | any-source | {host-source <sIpAddr>}}",
     "output_example": ""
   },
   {
@@ -213,7 +213,7 @@
   },
   {
     "mode": [
-      "any"
+      "time-range"
     ],
     "syntax": "absolute-periodic {Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday} <start_time> to {Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday} <end_time>",
     "params": {
@@ -228,7 +228,7 @@
   },
   {
     "mode": [
-      "any"
+      "time-range"
     ],
     "syntax": "periodic {{Monday+Tuesday+Wednesday+Thursday+Friday+Saturday+ Sunday} | daily | weekdays | weekend} <start_time> to <end_time>",
     "params": {
@@ -243,24 +243,26 @@
   },
   {
     "mode": [
-      "global"
+      "time-range"
     ],
-    "syntax": "absolute start <start_time> <start_data> [end <end_time> <end_data>]",
+    "syntax": "absolute start <start_time> <start_date> [end <end_time> <end_date>]",
     "params": {
-      "<start_time> <start_data>": "开始时间日期",
-      "<end_time> <end_data>": "结束时间日期"
+      "<start_time>": "开始时间",
+      "<start_date>": "开始日期",
+      "<end_time>": "结束时间",
+      "<end_date>": "结束日期"
     },
     "desc": "创建一个绝对时间范围",
     "requires": "",
     "state_key": "time_range.absolute",
-    "no_cmd": "no absolute start <start_time> <start_data> [end <end_time> <end_data>]",
+    "no_cmd": "no absolute start <start_time> <start_date> [end <end_time> <end_date>]",
     "output_example": ""
   },
   {
     "mode": [
       "global"
     ],
-    "syntax": "access-list <num> {deny | permit} {icmp | igmp | tcp | udp | eigrp | gre | igrp | ipinip | ip | ospf | <protocol-num>} {{<sIpAddr> <sMask>} | any-source | {host-source <sIpAddr>}} {{<dIpAddr> <dMask>} | any-destination | {host-destination <dIpAddr>}} [options]",
+    "syntax": "access-list <num> {deny | permit} {icmp | igmp | tcp | udp | eigrp | gre | igrp | ipinip | ip | ospf | <protocol-num>} {{<sIpAddr> <sMask>} | any-source | {host-source <sIpAddr>}} {{<dIpAddr> <dMask>} | any-destination | {host-destination <dIpAddr>}} [s-port {<sPort> | range <sPortMin> <sPortMax>}] [d-port {<dPort> | range <dPortMin> <dPortMax>}] [precedence <prec>] [tos <tos>] [time-range <time-range-name>]",
     "params": {
       "<num>": "扩展IP ACL编号",
       "protocol": "协议类型",

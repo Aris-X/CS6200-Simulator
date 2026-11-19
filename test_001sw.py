@@ -109,7 +109,7 @@ def enable_001sw_extensions(engine: CS6200CLIEngine) -> Dict[str, int]:
       - semicolon ';' VLAN lists ('switchport trunk allowed vlan 21;22;222')
       - multi-port interface ranges ('interface ethernet 1/0/5-6;1/0/7')
       - chained sub-view jumps without typing 'exit' first
-      - 'interface loopback <id>', 'ip routing', 'ipv6 unicast-routing'
+      - 'interface loopback <id>', 'ipv6 enable'
       - SVI 'ipv6 enable', 'no autostate', and 'write memory'
     """
     stats = {
@@ -133,12 +133,6 @@ def enable_001sw_extensions(engine: CS6200CLIEngine) -> Dict[str, int]:
         if cur_mode == "priv" and low in {"write memory", "wr mem"}:
             stats["extended_001sw_cmds"] += 1
             return orig_execute("write")
-
-        # 2. Support global 'ip routing' & 'ipv6 unicast-routing'
-        if cur_mode == "global" and low in {"ip routing", "ipv6 unicast-routing"}:
-            stats["extended_001sw_cmds"] += 1
-            engine.state["system"][low.replace(" ", "_")] = True
-            return ""
 
         # 3. Support 'interface loopback <id>' in global or sub-view mode
         m_loop = re.match(r"^interface\s+loopback\s+(\d+)$", line, flags=re.IGNORECASE)
@@ -257,10 +251,9 @@ def run_001sw_verification() -> None:
     # -------------------------------------------------------------------------
     # STAGE 1: Hostname & IPv4/IPv6 Routing Enablement
     # -------------------------------------------------------------------------
-    print("\n--- [Stage 1/7] Hostname & IPv4/IPv6 Unicast Routing ---")
+    print("\n--- [Stage 1/7] Hostname & IPv6 Enablement ---")
     exec_ok(engine, "hostname SW")
-    exec_ok(engine, "ip routing")
-    exec_ok(engine, "ipv6 unicast-routing")
+    exec_ok(engine, "ipv6 enable")
     assert engine.state["system"]["hostname"] == "SW"
     assert engine.get_prompt() == "SW(config)#"
 
@@ -483,16 +476,14 @@ def run_001sw_verification() -> None:
     # -------------------------------------------------------------------------
     # STAGE 7: Inspect Show Outputs & Extension Telemetry
     # -------------------------------------------------------------------------
-    print("\n--- [Stage 7/7] Verify 'show vlan', 'show ip interface brief', 'show ip route' ---")
-    for sh_cmd in ("show vlan", "show port-group", "show ip interface brief", "show ip route"):
+    print("\n--- [Stage 7/7] Verify 'show vlan', 'show ip interface', 'show ip route' ---")
+    for sh_cmd in ("show vlan", "show port-group", "show ip interface", "show ip route"):
         print(f"\n>>> {sh_cmd}")
         exec_ok(engine, sh_cmd)
 
     # `show running-config` must include IPv4/IPv6 routing and dual-stack SVI config
     print("\n>>> show running-config (IPv4/IPv6 sections)")
     running = exec_ok(engine, "show running-config")
-    assert "ip routing" in running, running
-    assert "ipv6 unicast-routing" in running, running
     assert " ipv6 enable" in running, running
     assert " ipv6 address 2001:da8:20:1:0::1/96" in running, running
     assert " no autostate" in running, running
