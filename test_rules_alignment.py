@@ -168,7 +168,8 @@ def run_alignment_suite() -> None:
 
     exec_line(engine, "enable")
     assert engine.get_prompt() == "Switch#"
-    exec_line(engine, "show ip interface")
+    # 裸 show ip interface 真机不支持
+    assert_invalid(engine, "show ip interface")
     exec_line(engine, "config terminal")
     # 接口启停命令必须仍然有效
     exec_line(engine, "interface ethernet 1/0/1")
@@ -176,6 +177,11 @@ def run_alignment_suite() -> None:
     assert engine.state["interfaces"]["Ethernet1/0/1"]["shutdown"] is True
     exec_line(engine, "no shutdown")
     assert engine.state["interfaces"]["Ethernet1/0/1"]["shutdown"] is False
+    exec_line(engine, "exit")
+
+    # OSPF VRF 关键字必须可解析
+    exec_line(engine, "router ospf 1 vrf VPN1")
+    assert engine.get_prompt() == "Switch(Config-Router)#"
     exec_line(engine, "exit")
 
     # Tunnel 视图必须可从全局进入
